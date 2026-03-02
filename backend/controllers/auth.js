@@ -3,11 +3,11 @@ const Secret=process.env.Secret
 function generatetoken(user)
 {
     const payload={
-       Fullname: user.Fullname,
-       Email:user.Email,
-       PhoneNumber:user.PhoneNumber,
-       Password:user.Password,
-       Role:user.Role
+       fullName: user.fullName,
+       email:user.email,
+       phoneNumber:user.phoneNumber,
+       password:user.password,
+       role:user.role
 
     }
     return jwt.sign(payload,Secret);

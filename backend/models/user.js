@@ -2,29 +2,33 @@ const mongoose=require("mongoose")
 
 
 const UserSchema=new mongoose.Schema({
-    Fullname:{
+    fullName:{
         type:String,
          required:true
     },
-    Email:{
+    email:{
         type:String,
         required:true,
         unique:true
     },
-    PhoneNumber:{
-        type:Number,
+    phoneNumber:{
+        type:String,
          unique:true
     },
-    Password:{
+    password:{
         type:String,
          required:true
     },
-    Role:{
+    role:{
         type:String,
         enum:["USER","VENDOR","ADMIN"],
         default:"USER",
         required:true
 
+    },
+    isApproved:{
+        type:Boolean,
+        default:false
     }
 },{timestamps:true});
 
