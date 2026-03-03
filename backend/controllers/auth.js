@@ -3,6 +3,7 @@ const Secret=process.env.Secret
 function generatetoken(user)
 {
     const payload={
+        _id:user._id,
        fullName: user.fullName,
        email:user.email,
        phoneNumber:user.phoneNumber,
@@ -10,12 +11,16 @@ function generatetoken(user)
        role:user.role
 
     }
+    console.log(payload)
     return jwt.sign(payload,Secret);
 }
 
 
 function verifytoken(token){
-    return jwt.verify(token,Secret);
+              console.log("Secret:", Secret);
+         return jwt.verify(token,Secret);
+  
+    
 }
 
 

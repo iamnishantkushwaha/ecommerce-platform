@@ -10,10 +10,10 @@ const router = express.Router();
 const upload = require("../middlewares/upload");
 
 // Route to add a new product with image upload
-router.post("/add-product", upload.single("image"), handleproductupload);
+router.post("/add-product",upload.single("image"), handleproductupload);
 
 // Route to get all products for the vendor
-router.get("/product", handleproduct);
+router.get("/product",  handleproduct);
 
 // Route to delete a product by ID
 router.delete("/product/:id", handledelete);

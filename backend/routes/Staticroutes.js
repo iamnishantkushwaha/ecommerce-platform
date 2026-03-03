@@ -6,8 +6,9 @@ router.post("/signup",handlesignup);
 
 router.post("/login",handlelogin);
 
-router.get("/",(req,res)=>{
-    return res.send("hello");
+router.get("/logout",(req,res)=>{
+     res.clearCookie("token");
+    return res.status(200).json({message:"logout successfully"})
 })
 
 module.exports=router;

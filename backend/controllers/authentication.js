@@ -16,7 +16,7 @@ async function handlesignup(req, res) {
       password: hashpassword,
       role
     });
-    return res.status(201).redirect("/");
+    return res.status(201).json({message:`${role} created successfully`});
   } catch (error) {
     console.log(error);
   return res.status(500).json({ message: "Server Error", error });
@@ -24,22 +24,28 @@ async function handlesignup(req, res) {
 }
 
 async function handlelogin(req, res) {
-  const { email, password,role,isApproved } = req.body;
+  const { email, password } = req.body;
   try {
-    if(role==="VENDOR")
-    {    if(!isApproved) return res.status(401).json({message:"Not Approved Yet"});
+     const user = await User.findOne({ email: email })
+     console.log(user)
+      if (!user) return res.status(404).json({ message: "User Not Found" });
+        const matchpassword = await bcrypt.compare(password, user.password);
+    console.log(matchpassword)
+    if (!matchpassword) return res.status(401).json({ message: "incorrect password" });
+    
+    if(user.role==="VENDOR")
+    {     if(!user.isApproved)  return res.status(401).json({message:"Not Approved Yet"});
 
     }
-    const user = await User.findOne({ Email: Email });
    
-    if (!user) res.status(404).json({ message: "User Not Found" }).redirect("/signup");
-    const matchpassword = await bcrypt.compare(password, user.password);
    
-    if (!matchpassword) return res.status(401).json({ message: "incorrect password" });
+   
+  
 
     const token =generatetoken(user);
     res.cookie("token",token);
-    return res.status(200).redirect("/");
+    console.log("token:",token);
+    return res.status(200).json({message:`login successfully`});
   } catch (err) {
     return res.status(500).json("Server Error");
   }
