@@ -18,7 +18,7 @@ async function handlesignup(req, res) {
     });
     return res.status(201).json({message:`${role} created successfully`});
   } catch (error) {
-    console.log(error);
+    
   return res.status(500).json({ message: "Server Error", error });
   }
 }
