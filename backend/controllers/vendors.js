@@ -1,12 +1,12 @@
 const Product=require("../models/product");
-
+const Order=require("../models/orders")
 async function handleproductupload(req,res){
    const {title,description,price,stock,category}=req.body;
   
    try{  const isproductpresent= await Product.findOne({title,description,price});
 
   if(isproductpresent) return res.status(409).json({message:"product already present"})
-    if(!isproductpresent)    console.log(req.file)
+    if(!isproductpresent)   
     await Product.create({
         title,
         description,
@@ -31,7 +31,7 @@ async function handleproduct(req,res){
     
     try{
     const product =await Product.find({vendor:req.user._id});
-    console.log(product)
+    
     if(!product) return res.status(404).json({message:"No product Found"});
     return res.status(200).json({message:"product found"})
     }catch(err){
@@ -61,5 +61,31 @@ async function handleproductupdate(req,res){
     }
 }
 
+async function handleorders(req,res){
+    try{
+        
+    const Orders =await Order.find({vendor:req.user._id});
+    if(!Orders) return res.status(404).json({message:"No Order Found"});
+     return res.status(200).json({message:"Order Fetched Successfully"})
+    }catch(err){
+        return res.status(500).json({message:"Server Error"});
+    }
+}
 
-module.exports={handleproduct,handleproductupload,handledelete,handleproductupdate}
+async function handleorderstatus(req,res){
+    try{
+        const orderid=req.params.orderid;
+        const {orderStatus,paymentStatus}=req.body;
+    const Orders =await Order.findOneAndUpdate({_id:orderid},{orderStatus,paymentStatus});
+    console.log(Orders)
+    
+    
+    
+    
+    return res.status(200).json({message:"Order Fetched Successfully"})
+    }catch(err){
+        return res.status(500).json({message:"Server Error"});
+    }
+}
+
+module.exports={handleproduct,handleproductupload,handledelete,handleproductupdate,handleorders,handleorderstatus}

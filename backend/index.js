@@ -9,6 +9,7 @@ const cookieParser = require("cookie-parser");
 const Staticrouter = require("./routes/Staticroutes");
 const adminroute=require("./routes/adminroute")
 const vendorroute=require("./routes/vendorroute");
+const userroute=require("./routes/userroutes")
 const { protect } = require("./middlewares/protect");
 const { authMiddleware } = require("./middlewares/rolecheck");
 const {rolecheck} =require("./middlewares/rolecheck")
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use("/uploads",express.static(path.resolve("public/uploads")))
 app.use("/api/", Staticrouter);
+app.use("/api/user",protect, userroute);
 app.use("/api/admin/",protect,rolecheck("ADMIN"),adminroute)
 app.use("/api/vendor/",protect,rolecheck("VENDOR"),vendorroute)
 app.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));

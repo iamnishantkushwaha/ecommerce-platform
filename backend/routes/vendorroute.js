@@ -5,7 +5,9 @@ const {
   handleproductupload,
   handleproductupdate,
   handledelete,
-} = require("../controllers/products");
+  handleorders,
+  handleorderstatus,
+} = require("../controllers/vendors");
 const router = express.Router();
 const upload = require("../middlewares/upload");
 
@@ -21,5 +23,7 @@ router.delete("/product/:id", handledelete);
 // Route to update a product by ID with optional image upload
 router.patch("/product/:id", upload.single("image"), handleproductupdate);
 
+router.get("/orders",handleorders);
+router.patch("/orders/:orderid",handleorderstatus);
 // Export the router
 module.exports = router;

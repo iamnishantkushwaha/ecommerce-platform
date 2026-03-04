@@ -11,13 +11,13 @@ function generatetoken(user)
        role:user.role
 
     }
-    console.log(payload)
+ 
     return jwt.sign(payload,Secret);
 }
 
 
 function verifytoken(token){
-              console.log("Secret:", Secret);
+          
          return jwt.verify(token,Secret);
   
     

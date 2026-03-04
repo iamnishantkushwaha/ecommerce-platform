@@ -4,7 +4,7 @@ const bcrypt=require("bcrypt")
 async function handlesignup(req, res) {
   try {
     const { fullName, email, phoneNumber, password, role } = req.body;
-    console.log(req.body);
+   
     const user = await User.findOne( {email} );
     if (user) return res.status(400).json({ message: "User already Existed" });
     const hashpassword = await bcrypt.hash(password, 10);
@@ -27,10 +27,10 @@ async function handlelogin(req, res) {
   const { email, password } = req.body;
   try {
      const user = await User.findOne({ email: email })
-     console.log(user)
+   
       if (!user) return res.status(404).json({ message: "User Not Found" });
         const matchpassword = await bcrypt.compare(password, user.password);
-    console.log(matchpassword)
+  
     if (!matchpassword) return res.status(401).json({ message: "incorrect password" });
     
     if(user.role==="VENDOR")
@@ -44,7 +44,7 @@ async function handlelogin(req, res) {
 
     const token =generatetoken(user);
     res.cookie("token",token);
-    console.log("token:",token);
+   
     return res.status(200).json({message:`login successfully`});
   } catch (err) {
     return res.status(500).json("Server Error");
