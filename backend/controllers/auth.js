@@ -4,10 +4,6 @@ function generatetoken(user)
 {
     const payload={
         _id:user._id,
-       fullName: user.fullName,
-       email:user.email,
-       phoneNumber:user.phoneNumber,
-       password:user.password,
        role:user.role
 
     }
