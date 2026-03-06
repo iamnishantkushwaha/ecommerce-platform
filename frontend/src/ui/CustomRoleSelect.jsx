@@ -4,7 +4,7 @@ import { IoMdArrowDropdown } from "react-icons/io";
 const roles = [
   { id: "USER", label: "USER" },
   { id: "VENDOR", label: "VENDOR" },
-  { id: "ADMIN", label: "ADMIN" },
+  
 ];
 
 function CustomRoleSelect({ role, setRole }) {

@@ -18,7 +18,7 @@ async function handlesignup(req, res) {
     });
     return res.status(201).json({message:`${role} created successfully`});
   } catch (error) {
-    
+    console.log(error)
   return res.status(500).json({ message: "Server Error", error });
   }
 }
@@ -43,7 +43,11 @@ async function handlelogin(req, res) {
   
 
     const token =generatetoken(user);
-    res.cookie("token",token);
+    res.cookie("token",token,{
+      httpOnly:true,
+      secure:false,
+      sameSite: "lax"
+    });
    
     return res.status(200).json({message:`login successfully`});
   } catch (err) {
