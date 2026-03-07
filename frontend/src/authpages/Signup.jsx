@@ -7,7 +7,7 @@ import { IoMdEyeOff } from "react-icons/io";
 import CustomRoleSelect from "../ui/CustomRoleSelect";
 import Logopara from "../ui/Logopara";
 import { Link } from "react-router";
-import axios from "axios"
+import axios from "axios";
 const Signup = () => {
   const [fullName, setfullName] = useState("");
   const [email, setemail] = useState("");
@@ -15,25 +15,27 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [role, setrole] = useState("USER");
   const [show, setshow] = useState(false);
- 
 
-  const handleSignup=async (e)=>{
+  const handleSignup = async (e) => {
     e.preventDefault();
-    try{
- const res=await axios.post(`${import.meta.env.VITE_BASE_URL}/signup`,{
-     fullName,
-     email,
-     phoneNumber,
-     password,
-     role
-    })
-    setfullName(""),setemail(""),setPassword(" "),setphoneNumber(" "),setrole("USER")
-  console.log(res?.data.message);
-    }catch(err){
-      console.log("Error in Signup Page: ",err);
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/signup`, {
+        fullName,
+        email,
+        phoneNumber,
+        password,
+        role,
+      });
+      (setfullName(""),
+        setemail(""),
+        setPassword(" "),
+        setphoneNumber(" "),
+        setrole("USER"));
+      console.log(res?.data.message);
+    } catch (err) {
+      console.log("Error in Signup Page: ", err);
     }
-    
-  }
+  };
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#F1F2F4] min-w-screen">
       <Logopara
@@ -52,7 +54,6 @@ const Signup = () => {
         <form
           className="flex flex-col gap-3 text-lg "
           method="POST"
-          
           onSubmit={handleSignup}
         >
           <div className="flex flex-col">
@@ -64,6 +65,7 @@ const Signup = () => {
               placeholder="John Doe"
               id="fullName"
               name="fullName"
+              autoComplete="fullName"
               type="text"
               value={fullName}
               onChange={(e) => setfullName(e.target.value)}
@@ -80,6 +82,7 @@ const Signup = () => {
               name="email"
               type="email"
               value={email}
+              autoComplete="email"
               onChange={(e) => setemail(e.target.value)}
             />
           </div>
@@ -95,6 +98,7 @@ const Signup = () => {
               name="phoneNumber"
               type="tel"
               value={phoneNumber}
+              autoComplete="phoneNumber"
               onChange={(e) => setphoneNumber(e.target.value)}
             />
           </div>
@@ -117,6 +121,7 @@ const Signup = () => {
               name="password"
               type={show ? "text" : "password"}
               value={password}
+              autoComplete="password"
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
@@ -124,7 +129,7 @@ const Signup = () => {
             <CustomRoleSelect role={role} setRole={setrole} />
           </div>
           <div className="inline">
-            <input type="radio" name="agree" id="agree" />
+            <input type="radio" name="agree" id="agree" autoComplete="agree" />
             <label className="text-sm pl-1.5" htmlFor="agree">
               I agree to the{" "}
               <a href="" className="text-indigo-600">
@@ -139,7 +144,6 @@ const Signup = () => {
           <div className="flex items-center justify-center">
             <button
               type="submit"
-             
               className="px-15 py-3 text-white  rounded-xl bg-indigo-600"
             >
               Create Account

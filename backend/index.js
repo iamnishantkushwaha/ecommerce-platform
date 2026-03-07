@@ -28,4 +28,8 @@ app.use("/api/", Staticrouter);
 app.use("/api/user",protect, userroute);
 app.use("/api/admin/",protect,rolecheck("ADMIN"),adminroute)
 app.use("/api/vendor/",protect,rolecheck("VENDOR"),vendorroute)
+app.get("/api/me",protect,(req,res)=>{
+  console.log(req.user);
+  return res.json({user:req.user})
+})
 app.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));

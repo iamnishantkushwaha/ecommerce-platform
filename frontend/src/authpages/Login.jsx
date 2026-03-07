@@ -14,7 +14,7 @@ const Login = () => {
       const handleLogin=async(e)=>{
         e.preventDefault();
         try{
-  const res=await api.post(`${import.meta.env.VITE_BASE_URL}/login`,{email,password})
+  const res=await api.post(`/login`,{email,password})
         setemail("");
         setPassword("");
         console.log(res?.data.message);
@@ -48,6 +48,7 @@ const Login = () => {
               name="email"
               type="email"
               value={email}
+              autoComplete='email'
               onChange={(e)=>setemail(e.target.value)}
             />
           </div>
@@ -63,6 +64,7 @@ const Login = () => {
               name="password"
               type={show?"text":"password"}
               value={password}
+              autoComplete='current-password'
               onChange={(e)=>setPassword(e.target.value)}
             />
           </div>

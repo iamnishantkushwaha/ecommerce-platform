@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const protect =require("../middlewares/protect")
 const { handlesignup, handlelogin } = require("../controllers/authentication");
 const Product = require("../models/product");
 router.post("/signup",handlesignup);
@@ -35,6 +35,7 @@ router.get("/products",async(req,res)=>{
   }
  
 })
+
 
 
 module.exports=router;
