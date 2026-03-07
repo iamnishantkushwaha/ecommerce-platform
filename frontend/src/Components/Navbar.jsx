@@ -35,7 +35,7 @@ const Navbar = () => {
       <div className="text-black font-bold md:w-1/5  text-xl flex gap-2 items-center">
         <FiShoppingBag className=" text-3xl  text-indigo-600" /> MarketPro
       </div>
-      <div className="flex items-center md:hidden justify-center gap-3">
+      <div className="flex items-center md:hidden  justify-center gap-3">
         <CiShoppingCart className="text-3xl" />
         <div >
           {!Isopen ? (
@@ -52,7 +52,7 @@ const Navbar = () => {
         </div>
         
       </div>
-       <div className="md:flex md:items-center  md:justify-between w-full">
+       <div className="hidden md:flex md:items-center  md:justify-between w-full">
         <div className="flex justify-center items-center gap-8 w-4/5">
         <NavLink to="/" className="hover:bg-indigo-200 rounded-xl p-2">Home</NavLink>
        <NavLink to="/" className="hover:bg-indigo-200 rounded-xl p-2">Products</NavLink>
@@ -71,7 +71,7 @@ const Navbar = () => {
       <div
         className={
           Isopen
-            ? "bg-black text-gray-400 border-b-gray-400 border-b flex py-4 px-4 flex-col text-md h-65 w-full  left-0 absolute  top-17 "
+            ? "bg-white text-gray-400 border-b-gray-400 border-b flex py-4 px-4 flex-col text-md h-65 w-full  left-0 absolute  top-17 "
             : "hidden"
         }
       >
@@ -81,9 +81,11 @@ const Navbar = () => {
         <NavLink to="/" className="hover:bg-indigo-200 rounded-xl p-2">
           Products
         </NavLink>
-        <NavLink to="/" className="hover:bg-indigo-200 rounded-xl p-2">
-          Dashboard
-        </NavLink>
+            {!user && (<><NavLink to="/login" className="hover:bg-indigo-200 rounded-xl p-2">Login</NavLink>
+       <NavLink to="/signup" className="hover:bg-indigo-200 rounded-xl p-2">Sign Up</NavLink></>)}
+       {user && (<> <NavLink to="/" className="hover:bg-indigo-200 rounded-xl p-2">Dashboard</NavLink>
+       <NavLink to="/login" className="hover:bg-indigo-200 rounded-xl p-2" onClick={handlelogout}>Logout</NavLink></>)}
+        
       </div>
       
     </div>
