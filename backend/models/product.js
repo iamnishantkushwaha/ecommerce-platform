@@ -34,7 +34,9 @@ const ProductSchema=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"User"
 
-    }
+    },
+    isFeatured:{type:Boolean,
+        default:false}
 },{timestamps:true});
 
 const Product=mongoose.model("product",ProductSchema);

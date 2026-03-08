@@ -31,6 +31,7 @@ const Navbar = () => {
      }
   }
   return (
+      <div className="fixed top-0 left-0 w-full z-50 bg-white">
     <div className="min-w-screen h-17 flex  border-b-gray-400 border-b relative items-center justify-between px-4  lg:px-35 bg-white">
       <div className="text-black font-bold md:w-1/5  text-xl flex gap-2 items-center">
         <FiShoppingBag className=" text-3xl  text-indigo-600" /> MarketPro
@@ -88,7 +89,7 @@ const Navbar = () => {
         
       </div>
       
-    </div>
+    </div></div>
   );
 };
 

@@ -2,10 +2,11 @@ const Product=require("../models/product");
 const Order=require("../models/orders")
 async function handleproductupload(req,res){
    const {title,description,price,stock,category}=req.body;
-  
+ console.log(req.file);
    try{  const isproductpresent= await Product.findOne({title,description,price});
 
   if(isproductpresent) return res.status(409).json({message:"product already present"})
+   
     if(!isproductpresent)   
     await Product.create({
         title,
@@ -19,7 +20,9 @@ async function handleproductupload(req,res){
       return res.status(201).json({message:"product added successfully"});
 }
 catch(err){
-    return res.status(500).json({message:"Server error"})
+    return res.status(500).json({message:`Server error`,
+        error:err.message
+    });
 } 
 
 }
