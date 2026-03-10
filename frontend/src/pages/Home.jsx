@@ -4,13 +4,17 @@ import Hero from '../Components/homepage/Hero'
 import Servicecard from '../Components/homepage/Servicecard'
 import BrowseCategories from '../Components/homepage/BrowseCategories'
 import Featuredproducts from '../Components/homepage/Featuredproducts'
+import Footer from '../Components/Footer'
+
 const Home = () => {
   return (
-    <div className='min-h-screen min-w-screen bg-gray-200'><Navbar />
+    <div className='min-h-screen min-w-screen mt-20  overflow-x-hidden flex flex-col gap-10 bg-gray-200 '>
+    
     <Hero />
     <Servicecard />
     <BrowseCategories/>
     <Featuredproducts />
+   
     </div>
   )
 }

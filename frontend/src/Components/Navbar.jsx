@@ -32,7 +32,7 @@ const Navbar = () => {
   }
   return (
       <div className="fixed top-0 left-0 w-full z-50 bg-white">
-    <div className="min-w-screen h-17 flex  border-b-gray-400 border-b relative items-center justify-between px-4  lg:px-35 bg-white">
+    <div className="min-w-screen h-17 flex  border-b-gray-400 border-b relative items-center justify-between px-4  md:px-27  bg-white ">
       <div className="text-black font-bold md:w-1/5  text-xl flex gap-2 items-center">
         <FiShoppingBag className=" text-3xl  text-indigo-600" /> MarketPro
       </div>
@@ -63,7 +63,7 @@ const Navbar = () => {
        {user && (<> <NavLink to="/" className="hover:bg-indigo-200 rounded-xl p-2">Dashboard</NavLink>
        <NavLink to="/login" className="hover:bg-indigo-200 rounded-xl p-2" onClick={handlelogout}>Logout</NavLink></>)}</div>
 
-       <div className="flex  items-center justify-center w-1/5 gap-8"><NavLink>  <CiShoppingCart className="text-3xl" /></NavLink>
+       <div className={user?"flex  items-center justify-center w-1/5   gap-8 ":"flex  items-center justify-end w-1/5  "}><NavLink>  <CiShoppingCart className="text-3xl " /></NavLink>
       <NavLink to="/"><GoPerson className={user?"text-xl ml-4 hidden md:inline-block ":"hidden"}/></NavLink></div>
       
      

@@ -89,7 +89,7 @@ const BrowseCategories = () => {
     },
   ];
   return (
-    <div className="max-h-screen h-[75vh] min-w-screen flex flex-col gap-10 px-4 ">
+    <div className="max-h-screen h-[75vh] md:h-full md:py-5 md:px-27 md:max-w-screen min-w-screen md:min-w-fit flex flex-col gap-10 px-4 ">
       <div className="flex justify-between">
         <h1 className="text-2xl font-bold">Browse Categories</h1>
         <h3 className="flex items-center justify-center gap-1 text-sm text-indigo-600">
@@ -97,13 +97,13 @@ const BrowseCategories = () => {
           <GoArrowRight />
         </h3>
       </div>
-      <div className="w-full grid grid-cols-2 gap-4.5">
+      <div className="w-full grid grid-cols-2 md:grid-rows-1 md:grid-cols-6 gap-4.5">
         {cards.map((card, idx) => {
           const Icon = card.logo;
           return (
             <div
               key={idx}
-              className="  flex flex-col justify-center gap-3 items-center rounded-xl py-4 bg-white"
+              className="  flex flex-col  hover:shadow-md justify-center gap-3 items-center rounded-xl py-4 bg-white"
             >
               <div>
                 <div className="bg-indigo-100 rounded-xl w-fit p-2">
