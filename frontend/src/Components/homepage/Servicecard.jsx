@@ -22,10 +22,10 @@ const Servicecard = () => {
     <div className="max-h-screen h-96 flex flex-col md:w-full md:h-fit  md:flex-row justify-evenly min-w-screen px-4   bg-gray-200">
       {cards.map((card,idx)=>{
         const Icon=card.logo;
-          return(<div key={idx} className=" md:flex gap-2.5 md:pr-35  hover:shadow-sm bg-white rounded-xl md:p-5 md:pl-8 p-5">
+          return(<div key={idx} className=" flex gap-2.5 md:pr-35  hover:shadow-sm bg-white rounded-xl md:p-5 md:pl-8 p-5">
         
         <div>
-          <div className="bg-indigo-100 rounded-xl p-2">
+          <div className="bg-indigo-100 w-fit  rounded-xl p-2">
           {<Icon className="font-semibold text-3xl text-indigo-600"/>}
           </div>
         </div>
