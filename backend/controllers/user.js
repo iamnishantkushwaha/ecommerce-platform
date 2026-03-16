@@ -2,6 +2,7 @@ const Product=require("../models/product")
 const Order=require("../models/orders")
 const Cart=require("../models/Cart")
 const mongoose=require("mongoose")
+const User=require("../models/user")
 async function handleplaceorders(req,res){
     try{
         if(!req.user) return res.status(401).json({message:"unauthorized"})
@@ -24,16 +25,19 @@ async function handleplaceorders(req,res){
      await Product.findByIdAndUpdate(productId,{stock:orderproduct.stock});
      return res.status(200).json({message:"Order Placed Successfully"})
     }catch(err){
-        return res.status(500).json({message:"Server Error"});
+        return res.status(500).json({message:"Server Error",
+          Error:err.message
+        });
     }
 }
 
 async function handleorders(req,res){
     try{
-        
+         console.log("orders route hit");
     const Orders =await Order.find({user:req.user._id});
-    if(!Orders.length==0) return res.status(404).json({message:"No Order Found"});
-     return res.status(200).json({message:"Order Fetched Successfully"})
+    if(Orders.length==0) return res.status(404).json({message:"No Order Found"
+    });
+     return res.status(200).json({message:"Order Fetched Successfully",orders:Orders})
     }catch(err){
         return res.status(500).json({message:"Server Error"});
     }
@@ -176,4 +180,32 @@ async function handledeletecart(req,res){
     }
     
 }
-module.exports={handleplaceorders,handleorders,handlecancelorders,handlecart,handlegetcart,handlecartupdate,handledeletecart}
+
+async function handleprofile(req,res){
+  
+  try{
+    const user=await User.findOne({_id:req.user._id})
+    if(!user) return res.status(401).json({message:"unauthorized"})
+    return res.status(200).json({message:"user found",user})
+  }catch(err){
+    return res.status(500).json({
+      message:"Server error",
+      Error:err.message
+
+    })
+  }
+}
+async function handleupdateprofile(req,res){
+  try{
+    const {fullName,email,phoneNumber}=req.body;
+    const user=await User.findOneAndUpdate({_id:req.user._id},{fullName,email,phoneNumber});
+    if(!user) return res.status(404).json({message:"user not found"})
+    return res.status(200).json({message:"Profile Updated Successfully"})
+  }catch(err){
+return res.status(500).json({message:"Server Error",
+  Error:err.message
+ 
+})
+}
+}
+module.exports={handleplaceorders,handleprofile,handleupdateprofile,handleorders,handlecancelorders,handlecart,handlegetcart,handlecartupdate,handledeletecart}

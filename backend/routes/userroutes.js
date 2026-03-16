@@ -1,5 +1,5 @@
 const express = require("express");
-const { handleplaceorders, handleorders, handlecancelorders, handlecart, handlecartupdate, handlegetcart, handledeletecart } = require("../controllers/user");
+const { handleplaceorders, handleprofile,handleorders, handlecancelorders, handlecart, handlecartupdate, handlegetcart, handledeletecart, handleupdateprofile } = require("../controllers/user");
 
 const router = express.Router();
 
@@ -12,4 +12,6 @@ router.delete("/cart/:productId",handledeletecart);
 router.post("/orders",handleplaceorders);
 router.get("/orders",handleorders)
 router.patch("/orders/:orderid",handlecancelorders);
+router.get("/profile",handleprofile);
+router.patch("/profile",handleupdateprofile);
 module.exports=router
