@@ -9,7 +9,7 @@ import Footer from '../Components/Footer'
 const Home = () => {
   return (
     <div className='min-h-screen min-w-screen mt-20  overflow-x-hidden flex flex-col gap-10 bg-gray-200 '>
-    <Navbar />
+   <Navbar />
     <Hero />
     <Servicecard />
     <BrowseCategories/>

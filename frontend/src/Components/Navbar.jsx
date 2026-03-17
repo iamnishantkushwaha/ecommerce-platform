@@ -60,11 +60,11 @@ const Navbar = () => {
        
        {!user && (<><NavLink to="/login" className="hover:bg-indigo-200 rounded-xl p-2">Login</NavLink>
        <NavLink to="/signup" className="hover:bg-indigo-200 rounded-xl p-2">Sign Up</NavLink></>)}
-       {user && (<> <NavLink to="/" className="hover:bg-indigo-200 rounded-xl p-2">Dashboard</NavLink>
+       {user && (<> <NavLink to="/dashboard/orders" className="hover:bg-indigo-200 rounded-xl p-2">Dashboard</NavLink>
        <NavLink to="/login" className="hover:bg-indigo-200 rounded-xl p-2" onClick={handlelogout}>Logout</NavLink></>)}</div>
 
-       <div className={user?"flex  items-center justify-center w-1/5   gap-8 ":"flex  items-center justify-end w-1/5  "}><NavLink>  <CiShoppingCart className="text-3xl " /></NavLink>
-      <NavLink to="/"><GoPerson className={user?"text-xl ml-4 hidden md:inline-block ":"hidden"}/></NavLink></div>
+       <div className={user?"flex  items-center justify-center w-1/5   gap-8 ":"flex  items-center justify-end w-1/5  "}><NavLink to="/cart">  <CiShoppingCart className="text-3xl " /></NavLink>
+      <NavLink to="/dashboard/profile"><GoPerson className={user?"text-xl ml-4 hidden md:inline-block ":"hidden"}/></NavLink></div>
       
      
       </div>
@@ -79,12 +79,12 @@ const Navbar = () => {
         <NavLink to="/" className="hover:bg-indigo-200 rounded-xl p-2">
           Home
         </NavLink>
-        <NavLink to="/" className="hover:bg-indigo-200 rounded-xl p-2">
+        <NavLink to="/products" className="hover:bg-indigo-200 rounded-xl p-2">
           Products
         </NavLink>
             {!user && (<><NavLink to="/login" className="hover:bg-indigo-200 rounded-xl p-2">Login</NavLink>
        <NavLink to="/signup" className="hover:bg-indigo-200 rounded-xl p-2">Sign Up</NavLink></>)}
-       {user && (<> <NavLink to="/" className="hover:bg-indigo-200 rounded-xl p-2">Dashboard</NavLink>
+       {user && (<> <NavLink to="/dashboard/orders" className="hover:bg-indigo-200 rounded-xl p-2">Dashboard</NavLink>
        <NavLink to="/login" className="hover:bg-indigo-200 rounded-xl p-2" onClick={handlelogout}>Logout</NavLink></>)}
         
       </div>

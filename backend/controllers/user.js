@@ -3,6 +3,7 @@ const Order=require("../models/orders")
 const Cart=require("../models/Cart")
 const mongoose=require("mongoose")
 const User=require("../models/user")
+const bycrpt=require("bcrypt")
 async function handleplaceorders(req,res){
     try{
         if(!req.user) return res.status(401).json({message:"unauthorized"})
@@ -208,4 +209,22 @@ return res.status(500).json({message:"Server Error",
 })
 }
 }
-module.exports={handleplaceorders,handleprofile,handleupdateprofile,handleorders,handlecancelorders,handlecart,handlegetcart,handlecartupdate,handledeletecart}
+
+async function handlepasswordchange(req,res){
+  try{
+   const {currentpassword,newpassword}=req.body;
+    const user =await User.findOne({_id:req.user._id});
+    if(!user) return res.status(404).json({message:"user not found"});
+    const matchpassword=await   bycrpt.compare(currentpassword,user.password)
+    if(!matchpassword) return res.status(401).json({message:"Incorrect password"});
+    const hashpassword=await bycrpt.hash(newpassword,10);
+    console.log(hashpassword)
+    await User.findOneAndUpdate({_id:req.user._id},{password:hashpassword})
+    return res.status(200).json({message:"Password Updated Successfully"});
+  }catch(err){
+ return res.status(500).json({message:"Server Error",
+  Error:err.message
+ })
+  }
+}
+module.exports={handleplaceorders,handleprofile,handlepasswordchange,handleupdateprofile,handleorders,handlecancelorders,handlecart,handlegetcart,handlecartupdate,handledeletecart}
