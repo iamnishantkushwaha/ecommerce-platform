@@ -7,7 +7,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "npx nodemon index.js"
+    "start": "npx nodemon index.js"
   },
   "dependencies": {
     "cloudinary": "^1.41.3",

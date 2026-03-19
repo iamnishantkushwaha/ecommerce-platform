@@ -6,14 +6,14 @@ import { FiChevronDown } from "react-icons/fi";
 export default function FilterDropdown({ onChange ,options}) {
   const [open, setOpen] = useState(false);
 
-  const [selected, setSelected] = useState(options[0]);
+  const [selected, setSelected] = useState(options[0].label);
 
-  const handleSelect = (value) => {
-    setSelected(value);
+  const handleSelect = (item) => {
+    setSelected(item.label);
     setOpen(false);
 
     // send value to parent (for API / sorting)
-    onChange && onChange(value);
+    onChange && onChange(item.value);
   };
 
   return (
@@ -33,13 +33,13 @@ export default function FilterDropdown({ onChange ,options}) {
         <div className="absolute w-full mt-1 bg-white border rounded-lg shadow-md z-10">
           {options.map((item) => (
             <div
-              key={item}
+              key={item.label}
               onClick={() => handleSelect(item)}
               className={`px-4 py-2 cursor-pointer hover:bg-indigo-200 ${
-                selected === item ? "bg-indigo-600 text-white" : ""
+                selected === item.label ? "bg-indigo-600 text-white" : ""
               }`}
             >
-              {item}
+              {item.label}
             </div>
           ))}
         </div>
