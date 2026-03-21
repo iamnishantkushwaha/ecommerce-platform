@@ -1,9 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { CiShoppingCart } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
+import { setCart } from "../Redux/Cartslice";
+import { useDispatch, useSelector } from "react-redux";
+import api from '../api';
 const Card = (props) => {
+   const dispatch=useDispatch();
+    const items=useSelector((state)=>state.cart.items)
     const product=props.product;
-    console.log(product)
+   
+ 
+    const handleaddtocart=async()=>{
+      try{  
+    const res=await api.post("/user/cart",{productId:product._id,
+        quantity:1
+      });
+      console.log(res.data.cart);
+      dispatch(setCart(res.data.cart.products))
+      }catch(err){
+        console.log("Error in Card:",err);
+      }
+      
+    }
   return (
     <div
                   key={props.idx}
@@ -24,9 +42,9 @@ const Card = (props) => {
                     </h1>
                     <div className="flex justify-between items-center">
                       <span className="text-xl font-bold">${product.price}</span>
-                      <span>
+                      <button onClick={handleaddtocart} className='hover:bg-indigo-200 p-2 hover:rounded-4xl'>
                         <CiShoppingCart className="text-2xl" />
-                      </span>
+                      </button>
                     </div>
                   </div>
                 </div>

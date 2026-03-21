@@ -17,7 +17,7 @@ const Hero = () => {
           Shop from thousands of verified vendors. Quality products, fast
           delivery, and secure payments.Shop Now
         </p>
-        <div className="flex gap-3">
+        <div className="flex gap-3 md:gap-8">
           <Link>
             <button className="bg-indigo-600 py-2.5 flex items-center justify-center text-white font-semibold px-6 rounded-xl">
               Shop Now

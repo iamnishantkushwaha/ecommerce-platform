@@ -28,7 +28,7 @@ const Featuredproducts = () => {
       <div className="grid grid-cols-1  md:grid-cols-4 md:flex-wrap  gap-6">
         {featureproduct.map((product, idx) => {
           return (
-            <Card idx={idx} product={product} />
+            <Card key={product._id} idx={idx} product={product} />
           );
         })}
       </div>

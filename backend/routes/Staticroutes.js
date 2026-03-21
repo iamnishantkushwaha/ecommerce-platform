@@ -56,17 +56,16 @@ const products=await Product.find(filter).sort(sortoption).skip(skip).limit(limi
    const totalProducts = await Product.countDocuments(filter);
    
   
-   if(!products|| products.length==0) return res.status(404).json({message:"products not available"})
    
  
 
-return res.status(200).json({message:"product found",
-    totalProducts,
-    
+return res.status(200).json({
+      message: products.length > 0 ? "product found" : "no products found",
+      totalProducts,
       currentPage: page,
-     
       totalPages: Math.ceil(totalProducts / limit),
-      products})
+      products,
+    });
  
   }catch(err){
     return res.status(500).json({message:"Server Error",

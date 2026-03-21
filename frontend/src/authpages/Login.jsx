@@ -5,6 +5,7 @@ import { useState } from "react";
 import Logopara from '../ui/Logopara';
 import { Link, useNavigate } from 'react-router';
 import api from "../api"
+import { toast } from 'react-toastify';
 const Login = () => {
     const [email,setemail]=useState("");
      const [password,setPassword]=useState("");
@@ -17,11 +18,12 @@ const Login = () => {
   const res=await api.post(`/login`,{email,password})
         setemail("");
         setPassword("");
-        console.log(res?.data.message);
+        toast.success("Login Successfully")
+        console.log(res.data);
       Navigate("/")
         }catch(err)
-        {
-          console.log("Error in Login page: ",err);
+        {  toast.error(err.response?.data?.message)
+          console.log(err.response?.data?.message);
         }
        
       }

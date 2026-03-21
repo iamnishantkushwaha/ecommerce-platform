@@ -56,7 +56,7 @@ const Navbar = () => {
        <div className="hidden md:flex md:items-center  md:justify-between w-full">
         <div className="flex justify-center items-center gap-8 w-4/5">
         <NavLink to="/" className="hover:bg-indigo-200 rounded-xl p-2">Home</NavLink>
-       <NavLink to="/" className="hover:bg-indigo-200 rounded-xl p-2">Products</NavLink>
+       <NavLink to="/products" className="hover:bg-indigo-200 rounded-xl p-2">Products</NavLink>
        
        {!user && (<><NavLink to="/login" className="hover:bg-indigo-200 rounded-xl p-2">Login</NavLink>
        <NavLink to="/signup" className="hover:bg-indigo-200 rounded-xl p-2">Sign Up</NavLink></>)}

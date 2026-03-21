@@ -3,10 +3,12 @@ import Navbar from "../../Components/Navbar";
 import { IoMdSearch } from "react-icons/io";
 import { FaFilter } from "react-icons/fa";
 import { useState } from "react";
+
 import FilterDropdown from "../../ui/FilterDropdown";
 import api from "../../api";
 import Card from "../../ui/Card";
 const Products = () => {
+ 
   const categories = [
     "Electronics",
     "Clothing",
@@ -20,7 +22,7 @@ const Products = () => {
   const [openfilter, setopenfilter] = useState(false);
   const [Minprice,setMinprice]=useState();
   const [Maxprice,setMaxprice]=useState();
-  const [search,setsearch]=useState();
+  const [search,setsearch]=useState("");
   const [sort,setsort]=useState();
   const filterdropdown = [
   { label: "Newest", value: "newest" },
@@ -73,7 +75,7 @@ const Products = () => {
   return (
     <>
       <Navbar />{" "}
-      <div className=" relative min-w-screen min-h-screen md:px-27 flex-col md:flex-row md:gap-6 flex  bg-gray-100 px-4 pt-25">
+      <div className=" relative min-w-screen gap-4 min-h-screen md:px-27 flex-col md:flex-row md:gap-6 flex  bg-gray-100 px-4 pt-25">
         {/* for mobile */}
         {openfilter && (
           <div className="flex rounded-xl flex-col gap-3 bg-white p-4">
@@ -128,7 +130,8 @@ const Products = () => {
         <div className="md:flex hidden rounded-xl flex-col md:h-1/2 gap-3 bg-white p-4">
           <h2 className="text-2xl font-bold">Filters</h2>
           <h3 className="text-xl font-semibold">Category</h3>
-          {categories.map((category, idx) => {
+          { 
+          categories.map((category, idx) => {
             return (
               <div className="flex flex-col gap-2" key={idx}>
                 <label
@@ -174,15 +177,16 @@ const Products = () => {
         <IoMdSearch
           className={
             !openfilter
-              ? " md:left-113 absolute md:top-28 top-28 left-8 text-xl text-gray-400 "
-              : "absolute top-134 left-8 text-xl text-gray-400"
+              ? " md:left-113 absolute md:top-28 top-28 left-7 text-xl text-gray-400 "
+              : "absolute top-134.5 left-7 text-xl text-gray-400"
           }
         />
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 md:w-full">
           <div className="flex md:flex-row flex-col gap-3 ">
             <input
               className="bg-white outline-0 border pl-8 w-full border-gray-200 p-2  rounded-xl md:h-10 "
               type="text"
+              value={search}
               onChange={(e)=>setsearch(e.target.value)}
               name="search"
               id="search"
@@ -198,7 +202,7 @@ const Products = () => {
             </div>
           </div>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-            {products.map((product, idx) => {
+            { products.length==0?<div className="w-4xl  font-semibold h-86 flex justify-center items-center">No Products Available</div>:products.map((product, idx) => {
               return <Card key={idx} product={product} />;
             })}
           </div>

@@ -138,7 +138,9 @@ async function handlegetcart(req,res){
      
     if(!cart) return res.status(404).json({message:"cart is empty"})
        
-        return res.status(200).json({message:" product is in cart"})
+        return res.status(200).json({message:" product is in cart",
+          cart
+        })
     }catch(error){
             console.log(error);   // ADD THIS
 
@@ -154,10 +156,17 @@ async function handlecartupdate(req,res){
         const cart=await Cart.findOne({user:req.user._id})
         if(!cart) return res.status(404).json({message:"cart not found"})
         const item=cart.products.find((p)=>p.product.toString()===productId)  
+      console.log("items",item);
       if(!item) return res.status(404).json({message:"product not found"})
          item.quantity=quantity;
          await cart.save();
-        return res.status(200).json({message:"cart updated"}) }
+         console.log("cart",cart);
+           const updatedCart = await Cart.findOne({ user: req.user._id }).populate("products.product");
+        return res.status(200).json({message:"cart updated",
+          cart:updatedCart
+        }
+          
+        ) }
         catch(err){
             return res.status(500).json({message:"server error"})
         }
@@ -175,7 +184,10 @@ async function handledeletecart(req,res){
     if(!cart) return res.status(404).json({message:"cart is empty"})
       cart.products=cart.products.filter((p)=>p.product.toString()!==productId)
      await cart.save() ;
-        return res.status(200).json({message:"  product removed from cart"})
+     const updatedcart=await Cart.findOne({user:req.user._id}).populate("products.product")
+        return res.status(200).json({message:"  product removed from cart",
+          cart:updatedcart
+        })
     }catch(error){
         return res.status(500).json({message:"server error"})
     }
