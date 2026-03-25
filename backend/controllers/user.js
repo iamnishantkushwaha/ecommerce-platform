@@ -7,25 +7,51 @@ const bycrpt=require("bcrypt")
 async function handleplaceorders(req,res){
     try{
         if(!req.user) return res.status(401).json({message:"unauthorized"})
-    const {productId,quantity,deliveryAddress}=req.body;
-    console.log(productId);
-    const orderproduct=await Product.findById(productId);
-    if(!orderproduct) return res.status(404).json({message:"product not found"});
-    if(orderproduct.stock<quantity) return res.status(400).json({message:`in stock only ${orderproduct.stock} available`})
+    const {products,deliveryAddress}=req.body;
     
-     orderproduct.stock-=quantity;   
-    await Order.create({
-        user:req.user._id,
-        vendor:orderproduct.vendor,
-        products:[{product:productId,productName:orderproduct.title,quantity,price:orderproduct.price}
-        ],
-        totalAmount:quantity*orderproduct.price,
-        deliveryAddress
+  if(!products || !Array.isArray(products)||products.length==0) return res.status(404).json({message:"Products are required"})
+
+   if (!deliveryAddress) {
+      return res.status(400).json({ message: "Delivery address is required" });
+    }
+
+    let orderItems = [];
+    let totalAmount = 0;
+    let vendor = null;
+    for(const item in products)
+      {
+        const {productId,quantity}=item;
+        if (!productId || !quantity || quantity <= 0) {
+        return res.status(400).json({ message: "Invalid product data" });}
+      const product=await Product.findById(productId);
+    if(!product) return res.status(404).json({message:"product not found"});
+    if(product.stock<quantity) return res.status(400).json({message:`${product.title} have  only ${product.stock} available`})
+        product.stock-=quantity;   
+      await product.save()
+       orderItems.push(
+        {
+       product: product._id,
+        productName: product.title,
+        quantity,
+        price: product.price,
+        }
+       )
+
+       totalAmount=product.price*quantity;
+
        
+     
+  }
+    await Order.create({
+      user: req.user._id,
+      vendor:product.vendor,
+      products: orderItems,
+      totalAmount,
+      deliveryAddress,
     });
-     await Product.findByIdAndUpdate(productId,{stock:orderproduct.stock});
-     return res.status(200).json({message:"Order Placed Successfully"})
-    }catch(err){
+
+    return res.status(201).json({ message: "Order placed successfully" });
+}catch(err){
         return res.status(500).json({message:"Server Error",
           Error:err.message
         });
