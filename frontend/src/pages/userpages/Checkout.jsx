@@ -5,12 +5,13 @@ import { LuWallet } from "react-icons/lu";
 import { FaCreditCard } from "react-icons/fa6";
 import { FiSmartphone } from "react-icons/fi";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
+  const navigate = useNavigate();
   const [isonline, setisonline] = useState(false);
   const [paymentmethod, setpaymentmethod] = useState("");
   const [onlinepaymentmethod, setonlinepaymentmethod] = useState("");
-  const [IsUpi, setIsUpi] = useState(false);
   return (
     <>
       <Navbar />
@@ -222,6 +223,27 @@ const Checkout = () => {
             " "
           )}
         </div>
+        <div className="md:w-2/5 rounded-xl bg-white p-5">
+            <h2 className="text-xl font-semibold">Order Summary</h2>
+
+            <div className="border-b border-gray-400 py-2">
+             <div><img className="h-5 w-5" src="https://res.cloudinary.com/dwgrcxx4o/image/upload/v1772901760/hero-banner-sbBafxHj_1_hl4yay.jpghttps://res.cloudinary.com/dwgrcxx4o/image/upload/v1772901760/hero-banner-sbBafxHj_1_hl4yay.jpg" alt="" /><div><h3 className="font-semibold">title</h3>
+             <h4>QTY:</h4></div>
+             <h2 className="text-lg font-bold">pice</h2></div>
+            </div>
+
+            <div className="flex justify-between font-bold text-xl py-2">
+              <span>Total</span>
+              <span></span>
+            </div>
+
+            <button
+              onClick={() => navigate("/cart/checkout")}
+              className="w-full mt-4 p-4 bg-indigo-600 text-white rounded-xl"
+            >
+              Proceed to Checkout
+            </button>
+          </div>
       </div>
     </>
   );

@@ -5,24 +5,26 @@ import { removefromcart, setCart } from "../../Redux/Cartslice";
 import api from "../../api";
 import { useNavigate } from "react-router-dom";
 
+
 const CartPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [items, setItems] = useState([]);
-  const [shipping, setshipping] = useState(0);
+  const shipping = 0;
 
   useEffect(() => {
     const fetchcart = async () => {
       try {
         const res = await api.get("/user/cart");
         setItems(res.data.cart.products);
+        dispatch(setCart(res.data.cart.products));
       } catch (err) {
         console.log("Error in Cart", err);
       }
     };
     fetchcart();
-  }, []);
+  }, [dispatch]);
 
   const subtotal = useMemo(() => {
     return items.reduce((acc, item) => {

@@ -102,10 +102,20 @@ async function handlecancelorders(req,res){
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
-
+    
     let cart = await Cart.findOne({ user: req.user._id });
-
+    if(cart){
+      cart=await Cart.findByIdAndUpdate(cart._id,{
+        quantity:cart.quantity+quantity
+      })
+    }
     // If cart does not exist
+
+    const existingitem=cart.products.find((item)=>item.product.toString()===productId)
+
+    if(existingitem){
+      existingitem.quantity+=quantity
+    }
     if (!cart) {
       cart = await Cart.create({
         user: req.user._id,
