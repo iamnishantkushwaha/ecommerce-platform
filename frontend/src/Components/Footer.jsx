@@ -9,10 +9,10 @@ import { LuFacebook } from "react-icons/lu";
 import { Link } from "react-router";
 const Footer = () => {
   return (
-    <div className="min-h-screen md:min-h-fit min-w-screen px-4 md:px-27 bg-white ">
+    <div className="min-h-screen md:min-h-fit w-full px-4 md:px-6 lg:px-10 bg-white">
       <div className="flex flex-col md:flex-row gap-12 md:gap-15 py-15 md:py-8 border-b border-gray-100">
         <div className="flex flex-col justify-items-start">
-          <div className=" h-40 p-4 md:w-150   gap-1.5 w-full   flex flex-col justify-center items-start">
+          <div className="min-h-24 p-4 md:max-w-md gap-1.5 w-full flex flex-col justify-center items-start">
             <h1 className="  text-indigo-600 gap-2 flex text-2xl font font-bold">
               <FiShoppingBag className="text-3xl" />
               MarketPro

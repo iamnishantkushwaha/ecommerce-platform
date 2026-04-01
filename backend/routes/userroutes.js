@@ -1,5 +1,5 @@
 const express = require("express");
-const { handleplaceorders, handleprofile,handleorders, handlecancelorders, handlecart, handlecartupdate, handlegetcart, handledeletecart, handleupdateprofile, handlepasswordchange } = require("../controllers/user");
+const { handleplaceorders, handleprofile,handleorders, handlecancelorders, handlecart, handlecartupdate, handlegetcart, handledeletecart, handleupdateprofile, handlepasswordchange, handletrackorder, handleLatestOrder } = require("../controllers/user");
 
 const router = express.Router();
 
@@ -12,7 +12,14 @@ router.delete("/cart/:productId",handledeletecart);
 router.post("/orders",handleplaceorders);
 router.get("/orders",handleorders)
 router.patch("/orders/:orderid",handlecancelorders);
+router.get("/trackorder/:orderId",handletrackorder);
+router.get("/latest-order", handleLatestOrder); 
 router.get("/profile",handleprofile);
 router.patch("/profile",handleupdateprofile);
+router.get("/api/me",(req,res)=>{
+  console.log(req.user);
+  return res.json({user:req.user})
+})
+
 router.patch("/passwordchange",handlepasswordchange);
 module.exports=router

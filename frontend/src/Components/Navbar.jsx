@@ -12,19 +12,20 @@ import api from "../api";
 const Navbar = () => {
   const [Isopen, setisopen] = useState(false);
   const [user, setuser] = useState(null);
- const dispatch=useDispatch()
- const cartcount = useSelector((state) =>
-  state.cart.items.reduce((total, item) => total + (item.quantity || 0), 0)
-);
-
+  const dispatch = useDispatch();
+  const cartcount = useSelector((state) =>
+    state.cart.items.reduce((total, item) => total + (item.quantity || 0), 0),
+  );
+  const [sidebar, setsidebar] = useState(false);
+  const sidebaroptions = ["Orders", "Track Order", "Profile", "Setting"];
   useEffect(() => {
     const fetchuser = async () => {
       try {
         const res = await api.get(`/me`);
         setuser(res.data.user);
         console.log(res);
-         const cartRes = await api.get("/user/cart");
-      dispatch(setCart(cartRes.data.cart?.products || []));
+        const cartRes = await api.get("/user/cart");
+        dispatch(setCart(cartRes.data.cart?.products || []));
       } catch (err) {
         console.log("Error in Navbar", err);
       }
@@ -43,16 +44,16 @@ const Navbar = () => {
   };
   return (
     <div className="fixed top-0 left-0 w-full z-50 bg-white">
-      <div className="min-w-screen h-17 flex  border-b-gray-400 border-b relative items-center justify-between px-4  md:px-27  bg-white ">
+      <div className="w-full h-16 flex border-b-gray-400 border-b relative items-center justify-between px-4 md:px-6 lg:px-10 bg-white">
         <div className="text-black font-bold md:w-1/5  text-xl flex gap-2 items-center">
           <FiShoppingBag className=" text-3xl  text-indigo-600" /> MarketPro
         </div>
         <div className="flex items-center md:hidden  relative justify-center gap-3">
           {cartcount > 0 && (
-  <div className="bg-red-400 font-semibold text-sm text-white flex rounded-full justify-center items-center h-4 w-4 top-0 right-8 absolute">
-    {cartcount}
-  </div>
-)}   
+            <div className="bg-red-400 font-semibold  text-sm text-white flex rounded-full justify-center items-center h-4 w-4 top-0 right-8 absolute">
+              {cartcount}
+            </div>
+          )}
           <CiShoppingCart className="text-3xl" />
           <div>
             {!Isopen ? (
@@ -124,11 +125,12 @@ const Navbar = () => {
             }
           >
             <NavLink to="/cart">
-{cartcount > 0 && (
-  <div className="bg-red-400 font-semibold text-md text-white flex rounded-full justify-center items-center h-5 w-5 top-0.1 right-26 absolute">
-    {cartcount}
-  </div>
-)}              <CiShoppingCart className="text-3xl " />
+              {cartcount > 0 && (
+                <div className="bg-red-400 font-semibold text-md text-white flex rounded-full justify-center items-center h-5 w-5 -top-1 right-32 absolute">
+                  {cartcount}
+                </div>
+              )}{" "}
+              <CiShoppingCart className="text-3xl " />
             </NavLink>
             <NavLink to="/dashboard/profile">
               <GoPerson
@@ -143,7 +145,7 @@ const Navbar = () => {
         <div
           className={
             Isopen
-              ? "bg-white text-gray-400 border-b-gray-400 border-b flex py-4 px-4 flex-col text-md h-65 w-full  left-0 absolute  top-17 "
+              ? "bg-white text-gray-400 border-b-gray-400 border-b flex py-4 px-4 flex-col text-md w-full left-0 absolute top-16 max-h-[70vh] overflow-y-auto"
               : "hidden"
           }
         >

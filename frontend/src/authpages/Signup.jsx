@@ -37,13 +37,13 @@ const Signup = () => {
     }
   };
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#F1F2F4] min-w-screen">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#F1F2F4] w-full px-4">
       <Logopara
         logotext="MarketPro"
         para="Create your account to get started"
       />
-      <div className="h-full mb-15 py-auto bg-white rounded-xl mx-4 px-8 py-3 md:px-12 lg:px-14">
-        <div className=" h-40  gap-1 w-full flex flex-col justify-center items-center">
+      <div className="w-full max-w-lg mb-10 bg-white rounded-xl px-6 py-4 md:px-8">
+        <div className="min-h-24 gap-1 w-full flex flex-col justify-center items-center">
           <h1 className="   gap-2 flex  font-semibold font text-3xl">
             Create Account
           </h1>
@@ -144,7 +144,7 @@ const Signup = () => {
           <div className="flex items-center justify-center">
             <button
               type="submit"
-              className="px-15 py-3 text-white  rounded-xl bg-indigo-600"
+              className="w-full sm:w-auto px-8 py-3 text-white rounded-xl bg-indigo-600"
             >
               Create Account
             </button>

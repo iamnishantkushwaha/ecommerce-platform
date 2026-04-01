@@ -89,7 +89,7 @@ const BrowseCategories = () => {
     },
   ];
   return (
-    <div className="max-h-screen h-[75vh] md:h-full md:py-5 md:px-27 md:max-w-screen min-w-screen md:min-w-fit flex flex-col gap-10 px-4 ">
+    <div className="h-auto md:h-full md:py-5 md:px-6 lg:px-10 md:max-w-screen w-full md:min-w-fit flex flex-col gap-10 px-4">
       <div className="flex justify-between">
         <h1 className="text-2xl font-bold">Browse Categories</h1>
         <h3 className="flex items-center justify-center gap-1 text-sm text-indigo-600">

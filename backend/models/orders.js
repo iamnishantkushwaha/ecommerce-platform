@@ -39,11 +39,18 @@ const orderSchema = new mongoose.Schema({
     required: true
   },
 
-  orderStatus: {
-    type: String,
-    enum: ["Pending", "Shipping", "Delivered", "Cancelled"],
-    default: "Pending"
-  },
+orderStatus: {
+  type: String,
+  enum: [
+    "Order Placed",
+    "Packed",
+    "Shipped",
+    "Out for Delivery",
+    "Delivered",
+    "Cancelled"
+  ],
+  default: "Order Placed"
+},
 
   paymentStatus: {
     type: String,
@@ -53,7 +60,23 @@ const orderSchema = new mongoose.Schema({
   deliveryAddress:{
     type:String,
     required:true
-  }
+  },
+trackingId: {
+  type: String,
+  default: ""
+},
+courierName: {
+  type: String,
+  default: ""
+},
+estimatedDelivery: {
+  type: Date,
+   default: function () {
+        const date = new Date();
+        date.setDate(date.getDate() + 7);
+        return date;
+      }
+}
 
 }, { timestamps: true });
 
