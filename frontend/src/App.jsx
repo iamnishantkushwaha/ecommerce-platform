@@ -20,21 +20,32 @@ import Trackorder from "./pages/userpages/Trackorder";
 
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import Vendordashboard from "./pages/vendorpages/Vendordashboard";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   useEffect(() => {
+    let isMounted = true;
+
     async function checkAuth() {
       try {
-        await api.get("/me");
-        setIsAuthenticated(true);
+        await api.get("/me", { timeout: 5000 });
+        if (isMounted) {
+          setIsAuthenticated(true);
+        }
       } catch (err) {
-        setIsAuthenticated(false);
+        if (isMounted) {
+          setIsAuthenticated(false);
+        }
       }
     }
 
     checkAuth();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   if (isAuthenticated === null) {
@@ -66,6 +77,13 @@ function App() {
             <Route path="orderplaced" element={<OrderPlaced />} />
           
           </Route>
+          <Route path="/vendor" element={<Vendordashboard />} />
+          <Route path="/vendor/dashboard" element={<Vendordashboard />} />
+          <Route path="/vendor/products" element={<Vendordashboard />} />
+          <Route path="/vendor/add-product" element={<Vendordashboard />} />
+          <Route path="/vendor/orders" element={<Vendordashboard />} />
+          <Route path="/vendor/revenue" element={<Vendordashboard />} />
+          <Route path="/vendor/profile" element={<Vendordashboard />} />
         </Route>
       </Routes>
 

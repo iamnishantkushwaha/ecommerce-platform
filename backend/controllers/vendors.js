@@ -91,4 +91,31 @@ async function handleorderstatus(req,res){
     }
 }
 
-module.exports={handleproduct,handleproductupload,handledelete,handleproductupdate,handleorders,handleorderstatus}
+
+async function handledashboard(req,res){
+    try{
+        
+        const order =await Order.find({vendor:req.user._id});
+        if(order.length===0 ) return res.status(404).json({message:"No Order Found"})
+        const totalsales=order.reduce((acc,item)=>{
+                 const ordertotal=   item.products.reduce((acc,product)=>{return acc+ product.quantity},0)
+                 return acc+ordertotal
+        },0)
+        
+        const totalRevenue=order.reduce((acc,item)=>{
+            return acc+item.totalAmount
+        },0)
+
+        const totalOrders=order.length
+        const totalproducts=await Product.find({vendor:req.user._id}).countDocuments();
+        return res.status(200).json({message:"dashboard data fetched",
+            totalsales,totalRevenue,totalOrders,totalproducts
+        })
+    }catch(err){
+        return res.status(500).json({message:"Server Error",
+            Error:err.message
+        })
+    }
+
+}
+module.exports={handleproduct,handledashboard,handleproductupload,handledelete,handleproductupdate,handleorders,handleorderstatus}
