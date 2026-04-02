@@ -21,6 +21,11 @@ import Trackorder from "./pages/userpages/Trackorder";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Vendordashboard from "./pages/vendorpages/Vendordashboard";
+import VendorProducts from "./pages/vendorpages/VendorProducts";
+import VendorAddProduct from "./pages/vendorpages/VendorAddProduct";
+import VendorOrders from "./pages/vendorpages/VendorOrders";
+import VendorRevenue from "./pages/vendorpages/VendorRevenue";
+import VendorProfile from "./pages/vendorpages/VendorProfile";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -66,7 +71,7 @@ function App() {
         <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
           <Route path="/dashboard" element={<Dashboard />}>
             <Route path="orders" element={<Orders />} />
-              <Route path="trackorder" element={<Trackorder />} />
+            <Route path="trackorder" element={<Trackorder />} />
             <Route path="profile" element={<Profile />} />
             <Route path="setting" element={<Setting />} />
           </Route>
@@ -75,15 +80,14 @@ function App() {
             <Route index element={<CartPage />} />
             <Route path="checkout" element={<Checkout />} />
             <Route path="orderplaced" element={<OrderPlaced />} />
-          
           </Route>
           <Route path="/vendor" element={<Vendordashboard />} />
           <Route path="/vendor/dashboard" element={<Vendordashboard />} />
-          <Route path="/vendor/products" element={<Vendordashboard />} />
-          <Route path="/vendor/add-product" element={<Vendordashboard />} />
-          <Route path="/vendor/orders" element={<Vendordashboard />} />
-          <Route path="/vendor/revenue" element={<Vendordashboard />} />
-          <Route path="/vendor/profile" element={<Vendordashboard />} />
+          <Route path="/vendor/products" element={<VendorProducts />} />
+          <Route path="/vendor/add-product" element={<VendorAddProduct />} />
+          <Route path="/vendor/orders" element={<VendorOrders />} />
+          <Route path="/vendor/revenue" element={<VendorRevenue />} />
+          <Route path="/vendor/profile" element={<VendorProfile />} />
         </Route>
       </Routes>
 
