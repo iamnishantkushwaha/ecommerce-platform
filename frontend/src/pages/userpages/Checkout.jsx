@@ -33,18 +33,31 @@ const Checkout = () => {
     fetchcart();
   }, []);
 
-  const handleplaceorder = async () => {
+  const handleplaceorder = async (e) => {
+    e.preventDefault();
+
+    if (!paymentmethod) {
+      return;
+    }
+
     try {
       const formattedProducts = items.map((item) => ({
         productId: item.product._id,
         quantity: item.quantity,
       }));
-
+    let paymentStatus;
       const deliveryAddress = `${fullname}, ${address}, ${city}, ${state}, ${country}, ${pincode}\nMobile Number: ${phonenumber}`;
-
+      if(paymentmethod=="online"){
+       paymentStatus="Paid"
+      }
+      else
+      {
+        paymentStatus="Unpaid"
+      }
       const res = await api.post("/user/orders", {
         products: formattedProducts,
         deliveryAddress,
+        paymentStatus
       });
       if (res.data.message == "Order placed successfully") {
         navigate("/cart/orderplaced");
@@ -59,13 +72,16 @@ const Checkout = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gray-200 w-full md:px-6 lg:px-10 px-4 flex flex-col gap-4 pt-20">
+      <div className="min-h-screen bg-gray-200 w-screen md:w-full md:px-6 lg:px-10 px-4 flex flex-col gap-4 pt-20">
         <h2 className="text-2xl font-bold">Checkout</h2>
-        <div className="md:flex-row flex md:gap-18 flex-col gap-4 ">
+        <form
+          onSubmit={handleplaceorder}
+          className="md:flex-row flex md:gap-18 flex-col gap-4 "
+        >
           <div className="flex flex-col md:w-4/6 gap-4">
             <div className=" flex flex-col gap-3 p-4 w-full bg-white rounded-xl">
               <h3 className="text-lg font-semibold">Shipping Address</h3>
-              <form action="" className=" w-full ">
+              <div className=" w-full ">
                 <div className="flex flex-col gap-2">
                   <label htmlFor="fullName">FullName</label>
                   <input
@@ -149,17 +165,17 @@ const Checkout = () => {
                       type="Number"
                       name="Pincode"
                       id="Pincode"
-                      required
+                      required={true}
                       value={pincode}
                       onChange={(e) => setpincode(e.target.value)}
                     />
                   </div>
                 </div>
-              </form>
+              </div>
             </div>
             <div className=" flex flex-col gap-8 p-4 w-full bg-white rounded-xl">
               <h3 className="text-lg font-semibold">Payment Method</h3>
-              <form className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4">
                 <div
                   onClick={() => {
                     setpaymentmethod(paymentmethod === "cash" ? "" : "cash");
@@ -172,6 +188,7 @@ const Checkout = () => {
                     name="payment"
                     id="payment"
                     value="cash"
+                    required
                     checked={paymentmethod == "cash"}
                     onChange={(e) => setpaymentmethod(e.target.value)}
                   />
@@ -196,6 +213,7 @@ const Checkout = () => {
                     name="payment"
                     id="online"
                     value="online"
+                    required
                     checked={paymentmethod == "online"}
                     onChange={(e) => setpaymentmethod(e.target.value)}
                   />
@@ -206,7 +224,7 @@ const Checkout = () => {
                     <LuWallet className="text-2xl " /> By Online Payment
                   </label>
                 </div>
-              </form>
+              </div>
               {isonline ? (
                 <div className="flex flex-col gap-4">
                   <h3 className="text-lg font-semibold">
@@ -221,6 +239,7 @@ const Checkout = () => {
                             : "creditcard",
                         )
                       }
+                       
                       className={`flex items-center p-3 md:p-6 ${onlinepaymentmethod == "creditcard" ? "border-indigo-600 bg-indigo-100" : "border-gray-300 "} flex-col border rounded-xl `}
                     >
                       <FaCreditCard className="text-2xl" />
@@ -234,6 +253,7 @@ const Checkout = () => {
                             : "debitcard",
                         )
                       }
+                      
                       className={`p-3 md:p-6 flex flex-col border ${onlinepaymentmethod == "debitcard" ? "border-indigo-600 bg-indigo-100" : "border-gray-300 "} border-gray-300 items-center rounded-xl `}
                     >
                       <FaCreditCard className="text-2xl" /> Debit Card
@@ -244,6 +264,7 @@ const Checkout = () => {
                           onlinepaymentmethod === "UPI" ? " " : "UPI",
                         )
                       }
+                       
                       className={`p-4 md:p-6 flex border ${onlinepaymentmethod === "UPI" ? "border-indigo-600 bg-indigo-100" : "border-gray-300 "} border-gray-300 items-center rounded-xl flex-col`}
                     >
                       {" "}
@@ -252,7 +273,7 @@ const Checkout = () => {
                   </div>
                   <div>
                     {onlinepaymentmethod != "UPI" ? (
-                      <form className="flex flex-col gap-2">
+                      <div className="flex flex-col gap-2">
                         <div className="flex flex-col gap-1">
                           <label htmlFor="cardnumber" className="font-semibold">
                             Card Number
@@ -283,7 +304,7 @@ const Checkout = () => {
                             placeholder="545"
                           />
                         </div>
-                      </form>
+                      </div>
                     ) : (
                       <div className="flex flex-col gap-1">
                         <label htmlFor="upi" className="font-semibold">
@@ -335,13 +356,13 @@ const Checkout = () => {
             </div>
 
             <button
-              onClick={handleplaceorder}
+              type="submit"
               className="w-full mt-4 p-4 bg-indigo-600 text-white rounded-xl"
             >
               Place Order
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </>
   );

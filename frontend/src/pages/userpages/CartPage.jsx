@@ -65,7 +65,7 @@ const CartPage = () => {
   };
 
   return (
-    <div className="min-h-screen w-full pb-10 px-4 md:px-6 lg:px-10 bg-gray-200 flex flex-col gap-5 pt-20">
+    <div className="min-h-screen w-screen md:w-full pb-10 px-4 md:px-6 lg:px-10 bg-gray-200 flex flex-col gap-5 pt-20">
       <h2 className="text-2xl font-bold">Shopping Cart</h2>
 
       {items.length === 0 ? (
@@ -74,7 +74,7 @@ const CartPage = () => {
         </div>
       ) : (
         <div className="flex flex-col h-fit md:flex-row md:gap-6  gap-10">
-          <div className="md:w-3/5 flex flex-col gap-6 max-h-[70vh] md:max-h-[75vh] px-6 overflow-y-auto ">
+          <div className="md:w-3/5 flex flex-col gap-6 max-h-[70vh] md:max-h-[75vh]  overflow-y-auto ">
             {items.map((item) => (
               <div
                 key={item._id}
@@ -127,7 +127,7 @@ const CartPage = () => {
             </div>
 
             <button
-              onClick={() => navigate("/cart/checkout")}
+              onClick={() => {navigate("/cart/checkout")}}
               className="w-full mt-4 p-4 bg-indigo-600 text-white rounded-xl"
             >
               Proceed to Checkout

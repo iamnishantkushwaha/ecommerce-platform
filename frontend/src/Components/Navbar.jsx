@@ -5,19 +5,47 @@ import { IoIosMenu } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import { GoPerson } from "react-icons/go";
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useNavigate } from "react-router";
+import { useDispatch, useSelector} from "react-redux";
+import { useLocation } from "react-router-dom";
 import { setCart } from "../Redux/Cartslice";
+import { CiLocationOn } from "react-icons/ci";
+import { IoMdContact } from "react-icons/io";
+import { IoSettingsOutline } from "react-icons/io5";
+import { GoArrowLeft } from "react-icons/go";
+
 import api from "../api";
 const Navbar = () => {
+  const location = useLocation();
+const sidebar = location.pathname.startsWith("/dashboard");
+ const navigate=useNavigate()
   const [Isopen, setisopen] = useState(false);
   const [user, setuser] = useState(null);
   const dispatch = useDispatch();
   const cartcount = useSelector((state) =>
     state.cart.items.reduce((total, item) => total + (item.quantity || 0), 0),
   );
-  const [sidebar, setsidebar] = useState(false);
-  const sidebaroptions = ["Orders", "Track Order", "Profile", "Setting"];
+  
+  
+  const sidebaroptions = [
+     {
+       logo: FiShoppingBag,
+       label: "Orders",
+       path: "/dashboard/orders",
+     },
+     { logo: CiLocationOn , label: "Track Order", path: "/dashboard/trackorder" },
+     { logo: IoMdContact, label: "Profile", path: "/dashboard/profile" },
+     {
+       logo: IoSettingsOutline,
+       label: "Setting",
+       path: "/dashboard/setting",
+     },
+     {logo:GoArrowLeft,
+      label:"Back to Store",
+      path:"/"
+     }
+   ];
+
   useEffect(() => {
     const fetchuser = async () => {
       try {
@@ -31,6 +59,7 @@ const Navbar = () => {
       }
     };
     fetchuser();
+   
   }, [dispatch]);
 
   const handlelogout = async () => {
@@ -54,7 +83,7 @@ const Navbar = () => {
               {cartcount}
             </div>
           )}
-          <CiShoppingCart className="text-3xl" />
+          <NavLink to="/cart" ><CiShoppingCart  className="text-3xl" /></NavLink>
           <div>
             {!Isopen ? (
               <IoIosMenu
@@ -71,11 +100,12 @@ const Navbar = () => {
         </div>
         <div className="hidden md:flex md:items-center  md:justify-between w-full">
           <div className="flex justify-center items-center gap-8 w-4/5">
-            <NavLink to="/" className="hover:bg-indigo-200 rounded-xl p-2">
+            <NavLink to="/"  onClick={() => setisopen(false)} className="hover:bg-indigo-200 rounded-xl p-2">
               Home
             </NavLink>
             <NavLink
               to="/products"
+               onClick={() => setisopen(false)}
               className="hover:bg-indigo-200 rounded-xl p-2"
             >
               Products
@@ -85,12 +115,14 @@ const Navbar = () => {
               <>
                 <NavLink
                   to="/login"
+                   onClick={() => setisopen(false)}
                   className="hover:bg-indigo-200 rounded-xl p-2"
                 >
                   Login
                 </NavLink>
                 <NavLink
                   to="/signup"
+                   onClick={() => setisopen(false)}
                   className="hover:bg-indigo-200 rounded-xl p-2"
                 >
                   Sign Up
@@ -102,14 +134,17 @@ const Navbar = () => {
                 {" "}
                 <NavLink
                   to="/dashboard/orders"
+                   onClick={() => setisopen(false)}
                   className="hover:bg-indigo-200 rounded-xl p-2"
                 >
                   Dashboard
                 </NavLink>
                 <NavLink
                   to="/login"
+                  
                   className="hover:bg-indigo-200 rounded-xl p-2"
-                  onClick={handlelogout}
+                  onClick={()=>{handlelogout();
+                      setisopen(false)}}
                 >
                   Logout
                 </NavLink>
@@ -124,7 +159,7 @@ const Navbar = () => {
                 : "flex  items-center justify-end relative w-1/5  "
             }
           >
-            <NavLink to="/cart">
+            <NavLink  onClick={() => setisopen(false)} to="/cart">
               {cartcount > 0 && (
                 <div className="bg-red-400 font-semibold text-md text-white flex rounded-full justify-center items-center h-5 w-5 -top-1 right-32 absolute">
                   {cartcount}
@@ -132,7 +167,7 @@ const Navbar = () => {
               )}{" "}
               <CiShoppingCart className="text-3xl " />
             </NavLink>
-            <NavLink to="/dashboard/profile">
+            <NavLink  onClick={() => setisopen(false)} to="/dashboard/profile">
               <GoPerson
                 className={
                   user ? "text-xl ml-4 hidden md:inline-block " : "hidden"
@@ -145,28 +180,29 @@ const Navbar = () => {
         <div
           className={
             Isopen
-              ? "bg-white text-gray-400 border-b-gray-400 border-b flex py-4 px-4 flex-col text-md w-full left-0 absolute top-16 max-h-[70vh] overflow-y-auto"
+              ? "bg-white text-black border-b-gray-400 border-b flex py-4 px-4 flex-col text-md w-full left-0 absolute top-16 max-h-[70vh] overflow-y-auto"
               : "hidden"
           }
         >
-          <NavLink to="/" className="hover:bg-indigo-200 rounded-xl p-2">
+         {!sidebar?
+         <><NavLink  onClick={() => setisopen(false)} to="/" className="hover:bg-indigo-200   rounded-xl p-2">
             Home
           </NavLink>
           <NavLink
-            to="/products"
+            onClick={() => setisopen(false)} to="/products"
             className="hover:bg-indigo-200 rounded-xl p-2"
           >
             Products
           </NavLink>
           {!user && (
             <>
-              <NavLink
+              <NavLink  onClick={() => setisopen(false)}
                 to="/login"
                 className="hover:bg-indigo-200 rounded-xl p-2"
               >
                 Login
               </NavLink>
-              <NavLink
+              <NavLink  onClick={() => setisopen(false)}
                 to="/signup"
                 className="hover:bg-indigo-200 rounded-xl p-2"
               >
@@ -178,20 +214,32 @@ const Navbar = () => {
             <>
               {" "}
               <NavLink
+               onClick={() => setisopen(false)}
                 to="/dashboard/orders"
                 className="hover:bg-indigo-200 rounded-xl p-2"
               >
                 Dashboard
               </NavLink>
               <NavLink
+              
                 to="/login"
                 className="hover:bg-indigo-200 rounded-xl p-2"
-                onClick={handlelogout}
+                onClick={()=>{handlelogout();
+                   setisopen(false)}}
               >
                 Logout
               </NavLink>
             </>
-          )}
+          )}</>:sidebaroptions.map((option,idx)=>{
+            const Icon=option.logo
+              return (  <NavLink key={idx}
+                to={option.path}
+                 onClick={() => setisopen(false)}
+                className="hover:bg-indigo-200 flex font-semibold items-center gap-2  rounded-xl p-2"
+              >
+               <Icon className="font-bold"/> {option.label}
+              </NavLink>)
+          })}
         </div>
       </div>
     </div>

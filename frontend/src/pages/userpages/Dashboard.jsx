@@ -4,14 +4,19 @@ import Orders from "./Orders";
 import Profile from "./Profile";
 import Navbar from "../../Components/Navbar";
 import { Outlet } from "react-router";
+import Sidebar from "../../Components/Sidebar";
 const Dashboard = () => {
   return (
-    <>
-      <Navbar />
-      <div className="min-h-screen mt-10 w-full">
+    <div className="min-h-screen w-screen flex  ">
+      <Sidebar />
+      <div className="w-5/6">
+        <Navbar sidebar={true} />
+      <div className=" w-full">
         <Outlet />
       </div>
-    </>
+      </div>
+      
+    </div>
   );
 };
 

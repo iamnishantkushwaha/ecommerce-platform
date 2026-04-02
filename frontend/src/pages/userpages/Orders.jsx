@@ -18,7 +18,7 @@ const Orders = () => {
   console.log(orders, "kl");
 
   return (
-    <div className="min-h-screen w-full px-4 md:px-6 lg:px-10 flex flex-col justify-center gap-5">
+    <div className="min-h-screen  md:h-full w-screen px-4 md:px-6 lg:px-10 flex justify-center flex-col gap-5 pt-6">
       <h1 className="text-2xl font-semibold">My Orders</h1>
 
       <Table orders={orders} />

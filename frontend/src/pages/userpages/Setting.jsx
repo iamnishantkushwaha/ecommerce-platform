@@ -22,9 +22,9 @@ const Setting = () => {
   const [newpassword, setnewpassword] = useState("");
   const [confirmpassword, setconfirmpassword] = useState("");
   return (
-    <div className="min-h-screen font-bold md:px-6 lg:px-10 bg-gray-100 px-4 py-5 gap-8 flex flex-col md:gap-10 w-full">
+    <div className="min-h-screen w-screen font-bold md:px-6 lg:px-10 bg-gray-100 px-4 py-5 gap-8 flex flex-col md:gap-10 md:w-full">
       <h1 className="text-3xl font-bold text-center">Setting</h1>
-      <div className="rounded-xl p-6 md:p-8 bg-white flex flex-col gap-6 md:gap-4 items-center w-full max-w-3xl mx-auto">
+      <div className="rounded-xl p-6 md:px-6 md:py-4 bg-white flex flex-col gap-6 md:gap-4 items-center w-full max-w-lg mx-auto">
         <h1 className="text-2xl font-bold ">Change Password</h1>
         <div className="w-full">
           <form

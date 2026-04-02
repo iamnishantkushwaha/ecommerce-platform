@@ -55,6 +55,7 @@ function App() {
         <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
           <Route path="/dashboard" element={<Dashboard />}>
             <Route path="orders" element={<Orders />} />
+              <Route path="trackorder" element={<Trackorder />} />
             <Route path="profile" element={<Profile />} />
             <Route path="setting" element={<Setting />} />
           </Route>
@@ -63,7 +64,7 @@ function App() {
             <Route index element={<CartPage />} />
             <Route path="checkout" element={<Checkout />} />
             <Route path="orderplaced" element={<OrderPlaced />} />
-            <Route path="trackorder" element={<Trackorder />} />
+          
           </Route>
         </Route>
       </Routes>

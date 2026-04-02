@@ -69,7 +69,7 @@ const Products = () => {
   return (
     <>
       <Navbar />{" "}
-      <div className="relative w-full gap-4 min-h-screen md:px-6 lg:px-10 flex-col md:flex-row md:gap-6 flex bg-gray-100 px-4 pt-25">
+      <div className="relative w-screen md:w-full gap-4 min-h-screen md:px-6 lg:px-10 flex-col md:flex-row md:gap-6 flex bg-gray-100 px-4 pt-25">
         {/* for mobile */}
         {openfilter && (
           <div className="flex rounded-xl flex-col gap-3 bg-white p-4">

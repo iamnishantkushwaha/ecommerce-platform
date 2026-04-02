@@ -25,7 +25,7 @@ const OrderPlaced = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen w-full flex flex-col justify-center items-center bg-gray-200 pt-20 px-4">
+      <div className="min-h-screen w-screen md:w-full flex flex-col justify-center items-center bg-gray-200 pt-20 px-4">
         <div className="w-full max-w-xl rounded-xl py-4 flex flex-col justify-center md:py-10 items-center gap-4 bg-white">
           <div className="w-full flex justify-center">
             <div className="flex justify-center items-center p-2 h-20 w-20 bg-green-100 rounded-full">

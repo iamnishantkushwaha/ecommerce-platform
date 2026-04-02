@@ -21,7 +21,7 @@ const Servicecard = () => {
     },
   ];
   return (
-    <div className="h-auto py-6 md:py-8 flex flex-col md:w-full md:h-fit md:flex-row justify-evenly w-full px-4 bg-gray-200">
+    <div className="h-auto py-6 md:py-8 flex flex-col gap-4 md:w-full md:h-fit md:flex-row justify-evenly w-full px-4 bg-gray-200">
       {cards.map((card, idx) => {
         const Icon = card.logo;
         return (

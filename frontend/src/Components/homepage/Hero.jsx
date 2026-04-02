@@ -4,7 +4,7 @@ import { IoIosArrowRoundForward } from "react-icons/io";
 
 const Hero = () => {
   return (
-    <div className="w-full md:items-center md:max-w-screen md:min-h-[70vh] px-4 md:px-10 lg:px-16 flex flex-col md:flex-row justify-around bg-white py-10">
+    <div className="w-full md:items-center gap-5 md:max-w-screen md:min-h-[70vh] px-4 md:px-10 lg:px-16 flex flex-col md:flex-row justify-around bg-white py-10">
       <div className="flex flex-col mt-4 md:pr-25 md:gap-5 md:h-full md:mt-0 md:w-1/2 md:items-start items-center justify-between  md:justify-center gap-3 ">
         <h3 className=" bg-indigo-100  rounded-2xl px-2.5 py-0.5 w-fit text-sm text-indigo-500">
           🚀New Season Arrivals

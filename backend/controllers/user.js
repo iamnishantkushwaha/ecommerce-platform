@@ -7,7 +7,7 @@ const bycrpt = require("bcrypt");
 async function handleplaceorders(req, res) {
   try {
     if (!req.user) return res.status(401).json({ message: "unauthorized" });
-    const { products, deliveryAddress } = req.body;
+    const { products, deliveryAddress,paymentStatus } = req.body;
 
     if (!products || !Array.isArray(products) || products.length == 0)
       return res.status(404).json({ message: "Products are required" });

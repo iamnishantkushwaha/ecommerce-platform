@@ -9,19 +9,27 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 
 const columns = [
-  { id: "_id", label: "Order ID", minWidth: 140 },
+  {
+    id: "_id",
+    label: "Order ID",
+    minWidth: 140,
+    format: (value) =>
+      value ? value.toString().slice(-6).toUpperCase() : "",
+  },
   {
     id: "createdAt",
     label: "Date",
     minWidth: 100,
-    format: (value) => new Date(value).toLocaleDateString("en-IN"),
+    format: (value) =>
+      new Date(value).toLocaleDateString("en-IN"),
   },
   {
     id: "products",
     label: "Items",
     minWidth: 150,
     align: "center",
-    format: (value) => (Array.isArray(value) ? value.length : 0),
+    format: (value) =>
+      Array.isArray(value) ? value.length : 0,
   },
   {
     id: "quantity",
@@ -30,7 +38,10 @@ const columns = [
     align: "center",
     format: (_, row) =>
       Array.isArray(row?.products)
-        ? row.products.reduce((sum, item) => sum + (item.quantity || 0), 0)
+        ? row.products.reduce(
+            (sum, item) => sum + (item.quantity || 0),
+            0
+          )
         : 0,
   },
   {
@@ -64,9 +75,9 @@ export default function StickyHeadTable(props) {
   }, [props.orders]);
 
   return (
-    <Paper className="rounded-2xl " sx={{ width: "100%", overflow: "hidden" }}>
+    <Paper className="rounded-2xl "  sx={{ minWidth: { xs: 320, sm: 600, md: 700 } }}>
       <TableContainer
-        className="rounded-2xl"
+        className="rounded-2xl "
         sx={{ maxHeight: 440, overflowX: "auto" }}
       >
         <Table stickyHeader aria-label="sticky table" sx={{ minWidth: 700 }}>

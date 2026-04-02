@@ -21,7 +21,7 @@ const Trackorder = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen pt-20 flex flex-col md:px-6 lg:px-10 gap-4 bg-gray-100 px-4 w-full">
+      <div className="min-h-screen pt-20 flex flex-col md:px-6 lg:px-10 gap-4 bg-gray-100 px-4 w-screen md:w-full">
         <h2 className="text-2xl font-bold">Track Order</h2>
         <div className="bg-white flex md:justify-start  md:gap-3 justify-between rounded-xl p-4">
           <input
