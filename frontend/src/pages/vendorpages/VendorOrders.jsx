@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import VendorNavbar from "../../Components/VendorNavbar";
 import {
   Table,
@@ -12,93 +12,26 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
+import api from "../../api";
 
 const VendorOrders = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  const orders = [
-    {
-      id: "ORD-001",
-      orderId: "001",
-      customer: "John Doe",
-      date: "2026-02-28",
-      total: "$458.99",
-      status: "Delivered",
-    },
-    {
-      id: "ORD-002",
-      orderId: "002",
-      customer: "Jane Smith",
-      date: "2026-02-27",
-      total: "$189.00",
-      status: "Shipped",
-    },
-    {
-      id: "ORD-003",
-      orderId: "003",
-      customer: "Bob Wilson",
-      date: "2026-02-26",
-      total: "$329.98",
-      status: "Processing",
-    },
-    {
-      id: "ORD-004",
-      orderId: "004",
-      customer: "Alice Brown",
-      date: "2026-02-25",
-      total: "$45.00",
-      status: "Delivered",
-    },
-    {
-      id: "ORD-005",
-      orderId: "005",
-      customer: "Charlie Davis",
-      date: "2026-02-24",
-      total: "$129.99",
-      status: "Cancelled",
-    },
-    {
-      id: "ORD-006",
-      orderId: "006",
-      customer: "Diana Evans",
-      date: "2026-02-23",
-      total: "$759.98",
-      status: "Delivered",
-    },
-    {
-      id: "ORD-007",
-      orderId: "007",
-      customer: "Edward Taylor",
-      date: "2026-02-22",
-      total: "$299.99",
-      status: "Processing",
-    },
-    {
-      id: "ORD-008",
-      orderId: "008",
-      customer: "Fiona Garcia",
-      date: "2026-02-21",
-      total: "$145.50",
-      status: "Shipped",
-    },
-    {
-      id: "ORD-009",
-      orderId: "009",
-      customer: "George Wilson",
-      date: "2026-02-20",
-      total: "$225.75",
-      status: "Processing",
-    },
-    {
-      id: "ORD-010",
-      orderId: "010",
-      customer: "Helen Martinez",
-      date: "2026-02-19",
-      total: "$567.50",
-      status: "Delivered",
-    },
-  ];
+  const [orders, setOrders] = useState([]);
+const fetchorders = async () => {
+      try {
+        const res = await api.get("/vendor/orders");
+        console.log(res.data);
+        setOrders(res.data.Orders || []);
+      } catch (err) {
+        console.log("Error in VendorOrders:", err.message);
+      }
+    };
+  useEffect(() => {
+    
+    fetchorders();
+  }, []);
+ 
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -107,6 +40,23 @@ const VendorOrders = () => {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+
+  const formatOrderId = (orderId) =>
+    orderId?.toString().slice(-6).toUpperCase();
+
+  const handleStatusChange = async(orderId, newStatus) => {
+    try{
+      const res=await api.patch(`/vendor/orders/${orderId}`,{
+      orderStatus:newStatus
+     })
+     console.log(`Status Updated to ${newStatus}`)
+     fetchorders()
+
+    }catch(err){
+      console.log("Error in Vendor Status Change:",err.message)
+    }
+     
   };
 
   const getStatusColor = (status) => {
@@ -192,19 +142,19 @@ const VendorOrders = () => {
                         hover
                         role="checkbox"
                         tabIndex={-1}
-                        key={order.id}
+                        key={order._id}
                       >
-                        <TableCell>{order.orderId}</TableCell>
-                        <TableCell>{order.customer}</TableCell>
-                        <TableCell>{order.date}</TableCell>
-                        <TableCell>{order.total}</TableCell>
-                        <TableCell className={getStatusColor(order.status)}>
-                          {order.status}
+                        <TableCell>{formatOrderId(order._id)}</TableCell>
+                        <TableCell>{order.user.fullName}</TableCell>
+                        <TableCell>{new Date(order.createdAt).toLocaleDateString()}</TableCell>
+                        <TableCell>{order.totalAmount}</TableCell>
+                        <TableCell className={getStatusColor(order.orderStatus)}>
+                          {order.orderStatus}
                         </TableCell>
                         <TableCell>
                           <Select
                             size="small"
-                            value={order.status}
+                            value={order.orderStatus}
                             sx={{
                               minWidth: "120px",
                               borderColor: "#e5e7eb",
@@ -219,11 +169,18 @@ const VendorOrders = () => {
                                   borderColor: "#3b82f6",
                                 },
                             }}
+                            onChange={(e) =>
+                              handleStatusChange(order._id, e.target.value)
+                            }
                           >
-                            <MenuItem value="Processing">Processing</MenuItem>
+                            <MenuItem value="Order Placed">Order Placed</MenuItem>
+                              <MenuItem value="Packed">Packed</MenuItem>
                             <MenuItem value="Shipped">Shipped</MenuItem>
+                            <MenuItem value= "Out for Delivery">Out for Delivery</MenuItem>
                             <MenuItem value="Delivered">Delivered</MenuItem>
                             <MenuItem value="Cancelled">Cancelled</MenuItem>
+                             
+   
                           </Select>
                         </TableCell>
                       </TableRow>

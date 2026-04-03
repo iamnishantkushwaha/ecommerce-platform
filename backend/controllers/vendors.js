@@ -1,5 +1,6 @@
 const Product = require("../models/product");
 const Order = require("../models/orders");
+const User =require("../models/user")
 async function handleproductupload(req, res) {
   const { title, description, price, stock, category } = req.body;
   console.log(req.file);
@@ -33,10 +34,10 @@ async function handleproductupload(req, res) {
 
 async function handleproduct(req, res) {
   try {
-    const product = await Product.find({ vendor: req.user._id });
+    const products = await Product.find({ vendor: req.user._id });
 
-    if (!product) return res.status(404).json({ message: "No product Found" });
-    return res.status(200).json({ message: "product found" });
+    if (!products) return res.status(404).json({ message: "No product Found" });
+    return res.status(200).json({ message: "product found", products });
   } catch (err) {
     return res.status(500).json({ message: "Server Error" });
   }
@@ -68,11 +69,18 @@ async function handleproductupdate(req, res) {
 
 async function handleorders(req, res) {
   try {
-    const Orders = await Order.find({ vendor: req.user._id });
+    const Orders = await Order.find({ vendor: req.user._id }).populate(
+      "user",
+      "fullName",
+    );
     if (!Orders) return res.status(404).json({ message: "No Order Found" });
-    return res.status(200).json({ message: "Order Fetched Successfully" });
+    return res
+      .status(200)
+      .json({ message: "Order Fetched Successfully", Orders });
   } catch (err) {
-    return res.status(500).json({ message: "Server Error" });
+    return res
+      .status(500)
+      .json({ message: "Server Error", Error: err.message });
   }
 }
 
@@ -113,46 +121,84 @@ async function handledashboard(req, res) {
       vendor: req.user._id,
     }).countDocuments();
 
-   const monthlymap={};
-   for(const item of order){
-    const month=new Date(item.createdAt).toLocaleString("default", {
-  month: "short",
-});
-const OrderQuantity=item.products.reduce((acc,product)=> {return acc+product.quantity},0)
-
-if(!monthlymap[month])
-{
-    monthlymap[month]=OrderQuantity;
-}
-else
-{
-    monthlymap[month]+=OrderQuantity;
-}
-
-
-   }
-
-const monthlysales=Object.keys(monthlymap).map((month)=>({
-    month,
-    sales:monthlymap[month],
-}))
-    
-    return res
-      .status(200)
-      .json({
-        message: "dashboard data fetched",
-        totalsales,
-        totalRevenue,
-        totalOrders,
-        totalproducts,
-        monthlysales
+    const monthlymap = {};
+   const  monthlyRevenueMap ={}
+    for (const item of order) {
+      const month = new Date(item.createdAt).toLocaleString("default", {
+        month: "short",
       });
+      const OrderQuantity = item.products.reduce((acc, product) => {
+        return acc + product.quantity;
+      }, 0);
+      
+      if (!monthlymap[month]) {
+        monthlymap[month] = OrderQuantity;
+      } else {
+        monthlymap[month] += OrderQuantity;
+      }
+
+      if (!monthlyRevenueMap[month]) {
+    monthlyRevenueMap[month] = item.totalAmount;
+  } else {
+    monthlyRevenueMap[month] += item.totalAmount;
+  }
+    }
+ 
+
+
+const monthlyRevenue = Object.keys(monthlyRevenueMap).map((month) => ({
+  month,
+  revenue: monthlyRevenueMap[month],
+}));
+    const monthlysales = Object.keys(monthlymap).map((month) => ({
+      month,
+      sales: monthlymap[month],
+    }));
+
+    return res.status(200).json({
+      message: "dashboard data fetched",
+      totalsales,
+      totalRevenue,
+      totalOrders,
+      totalproducts,
+      monthlysales,
+      monthlyRevenue
+    });
   } catch (err) {
     return res
       .status(500)
       .json({ message: "Server Error", Error: err.message });
   }
 }
+
+async function handleprofile(req, res) {
+  try {
+    const user = await User.findOne({ _id: req.user._id });
+    if (!user) return res.status(401).json({ message: "unauthorized" });
+    return res.status(200).json({ message: "user found", user });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Server error",
+      Error: err.message,
+    });
+  }
+}
+async function handleupdateprofile(req, res) {
+  try {
+    const { fullName, email, phoneNumber } = req.body;
+    const user = await User.findOneAndUpdate(
+      { _id: req.user._id },
+      { fullName, email, phoneNumber },
+    );
+    if (!user) return res.status(404).json({ message: "user not found" });
+    return res.status(200).json({ message: "Profile Updated Successfully" });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ message: "Server Error", Error: err.message });
+  }
+}
+
 module.exports = {
   handleproduct,
   handledashboard,
@@ -160,5 +206,7 @@ module.exports = {
   handledelete,
   handleproductupdate,
   handleorders,
+  handleprofile,
+  handleupdateprofile,
   handleorderstatus,
 };

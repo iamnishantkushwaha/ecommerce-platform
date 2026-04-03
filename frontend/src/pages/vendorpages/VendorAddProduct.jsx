@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import VendorNavbar from "../../Components/VendorNavbar";
+import api from "../../api";
 
 const VendorAddProduct = () => {
   const [formData, setFormData] = useState({
@@ -7,11 +8,40 @@ const VendorAddProduct = () => {
     category: "",
     price: "",
     stockQuantity: "",
-    sku: "SKU-001",
     description: "",
     images: [],
   });
+  const [dragActive, setDragActive] = useState(false);
 
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setDragActive(true);
+  };
+
+  const handleDragLeave = () => {
+    setDragActive(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setDragActive(false);
+
+    const files = Array.from(e.dataTransfer.files);
+
+    setFormData((prev) => ({
+      ...prev,
+      images: files,
+    }));
+  };
+
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+
+    setFormData((prev) => ({
+      ...prev,
+      images: files,
+    }));
+  };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -20,9 +50,31 @@ const VendorAddProduct = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Logic will be added later
+    try {
+      const formDataToSend = new FormData();
+
+      formDataToSend.append("title", formData.productName);
+      formDataToSend.append("price", formData.price);
+      formDataToSend.append("category", formData.category);
+      formDataToSend.append("stock", formData.stockQuantity);
+      formDataToSend.append("description", formData.description);
+      formDataToSend.append("image", formData.images[0]);
+      console.log("FormData", formDataToSend);
+      const res = await api.post("/vendor/add-product", formDataToSend);
+      console.log(res.data.message);
+      setFormData({
+    productName: "",
+    category: "",
+    price: "",
+    stockQuantity: "",
+    description: "",
+    images: [],
+  })
+    } catch (err) {
+      console.log("Error in add product:", err.message);
+    }
   };
 
   return (
@@ -95,8 +147,8 @@ const VendorAddProduct = () => {
                 </div>
               </div>
 
-              {/* Stock Quantity and SKU Row */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Stock Quantity */}
+              <div>
                 {/* Stock Quantity */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -108,21 +160,6 @@ const VendorAddProduct = () => {
                     value={formData.stockQuantity}
                     onChange={handleInputChange}
                     placeholder="0"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 text-sm"
-                  />
-                </div>
-
-                {/* SKU */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    SKU
-                  </label>
-                  <input
-                    type="text"
-                    name="sku"
-                    value={formData.sku}
-                    onChange={handleInputChange}
-                    placeholder="SKU-001"
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 text-sm"
                   />
                 </div>
@@ -148,7 +185,25 @@ const VendorAddProduct = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Product Images
                 </label>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors cursor-pointer">
+                <label
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                  className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors block ${
+                    dragActive
+                      ? "border-blue-500 bg-blue-50"
+                      : "border-gray-300 hover:border-blue-400"
+                  }`}
+                >
+                  {/* hidden input */}
+                  <input
+                    type="file"
+                    multiple
+                    className="hidden"
+                    accept="image/png, image/jpeg"
+                    onChange={handleFileChange}
+                  />
+
                   <svg
                     className="mx-auto h-10 w-10 text-gray-400 mb-2"
                     stroke="currentColor"
@@ -162,13 +217,26 @@ const VendorAddProduct = () => {
                       strokeLinejoin="round"
                     />
                   </svg>
+
                   <p className="text-gray-600 text-sm">
                     Drag & drop images here
                   </p>
                   <p className="text-xs text-gray-500 mt-1">
                     or click to browse (PNG, JPG up to 5MB)
                   </p>
-                </div>
+                </label>
+                {formData.images.length > 0 && (
+                  <div className="mt-4 grid grid-cols-3 gap-3">
+                    {formData.images.map((img, index) => (
+                      <img
+                        key={index}
+                        src={URL.createObjectURL(img)}
+                        alt="preview"
+                        className="w-full h-24 object-cover rounded-lg"
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Form Actions */}

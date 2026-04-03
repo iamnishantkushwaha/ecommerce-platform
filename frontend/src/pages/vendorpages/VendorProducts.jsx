@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import VendorNavbar from "../../Components/VendorNavbar";
 import { FiPlus, FiEdit2, FiTrash2 } from "react-icons/fi";
+import { useNavigate } from "react-router";
 import {
   Table,
   TableBody,
@@ -10,94 +11,43 @@ import {
   TableRow,
   Paper,
   TablePagination,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
 } from "@mui/material";
+import api from "../../api";
+import { Navigate } from "react-router";
 
 const VendorProducts = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [products, setproducts] = useState([]);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [editFormData, setEditFormData] = useState({
+    title: "",
+    category: "",
+    price: "",
+    stock: "",
+    description: "",
+  });
+  const navigate = useNavigate();
 
-  const products = [
-    {
-      id: 1,
-      productId: "001",
-      name: "Wireless Noise-Cancelling Headphones",
-      category: "Electronics",
-      price: "$299.99",
-      stock: 45,
-    },
-    {
-      id: 2,
-      productId: "002",
-      name: "Minimalist Leather Watch",
-      category: "Accessories",
-      price: "$189.00",
-      stock: 23,
-    },
-    {
-      id: 3,
-      productId: "003",
-      name: "Organic Cotton T-Shirt",
-      category: "Clothing",
-      price: "$45.00",
-      stock: 156,
-    },
-    {
-      id: 4,
-      productId: "004",
-      name: "Smart Home Speaker",
-      category: "Electronics",
-      price: "$129.99",
-      stock: 78,
-    },
-    {
-      id: 5,
-      productId: "005",
-      name: "Running Shoes Pro",
-      category: "Sports",
-      price: "$159.00",
-      stock: 34,
-    },
-    {
-      id: 6,
-      productId: "006",
-      name: "Ceramic Plant Pot Set",
-      category: "Home & Garden",
-      price: "$39.99",
-      stock: 89,
-    },
-    {
-      id: 7,
-      productId: "007",
-      name: "Bestseller Novel Collection",
-      category: "Books",
-      price: "$29.99",
-      stock: 200,
-    },
-    {
-      id: 8,
-      productId: "008",
-      name: "Premium Sunglasses",
-      category: "Accessories",
-      price: "$220.00",
-      stock: 56,
-    },
-    {
-      id: 9,
-      productId: "009",
-      name: "Yoga Mat Pro",
-      category: "Sports",
-      price: "$35.99",
-      stock: 67,
-    },
-    {
-      id: 10,
-      productId: "010",
-      name: "Coffee Maker Deluxe",
-      category: "Electronics",
-      price: "$89.99",
-      stock: 45,
-    },
-  ];
+  const fetchproducts = async () => {
+    try {
+      const res = await api.get("/vendor/product");
+      console.log(res);
+      setproducts(res.data.products);
+    } catch (err) {
+      console.log("Error in Vendor Products", err.message);
+    }
+  };
+  useEffect(() => {
+    fetchproducts();
+  }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -108,6 +58,51 @@ const VendorProducts = () => {
     setPage(0);
   };
 
+  const handleDelete = async (id) => {
+    try {
+      const res = await api.delete(`/vendor/product/${id}`);
+      console.log(res.data.message);
+    } catch (err) {
+      console.log("Error in handleDelete:", err.message);
+    }
+    fetchproducts();
+  };
+
+  const handleOpenEditDialog = (product) => {
+    setSelectedProduct(product);
+    setEditFormData({
+      title: product.title || "",
+      category: product.category || "",
+      price: product.price || "",
+      stock: product.stock || "",
+      description: product.description || "",
+    });
+    setEditDialogOpen(true);
+  };
+
+  const handleCloseEditDialog = () => {
+    setEditDialogOpen(false);
+    setSelectedProduct(null);
+  };
+
+  const handleEditInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handlesavechanges=async(id)=>{
+    try{
+      const res=await api.patch(`/vendor/product/${id}`,editFormData)
+      console.log("Product Upated Successfully");
+      setEditDialogOpen(false);
+      fetchproducts()
+    }catch(err){
+ console.log("Error in Edit Form :",err.message)
+    }
+  }
   return (
     <>
       <VendorNavbar />
@@ -115,7 +110,10 @@ const VendorProducts = () => {
         <div className="w-full h-full min-h-0 px-4 md:px-6 lg:px-10 flex flex-col gap-4 pt-6 pb-4">
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-semibold">My Products</h1>
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg flex items-center gap-2 transition-colors">
+            <button
+              onClick={() => navigate("/vendor/add-product")}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg flex items-center gap-2 transition-colors"
+            >
               <FiPlus className="text-lg" />
               Add Product
             </button>
@@ -184,8 +182,8 @@ const VendorProducts = () => {
                         tabIndex={-1}
                         key={product.id}
                       >
-                        <TableCell>{product.productId}</TableCell>
-                        <TableCell>{product.name}</TableCell>
+                        <TableCell>{product._id}</TableCell>
+                        <TableCell>{product.title}</TableCell>
                         <TableCell>{product.category}</TableCell>
                         <TableCell>{product.price}</TableCell>
                         <TableCell className="text-green-500">
@@ -193,10 +191,19 @@ const VendorProducts = () => {
                         </TableCell>
                         <TableCell>
                           <div className="flex gap-3">
-                            <button className="text-blue-600 hover:text-blue-800 transition-colors">
+                            <button
+                              type="button"
+                              onClick={() => handleOpenEditDialog(product)}
+                              className="text-blue-600 hover:text-blue-800 transition-colors"
+                            >
                               <FiEdit2 className="text-lg" />
                             </button>
-                            <button className="text-red-600 hover:text-red-800 transition-colors">
+                            <button
+                              onClick={() => {
+                                handleDelete(product._id);
+                              }}
+                              className="text-red-600 hover:text-red-800 transition-colors"
+                            >
                               <FiTrash2 className="text-lg" />
                             </button>
                           </div>
@@ -218,6 +225,67 @@ const VendorProducts = () => {
           </Paper>
         </div>
       </main>
+
+      <Dialog
+        open={editDialogOpen}
+        onClose={handleCloseEditDialog}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>Edit Product</DialogTitle>
+        <DialogContent className="space-y-4 pt-2">
+          <TextField
+            fullWidth
+            label="Product Name"
+            name="title"
+            value={editFormData.title}
+            onChange={handleEditInputChange}
+            margin="dense"
+          />
+          <TextField
+            fullWidth
+            label="Category"
+            name="category"
+            value={editFormData.category}
+            onChange={handleEditInputChange}
+            margin="dense"
+          />
+          <TextField
+            fullWidth
+            label="Price"
+            name="price"
+            type="number"
+            value={editFormData.price}
+            onChange={handleEditInputChange}
+            margin="dense"
+          />
+          <TextField
+            fullWidth
+            label="Stock"
+            name="stock"
+            type="number"
+            value={editFormData.stock}
+            onChange={handleEditInputChange}
+            margin="dense"
+          />
+          <TextField
+            fullWidth
+            label="Description"
+            name="description"
+            value={editFormData.description}
+            onChange={handleEditInputChange}
+            margin="dense"
+            multiline
+            minRows={3}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseEditDialog}>Cancel</Button>
+          <Button variant="contained" onClick={() => handlesavechanges(selectedProduct._id)}>
+            Save Changes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

@@ -1,8 +1,25 @@
 import React from "react";
 import VendorNavbar from "../../Components/VendorNavbar";
 import { FiTrendingUp, FiBarChart2 } from "react-icons/fi";
-
+import RevenueChart from "../../Components/RevenueChart"
+import { useState,useEffect } from "react";
+import api from "../../api";
 const VendorRevenue = () => {
+const [stats,setstats]=useState({})
+  useEffect(()=>{
+  const fetchstats=async()=>{
+    try{
+    const res=await api.get("/vendor/dashboard");
+    console.log(res.data);
+    setstats(res.data)
+    }catch(err){
+     console.log("Error in VendorDashboard",err.message);
+    }
+   
+  }
+  fetchstats()
+ },[])
+
   return (
     <>
       <VendorNavbar />
@@ -28,7 +45,6 @@ const VendorRevenue = () => {
                     Growth Rate
                   </p>
                   <h2 className="text-3xl font-bold text-gray-900">18.2%</h2>
-                  <p className="text-xs text-green-600 mt-1">Up from 14.5%</p>
                 </div>
                 <FiTrendingUp className="text-2xl text-gray-600" />
               </div>
@@ -42,9 +58,7 @@ const VendorRevenue = () => {
                     Net Profit
                   </p>
                   <h2 className="text-3xl font-bold text-gray-900">$34,200</h2>
-                  <p className="text-xs text-green-600 mt-1">
-                    +22% vs last period
-                  </p>
+                 
                 </div>
                 <FiBarChart2 className="text-2xl text-gray-600" />
               </div>
@@ -57,20 +71,14 @@ const VendorRevenue = () => {
               Revenue Over Time
             </h2>
 
-            {/* Chart Container */}
-            <div className="w-full h-56 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center mb-4">
-              <p className="text-gray-500 text-sm">Chart Container</p>
+            <div className="mb-4">
+              <RevenueChart stats={stats.monthlyRevenue} />
             </div>
 
-            {/* Legend */}
-            <div className="grid grid-cols-2 gap-4">
+            <div>
               <div className="flex items-center gap-3">
                 <div className="w-3 h-3 rounded-full bg-blue-600"></div>
                 <span className="text-sm text-gray-700">Revenue</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-3 h-3 rounded-full bg-green-600"></div>
-                <span className="text-sm text-gray-700">Sales</span>
               </div>
             </div>
           </div>
@@ -81,8 +89,8 @@ const VendorRevenue = () => {
               <p className="text-gray-600 font-medium text-sm mb-1">
                 Total Revenue
               </p>
-              <p className="text-2xl font-bold text-gray-900">$156,840</p>
-              <p className="text-xs text-gray-500 mt-1">Last 30 days</p>
+              <p className="text-2xl font-bold text-gray-900">{stats.totalRevenue}</p>
+            
             </div>
 
             <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-100">
@@ -90,14 +98,13 @@ const VendorRevenue = () => {
                 Avg Order Value
               </p>
               <p className="text-2xl font-bold text-gray-900">$125.40</p>
-              <p className="text-xs text-gray-500 mt-1">Per transaction</p>
             </div>
 
             <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-100">
               <p className="text-gray-600 font-medium text-sm mb-1">
                 Total Orders
               </p>
-              <p className="text-2xl font-bold text-gray-900">1,248</p>
+              <p className="text-2xl font-bold text-gray-900">{stats.totalOrders}</p>
               <p className="text-xs text-gray-500 mt-1">Completed orders</p>
             </div>
           </div>

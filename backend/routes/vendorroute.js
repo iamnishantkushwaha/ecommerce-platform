@@ -8,6 +8,8 @@ const {
   handleorders,
   handleorderstatus,
   handledashboard,
+  handleupdateprofile,
+  handleprofile,
 } = require("../controllers/vendors");
 const router = express.Router();
 const upload = require("../middlewares/upload");
@@ -21,7 +23,8 @@ router.get("/product",  handleproduct);
 // Route to delete a product by ID
 router.delete("/product/:id", handledelete);
 
-
+router.get("/profile",handleprofile)
+router.patch("/profile",handleupdateprofile)
 router.get("/dashboard",handledashboard)
 // Route to update a product by ID with optional image upload
 router.patch("/product/:id", upload.single("image"), handleproductupdate);
