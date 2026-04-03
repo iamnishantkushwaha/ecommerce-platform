@@ -1,36 +1,53 @@
-import React from "react";
+import React, { useState,useEffect } from "react";
 import VendorNavbar from "../../Components/VendorNavbar";
 import { FiShoppingBag, FiTrendingUp } from "react-icons/fi";
 import { IoBagHandleOutline } from "react-icons/io5";
 import { TbLayoutGrid } from "react-icons/tb";
+import api from "../../api";
+import DashboardChart from "../../Components/DashboardChart";
 
 const Vendordashboard = () => {
+const [dashboardstats,setdashboardstats]=useState({})
+ useEffect(()=>{
+  const fetchstats=async()=>{
+    try{
+    const res=await api.get("/vendor/dashboard");
+    console.log(res.data);
+    setdashboardstats(res.data)
+    }catch(err){
+     console.log("Error in VendorDashboard",err.message);
+    }
+   
+  }
+  fetchstats()
+ },[])
+
   const stats = [
     {
       label: "Total Sales",
-      value: "1,284",
-      trend: "+12% from last month",
+      value: dashboardstats.totalsales,
+     
       icon: <FiShoppingBag className="text-2xl text-gray-600" />,
       bgColor: "bg-white",
     },
     {
       label: "Revenue",
-      value: "$48,200",
-      trend: "+8.2% from last month",
+      value: ` $${dashboardstats.totalRevenue}`,
+      
       icon: <FiTrendingUp className="text-2xl text-gray-600" />,
       bgColor: "bg-white",
     },
     {
       label: "Orders",
-      value: "356",
-      trend: "+5% from last month",
+      value: dashboardstats.totalOrders,
+      
       icon: <IoBagHandleOutline className="text-2xl text-gray-600" />,
       bgColor: "bg-white",
     },
     {
       label: "Products",
-      value: "45",
-      trend: "3 new this month",
+      value: dashboardstats.totalproducts,
+      
       icon: <TbLayoutGrid className="text-2xl text-gray-600" />,
       bgColor: "bg-white",
     },
@@ -68,7 +85,7 @@ const Vendordashboard = () => {
                 <p className="text-2xl font-bold text-gray-900 mb-1">
                   {stat.value}
                 </p>
-                <p className="text-xs text-green-600">{stat.trend}</p>
+                
               </div>
             ))}
           </div>
@@ -79,7 +96,7 @@ const Vendordashboard = () => {
               Sales Analytics
             </h2>
             <div className="w-full h-64 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center">
-              <p className="text-gray-500 text-sm">Chart Container</p>
+              <DashboardChart stats={dashboardstats.monthlysales}/>
             </div>
           </div>
         </div>
