@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const Order = require("../models/orders");
 const Product = require("../models/product");
+const bcrypt=require("bcrypt")
 async function handlemanagevendors(req, res) {
   try {
     const vendors = await User.find({ role: "VENDOR" });
@@ -195,11 +196,32 @@ async function handlerecentactivities(req, res) {
   }
 }
 
+async function handleaddadmin(req,res){
+  try {
+    const { fullName, email, phoneNumber, password } = req.body;
+   
+    const user = await User.findOne( {email} );
+    if (user) return res.status(400).json({ message: "Admin already Existed" });
+    const hashpassword = await bcrypt.hash(password, 10);
 
+    await User.create({
+      fullName,
+      email,
+      phoneNumber,
+      password: hashpassword,
+      role:"ADMIN"
+    });
+    return res.status(201).json({message:`ADMIN created successfully`});
+  } catch (err) {
+   
+  return res.status(500).json({ message: "Server Error", Error:err.message });
+  }
+}
 
 module.exports = {
   handlemanagevendors,
   handledashboard,
+  handleaddadmin,
   handledeletevendor,
   handleorders,
   handleusers,

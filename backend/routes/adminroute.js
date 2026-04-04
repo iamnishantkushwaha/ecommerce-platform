@@ -13,6 +13,7 @@ const {
   handlefeatureproduct,
   handledeleteproduct,
   handleorders,
+  handleaddadmin,
 } = require("../controllers/Admin");
 
 router.get("/managevendors", handlemanagevendors);
@@ -23,6 +24,7 @@ router.patch("/managevendors/approve/:id", handlevendorapproval);
 router.patch("/managevendors/reject/:id", handlevendorrejection);
 router.delete("/deletevendor/:id", handledeletevendor);
 router.get("/dashboard", handledashboard);
+router.post("/addadmin", handleaddadmin);
 router.get("/orders", handleorders);
 router.patch("/products/:id",handlefeatureproduct)
 router.delete("/products/:id",handledeleteproduct)

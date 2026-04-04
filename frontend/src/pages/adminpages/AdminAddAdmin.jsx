@@ -1,10 +1,12 @@
 import { useState } from "react";
 import AdminNavbar from "../../Components/AdminNavbar";
+import api from "../../api";
 
 const AdminAddAdmin = () => {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
+    phoneNumber: "",
     password: "",
     confirmPassword: "",
   });
@@ -18,10 +20,14 @@ const AdminAddAdmin = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     if (isMismatch) return;
-    // API integration can be wired when backend add-admin endpoint is ready.
+    try{
+     const res=await api.post("/admin/addadmin",formData)
+    }catch(err){
+        console.log("Error in Adminaddadmin:",err.message)
+    }
     console.log("Add admin form submitted", formData);
   };
 
@@ -76,6 +82,25 @@ const AdminAddAdmin = () => {
                   required
                   className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter email"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="phoneNumber"
+                  className="mb-1 block text-sm font-medium text-gray-700"
+                >
+                  Phone Number
+                </label>
+                <input
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  type="tel"
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
+                  required
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter phone number"
                 />
               </div>
 
