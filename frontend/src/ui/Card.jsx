@@ -4,6 +4,7 @@ import { FaStar } from "react-icons/fa";
 import { setCart } from "../Redux/Cartslice";
 import { useDispatch } from "react-redux";
 import api from "../api";
+import { toast } from "react-toastify";
 const Card = (props) => {
   const dispatch = useDispatch();
   const product = props.product;

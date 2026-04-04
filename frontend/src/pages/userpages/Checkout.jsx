@@ -7,6 +7,7 @@ import { FiSmartphone } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api";
+import { toast } from "react-toastify";
 
 const Checkout = () => {
   const navigate = useNavigate();

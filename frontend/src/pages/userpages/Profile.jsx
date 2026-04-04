@@ -2,6 +2,7 @@ import React from "react";
 import { GoPerson } from "react-icons/go";
 import { useState, useEffect } from "react";
 import api from "../../api";
+import { toast } from "react-toastify";
 const Profile = () => {
   const [fullName, setfullName] = useState("");
   const [email, setemail] = useState("");
@@ -15,10 +16,9 @@ const Profile = () => {
         setfullName(res.data.user.fullName);
         setemail(res.data.user.email);
         setphoneNumber(res.data.user.phoneNumber);
-        toast.success("Profile Updated Successfully");
       } catch (err) {
         console.log("Error in Profile", err);
-         toast.error(err.response?.data?.message);
+         
       }
     };
     fetchprofiledata();
@@ -31,9 +31,12 @@ const Profile = () => {
         email,
         phoneNumber,
       });
+        toast.success("Profile Updated Successfully");
+
       console.log(res.data.message);
     } catch (err) {
       console.log("Error in Profile", err);
+      toast.error(err.response?.data?.message);
     }
   };
   return (

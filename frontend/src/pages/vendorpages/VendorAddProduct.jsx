@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import VendorNavbar from "../../Components/VendorNavbar";
 import api from "../../api";
+import { toast } from "react-toastify";
 
 const VendorAddProduct = () => {
   const [formData, setFormData] = useState({

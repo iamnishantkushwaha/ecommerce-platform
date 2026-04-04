@@ -84,6 +84,31 @@ async function handleorders(req, res) {
   }
 }
 
+async function handleshippingdetails(req,res){
+  try{
+   const {couriername,trackingId,estimatedDelivery}=req.body;
+    if (!couriername || !trackingId || !estimatedDelivery) {
+      return res.status(400).json({
+        message: "All fields are required",
+      });
+    }
+    const order=await Order.findOneAndUpdate({_id:req.params.id},{
+      courierName:couriername,
+      trackingId,
+      estimatedDelivery
+    },{ new: true })
+      if (!order) {
+      return res.status(404).json({
+        message: "Order not found",
+      });
+    }
+    return res.status(200).json({message:"Order Shipping Detail Updated Successfully"})
+  }catch(err){
+    return res.status(500).json({message:"Server Error",
+      Error:err.message
+    })
+  }
+}
 async function handleorderstatus(req, res) {
   try {
     const orderid = req.params.orderid;
@@ -208,5 +233,6 @@ module.exports = {
   handleorders,
   handleprofile,
   handleupdateprofile,
+  handleshippingdetails,
   handleorderstatus,
 };

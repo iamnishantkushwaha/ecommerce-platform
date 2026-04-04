@@ -1,6 +1,7 @@
 import api from "../../api";
 import AdminNavbar from "../../Components/AdminNavbar";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const AdminSettings = () => {
   const [formData, setFormData] = useState({

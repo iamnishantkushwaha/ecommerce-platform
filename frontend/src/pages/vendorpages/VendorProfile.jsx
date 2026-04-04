@@ -3,6 +3,8 @@ import { GoPerson } from "react-icons/go";
 import { useState, useEffect } from "react";
 import api from "../../api";
 import VendorNavbar from "../../Components/VendorNavbar";
+import { toast } from "react-toastify";
+
 const Profile = () => {
   const [fullName, setfullName] = useState("");
   const [email, setemail] = useState("");

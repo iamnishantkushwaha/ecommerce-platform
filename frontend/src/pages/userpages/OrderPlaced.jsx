@@ -48,7 +48,7 @@ const OrderPlaced = () => {
           <div className="flex flex-col gap-4 mt-3 justify-center items-center">
             <button
               onClick={() => {
-                navigate("/cart/trackorder");
+                navigate("/dashboard/trackorder");
               }}
               className="rounded-xl bg-indigo-600 text-white font-semibold w-full max-w-xs px-6 py-2 flex gap-1 items-center justify-center"
             >

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import api from "../../api";
+import { toast } from "react-toastify";
 const Setting = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -7,38 +7,32 @@ const bycrpt = require("bcrypt");
 async function handleplaceorders(req, res) {
   try {
     if (!req.user) return res.status(401).json({ message: "unauthorized" });
-    const { products, deliveryAddress,paymentStatus } = req.body;
+    const { products, deliveryAddress, paymentStatus } = req.body;
 
     if (!products || !Array.isArray(products) || products.length == 0)
       return res.status(404).json({ message: "Products are required" });
 
     if (!deliveryAddress) {
-      return res
-        .status(400)
-        .json({ message: "Delivery address is required"});
+      return res.status(400).json({ message: "Delivery address is required" });
     }
-   console.log(products,"kl");
+    console.log(products, "kl");
     let orderItems = [];
     let totalAmount = 0;
     let vendor = null;
     for (const item of products) {
       const { productId, quantity } = item;
       if (!productId || !quantity || quantity <= 0) {
-        return res
-          .status(400)
-          .json({ message: "Invalid product data"});
+        return res.status(400).json({ message: "Invalid product data" });
       }
       const product = await Product.findById(productId);
       if (!product)
         return res.status(404).json({ message: "product not found" });
       if (product.stock < quantity)
-        return res
-          .status(400)
-          .json({
-            message: `${product.title} have  only ${product.stock} available`,
-          });
+        return res.status(400).json({
+          message: `${product.title} have  only ${product.stock} available`,
+        });
       product.stock -= quantity;
-      vendor=product.vendor;
+      vendor = product.vendor;
       await product.save();
       orderItems.push({
         product: product._id,
@@ -56,7 +50,7 @@ async function handleplaceorders(req, res) {
       totalAmount,
       deliveryAddress,
     });
-     
+
     return res.status(201).json({ message: "Order placed successfully" });
   } catch (err) {
     return res
@@ -65,22 +59,20 @@ async function handleplaceorders(req, res) {
   }
 }
 
-async function handletrackorder(req,res){
- 
-  
-  try{
-     const {orderId}=req.params;
-     
-    const trackedorder=await Order.findById({_id:orderId});
-    if(!trackedorder) return res.status(404).json({message:"No order to track"})
-    return res.status(200).json({message:"find order to track",
-  trackedorder },
-      
-    )
-  }catch(err){
-    return res.status(500).json({message:"Server Error",
-      Error:err.message
-    })
+async function handletrackorder(req, res) {
+  try {
+    const { orderId } = req.params;
+
+    const trackedorder = await Order.findById({ _id: orderId });
+    if (!trackedorder)
+      return res.status(404).json({ message: "No order to track" });
+    return res
+      .status(200)
+      .json({ message: "find order to track", trackedorder });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ message: "Server Error", Error: err.message });
   }
 }
 async function handleorders(req, res) {
@@ -98,8 +90,9 @@ async function handleorders(req, res) {
 
 async function handleLatestOrder(req, res) {
   try {
-    const order = await Order.findOne({ user: req.user._id })
-      .sort({ createdAt: -1 });
+    const order = await Order.findOne({ user: req.user._id }).sort({
+      createdAt: -1,
+    });
 
     if (!order) {
       return res.status(404).json({ message: "No Order Found" });
@@ -107,9 +100,8 @@ async function handleLatestOrder(req, res) {
 
     return res.status(200).json({
       message: "Latest Order Fetched Successfully",
-      order
+      order,
     });
-
   } catch (err) {
     return res.status(500).json({ message: "Server Error" });
   }
@@ -142,38 +134,28 @@ async function handlecart(req, res) {
     const { productId, quantity } = req.body;
 
     if (!productId || !quantity) {
-      return res
-        .status(400)
-        .json({ message: "productId and quantity required" });
+      return res.status(400).json({
+        message: "productId and quantity are required",
+      });
     }
 
     const product = await Product.findById(productId);
     if (!product) {
-      return res.status(404).json({ message: "Product not found" });
+      return res.status(404).json({
+        message: "Product not found",
+      });
     }
 
     let cart = await Cart.findOne({ user: req.user._id });
-    if (cart) {
-      cart = await Cart.findByIdAndUpdate(cart._id, {
-        quantity: cart.quantity + quantity,
-      });
-    }
-    // If cart does not exist
 
-    const existingitem = cart.products.find(
-      (item) => item.product.toString() === productId,
-    );
-
-    if (existingitem) {
-      existingitem.quantity += quantity;
-    }
+    // cart nahi hai to naya cart banao
     if (!cart) {
       cart = await Cart.create({
         user: req.user._id,
         products: [
           {
             product: productId,
-            quantity: quantity,
+            quantity,
           },
         ],
       });
@@ -184,30 +166,31 @@ async function handlecart(req, res) {
       });
     }
 
-    // Check if product already exists in cart
-    const item = cart.products.find((p) => p.product.toString() === productId);
+    // ab cart guaranteed hai
+    const existingItem = cart.products.find(
+      (item) => item.product.toString() === productId
+    );
 
-    if (item) {
-      return res.status(409).json({
-        message: "Product already in cart",
+    if (existingItem) {
+      existingItem.quantity += quantity;
+    } else {
+      cart.products.push({
+        product: productId,
+        quantity,
       });
     }
 
-    // Add new product
-    cart.products.push({
-      product: productId,
-      quantity: quantity,
-    });
-
     await cart.save();
 
-    return res.status(201).json({
-      message: "Product added to cart",
+    return res.status(200).json({
+      message: "Cart updated successfully",
       cart,
     });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: "Server error" });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Server error",
+      error: err.message,
+    });
   }
 }
 
@@ -332,5 +315,5 @@ module.exports = {
   handlegetcart,
   handlecartupdate,
   handledeletecart,
-  handleLatestOrder
+  handleLatestOrder,
 };

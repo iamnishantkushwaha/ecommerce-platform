@@ -13,8 +13,7 @@ const columns = [
     id: "_id",
     label: "Order ID",
     minWidth: 140,
-    format: (value) =>
-      value ? value.toString().slice(-6).toUpperCase() : "",
+   
   },
   {
     id: "createdAt",

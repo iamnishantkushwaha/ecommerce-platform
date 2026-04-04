@@ -6,9 +6,10 @@ import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
 import CustomRoleSelect from "../ui/CustomRoleSelect";
 import Logopara from "../ui/Logopara";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import axios from "axios";
 import api from "../api";
+import { toast } from "react-toastify";
 const Signup = () => {
   const [fullName, setfullName] = useState("");
   const [email, setemail] = useState("");
@@ -16,7 +17,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [role, setrole] = useState("USER");
   const [show, setshow] = useState(false);
-
+  const navigate=useNavigate()
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
@@ -34,6 +35,7 @@ const Signup = () => {
         setrole("USER"));
         toast.success("Account Created Successfully");
       console.log(res?.data.message);
+  navigate("/login")
     } catch (err) {
        toast.error(err.response?.data?.message);
       console.log("Error in Signup Page: ", err);
