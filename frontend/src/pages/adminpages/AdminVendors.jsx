@@ -1,27 +1,26 @@
 import AdminNavbar from "../../Components/AdminNavbar";
 
-const mockVendors = [
-  {
-    id: "VND-301",
-    name: "Urban Cart Pvt",
-    email: "urban@example.com",
-    approval: "Approved",
-  },
-  {
-    id: "VND-302",
-    name: "Trend Hub",
-    email: "trend@example.com",
-    approval: "Pending",
-  },
-  {
-    id: "VND-303",
-    name: "Prime Retail",
-    email: "prime@example.com",
-    approval: "Rejected",
-  },
-];
+
 
 const AdminVendors = () => {
+  
+const fetchusers=async()=>{
+  try{
+      const res=await api.get("/admin/manageusers")
+        console.log(res.data);
+        setusers(res.data.users)
+        
+    }catch(err){
+      console.log("Error in AdminUsers:",err.message)
+    }
+    }
+
+
+  useEffect(()=>{
+
+    
+   fetchusers()
+  },[])
   return (
     <>
       <AdminNavbar />

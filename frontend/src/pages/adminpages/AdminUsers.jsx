@@ -1,27 +1,42 @@
+import { useState,useEffect } from "react";
 import AdminNavbar from "../../Components/AdminNavbar";
+import api from "../../api"
 
-const mockUsers = [
-  {
-    id: "USR-1201",
-    name: "Aarav Singh",
-    email: "aarav@example.com",
-    status: "Active",
-  },
-  {
-    id: "USR-1202",
-    name: "Emily Carter",
-    email: "emily@example.com",
-    status: "Active",
-  },
-  {
-    id: "USR-1203",
-    name: "Noah Williams",
-    email: "noah@example.com",
-    status: "Blocked",
-  },
-];
 
 const AdminUsers = () => {
+
+const [users,setusers]=useState([])
+
+
+const fetchusers=async()=>{
+  try{
+      const res=await api.get("/admin/manageusers")
+        console.log(res.data);
+        setusers(res.data.users)
+        
+    }catch(err){
+      console.log("Error in AdminUsers:",err.message)
+    }
+    }
+
+
+  useEffect(()=>{
+
+    
+   fetchusers()
+  },[])
+
+
+  const handledeleteuser=async(userId)=>{
+    try{
+      const res=await api.delete(`/admin/deleteuser/${userId}`)
+        console.log(res.data);
+       fetchusers()
+        
+    }catch(err){
+      console.log("Error in AdminUsers[deleteuser]:",err.message)
+    }
+  }
   return (
     <>
       <AdminNavbar />
@@ -36,16 +51,16 @@ const AdminUsers = () => {
               <p>Email</p>
               <p>Action</p>
             </div>
-            {mockUsers.map((user) => (
+            {users.map((user) => (
               <div
-                key={user.id}
+                key={user._id}
                 className="grid grid-cols-4 px-4 py-3 text-sm border-t border-gray-100 text-gray-700"
               >
-                <p>{user.id}</p>
-                <p>{user.name}</p>
+                <p>USR-{user._id.slice(0,6)}</p>
+                <p>{user.fullName}</p>
                 <p>{user.email}</p>
                 <div>
-                  <button
+                  <button onClick={()=>{handledeleteuser(user._id)}}
                     type="button"
                     className="rounded-md bg-red-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-red-700"
                   >

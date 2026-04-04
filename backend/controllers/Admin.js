@@ -17,9 +17,25 @@ async function handleusers(req, res) {
     const users = await User.find({ role: "USER" });
     if (!users) return res.status(404).json({ message: "users not available" });
 
-    return res.status(200).json({ message: "users fetched" });
+    return res.status(200).json({ message: "users fetched" ,users});
   } catch (err) {
-    return res.status(500).json({ message: "server error" });
+    return res.status(500).json({ message: "server error",
+      Error:err.message
+     });
+  }
+}
+
+async function handledeleteuser(req,res){
+  try {
+    const userId=req.params.id;
+    const users = await User.findByIdAndDelete(userId);
+    if (!users) return res.status(404).json({ message: "User not Found" });
+
+    return res.status(200).json({ message: "User Deleted Successfully"});
+  } catch (err) {
+    return res.status(500).json({ message: "server error",
+      Error:err.message
+     });
   }
 }
 
@@ -122,7 +138,8 @@ module.exports = {
   handledashboard,
   handleusers,
   handlevendorapproval,
-  handlerecentactivities,
+  
   handlerecentactivities,
   handlevendorrejection,
+  handledeleteuser
 };
