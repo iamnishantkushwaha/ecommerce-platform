@@ -1,27 +1,22 @@
+import api from "../../api";
 import AdminNavbar from "../../Components/AdminNavbar";
 
-const mockOrders = [
-  {
-    id: "ORD-10192",
-    customer: "Aarav Singh",
-    total: "$220",
-    status: "Shipped",
-  },
-  {
-    id: "ORD-10193",
-    customer: "Emily Carter",
-    total: "$79",
-    status: "Delivered",
-  },
-  {
-    id: "ORD-10194",
-    customer: "Noah Williams",
-    total: "$150",
-    status: "Processing",
-  },
-];
+import { useEffect,useState } from "react";
 
 const AdminOrders = () => {
+ const [orders,setorders]=useState([])
+  useEffect(()=>{
+    const fetchorders=async()=>{
+      try{
+ const res=await api.get("/admin/orders")
+ setorders(res.data.orders)
+ console.log(res.data)
+      }catch(err){
+  console.log("Error in AdminOrders",err.message)
+      }
+    }
+    fetchorders()
+  },[])
   return (
     <>
       <AdminNavbar />
@@ -36,15 +31,15 @@ const AdminOrders = () => {
               <p>Total</p>
               <p>Status</p>
             </div>
-            {mockOrders.map((order) => (
+            {orders.map((order) => (
               <div
-                key={order.id}
+                key={order._id.slice(0,5)}
                 className="grid grid-cols-4 px-4 py-3 text-sm border-t border-gray-100 text-gray-700"
               >
-                <p>{order.id}</p>
-                <p>{order.customer}</p>
-                <p>{order.total}</p>
-                <p>{order.status}</p>
+                <p>{order._id}</p>
+                <p>{order.user.fullName}</p>
+                <p>${order.totalAmount}</p>
+                <p>{order.orderStatus}</p>
               </div>
             ))}
           </div>

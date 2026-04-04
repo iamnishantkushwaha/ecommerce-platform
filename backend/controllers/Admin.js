@@ -25,6 +25,20 @@ async function handleusers(req, res) {
   }
 }
 
+
+async function handleorders(req, res) {
+  try {
+    const orders = await Order.find().populate("user","fullName");
+    if (!orders) return res.status(404).json({ message: "Orders Not Found" });
+
+    return res.status(200).json({ message: "Order fetched", orders });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ message: "server error", Error: err.message });
+  }
+}
+
 async function handledeleteuser(req, res) {
   try {
     const userId = req.params.id;
@@ -180,10 +194,14 @@ async function handlerecentactivities(req, res) {
       .json({ message: "Server Error", Error: err.message });
   }
 }
+
+
+
 module.exports = {
   handlemanagevendors,
   handledashboard,
   handledeletevendor,
+  handleorders,
   handleusers,
   handlevendorapproval,
   handlefeatureproduct,

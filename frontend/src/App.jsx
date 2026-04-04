@@ -32,6 +32,7 @@ import AdminVendors from "./pages/adminpages/AdminVendors";
 import AdminProducts from "./pages/adminpages/AdminProducts";
 import AdminOrders from "./pages/adminpages/AdminOrders";
 import AdminSettings from "./pages/adminpages/AdminSettings";
+import AdminAddAdmin from "./pages/adminpages/AdminAddAdmin";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -101,6 +102,7 @@ function App() {
           <Route path="/admin/vendors" element={<AdminVendors />} />
           <Route path="/admin/products" element={<AdminProducts />} />
           <Route path="/admin/orders" element={<AdminOrders />} />
+          <Route path="/admin/add-admin" element={<AdminAddAdmin />} />
           <Route path="/admin/settings" element={<AdminSettings />} />
         </Route>
       </Routes>

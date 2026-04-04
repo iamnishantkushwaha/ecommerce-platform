@@ -12,6 +12,7 @@ router.get("/logout",(req,res)=>{
     return res.status(200).json({message:"logout successfully"})
 })
 
+
 router.get("/products",async(req,res)=>{
   const {category,sort,maxprice,featured,minprice,search}=req.query;
   try{  const page=parseInt(req.query.page)||1;

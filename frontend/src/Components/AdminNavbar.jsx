@@ -7,6 +7,7 @@ import {
   FiShoppingBag,
   FiGrid,
   FiUsers,
+  FiUserPlus,
   FiPackage,
   FiTruck,
   FiShield,
@@ -19,6 +20,7 @@ const navItems = [
   { label: "Vendors", path: "/admin/vendors", icon: FiShield },
   { label: "Products", path: "/admin/products", icon: FiPackage },
   { label: "Orders", path: "/admin/orders", icon: FiTruck },
+  { label: "Add Admin", path: "/admin/add-admin", icon: FiUserPlus },
   { label: "Settings", path: "/admin/settings", icon: FiSettings },
 ];
 
