@@ -50,7 +50,7 @@ let sortoption={createdAt:-1}
  }
  
 console.log("STATIC CONTROLLER");
-const products=await Product.find(filter).sort(sortoption).skip(skip).limit(limit);
+const products=await Product.find(filter).sort(sortoption).skip(skip).limit(limit).populate("vendor", "fullName");;
 
   console.log(products)
    const totalProducts = await Product.countDocuments(filter);

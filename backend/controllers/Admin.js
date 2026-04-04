@@ -7,9 +7,7 @@ async function handlemanagevendors(req, res) {
     if (!vendors)
       return res.status(404).json({ message: "vendors not available" });
 
-    return res.status(200).json({ message: "vendor fetched" ,
-      vendors
-    });
+    return res.status(200).json({ message: "vendor fetched", vendors });
   } catch (err) {
     return res.status(500).json({ message: "server error" });
   }
@@ -19,25 +17,25 @@ async function handleusers(req, res) {
     const users = await User.find({ role: "USER" });
     if (!users) return res.status(404).json({ message: "users not available" });
 
-    return res.status(200).json({ message: "users fetched" ,users});
+    return res.status(200).json({ message: "users fetched", users });
   } catch (err) {
-    return res.status(500).json({ message: "server error",
-      Error:err.message
-     });
+    return res
+      .status(500)
+      .json({ message: "server error", Error: err.message });
   }
 }
 
-async function handledeleteuser(req,res){
+async function handledeleteuser(req, res) {
   try {
-    const userId=req.params.id;
+    const userId = req.params.id;
     const users = await User.findByIdAndDelete(userId);
     if (!users) return res.status(404).json({ message: "User not Found" });
 
-    return res.status(200).json({ message: "User Deleted Successfully"});
+    return res.status(200).json({ message: "User Deleted Successfully" });
   } catch (err) {
-    return res.status(500).json({ message: "server error",
-      Error:err.message
-     });
+    return res
+      .status(500)
+      .json({ message: "server error", Error: err.message });
   }
 }
 
@@ -55,21 +53,55 @@ async function handlevendorrejection(req, res) {
   const id = req.params.id;
 
   try {
-    await User.findOneAndUpdate( {_id: id} ,{approvalStatus:"REJECTED"});
+    await User.findOneAndUpdate({ _id: id }, { approvalStatus: "REJECTED" });
     return res.status(200).json({ message: "Vendor Rejected successfully" });
   } catch (error) {
     return res.status(401).json({ message: "Vendor doent exists" });
   }
 }
 
-async function handledeletevendor(req,res){
-   const id = req.params.id;
+async function handledeletevendor(req, res) {
+  const id = req.params.id;
 
   try {
-    await User.findOneAndDelete( {_id: id});
+    await User.findOneAndDelete({ _id: id });
     return res.status(200).json({ message: "Vendor Deleted successfully" });
   } catch (error) {
     return res.status(401).json({ message: "Vendor Not Found" });
+  }
+}
+
+async function handledeleteproduct(req, res) {
+  const id = req.params.id;
+
+  try {
+    const products = await Product.findOneAndDelete({ _id: id });
+    if (!products)
+      return res.status(404).json({ message: "Product Not Found" });
+    return res.status(200).json({ message: "Product Deleted successfully" });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ message: "Server Error", Error: err.message });
+  }
+}
+async function handlefeatureproduct(req, res) {
+  try {
+    const { featured } = req.body;
+    const id = req.params.id;
+    const products = await Product.findOneAndUpdate(
+      { _id: id },
+      { isFeatured: featured },
+    );
+    if (!products)
+      return res.status(404).json({ message: "Product Not Found" });
+    return res
+      .status(200)
+      .json({ message: "Product features updated successfully" });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ message: "Server Error", Error: err.message });
   }
 }
 async function handledashboard(req, res) {
@@ -78,15 +110,13 @@ async function handledashboard(req, res) {
     const totalusers = await User.countDocuments({ role: "USER" });
     const totalorders = await Order.countDocuments();
     const totalproducts = await Product.countDocuments();
-    return res
-      .status(200)
-      .json({
-        message: "dasshboard stats fetched successfully",
-        totalusers,
-        totalvendors,
-        totalorders,
-        totalproducts,
-      });
+    return res.status(200).json({
+      message: "dasshboard stats fetched successfully",
+      totalusers,
+      totalvendors,
+      totalorders,
+      totalproducts,
+    });
   } catch (err) {
     return res
       .status(500)
@@ -106,7 +136,10 @@ async function handlerecentactivities(req, res) {
     const recentVendors = await User.find({ role: "VENDOR" })
       .sort({ createdAt: -1 })
       .limit(5);
- const recentVendorsapprove = await User.find({ role: "VENDOR" ,approvalStatus:"APPROVED" })
+    const recentVendorsapprove = await User.find({
+      role: "VENDOR",
+      approvalStatus: "APPROVED",
+    })
       .sort({ createdAt: -1 })
       .limit(5);
     const activities = [
@@ -120,25 +153,27 @@ async function handlerecentactivities(req, res) {
         message: "New User Registered",
         createdAt: user.createdAt,
       })),
-       ...recentVendors.map((vendor) => ({
+      ...recentVendors.map((vendor) => ({
         type: "vendor",
         message: "New Vendor Registered",
-        createdAt:vendor.createdAt,
+        createdAt: vendor.createdAt,
       })),
-       ...recentVendors.map((vendor) => ({
+      ...recentVendors.map((vendor) => ({
         type: "vendor",
         message: "New Vendor Registered",
-        createdAt:vendor.createdAt,
+        createdAt: vendor.createdAt,
       })),
-       ...recentVendorsapprove.map((vendor) => ({
+      ...recentVendorsapprove.map((vendor) => ({
         type: "vendorapproved",
         message: "New Vendor Approved",
-        createdAt:vendor.createdAt,
+        createdAt: vendor.createdAt,
       })),
     ];
 
-    activities.sort((a,b)=>b.createdAt-a.createdAt)
-    return res.status(200).json({message:"recent activities fetched",activities})
+    activities.sort((a, b) => b.createdAt - a.createdAt);
+    return res
+      .status(200)
+      .json({ message: "recent activities fetched", activities });
   } catch (err) {
     return res
       .status(500)
@@ -151,8 +186,9 @@ module.exports = {
   handledeletevendor,
   handleusers,
   handlevendorapproval,
-  
+  handlefeatureproduct,
   handlerecentactivities,
   handlevendorrejection,
-  handledeleteuser
+  handledeleteuser,
+  handledeleteproduct,
 };

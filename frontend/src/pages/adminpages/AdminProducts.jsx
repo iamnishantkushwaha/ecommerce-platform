@@ -1,27 +1,45 @@
+import { useState, useEffect } from "react";
+import api from "../../api";
 import AdminNavbar from "../../Components/AdminNavbar";
 
-const mockProducts = [
-  {
-    id: "PRD-9001",
-    title: "Wireless Earbuds",
-    vendor: "Urban Cart",
-    status: "Published",
-  },
-  {
-    id: "PRD-9002",
-    title: "Running Shoes",
-    vendor: "Trend Hub",
-    status: "Under Review",
-  },
-  {
-    id: "PRD-9003",
-    title: "Desk Lamp",
-    vendor: "Prime Retail",
-    status: "Published",
-  },
-];
-
 const AdminProducts = () => {
+  const [products, setproducts] = useState([]);
+  const [featured, setfeatured] = useState(false);
+  const [deletingId, setDeletingId] = useState("");
+
+  const fetchproducts = async () => {
+    try {
+      const res = await api.get("/products");
+      setproducts(res.data.products || []);
+    } catch (err) {
+      console.log("Error in adminproducts:", err.message);
+    }
+  };
+
+  const handleSetFeatured = async (product) => {
+    try {
+      const res = await api.patch(`/admin/products/${product._id}`, {
+        featured,
+      });
+      console.log(res.data);
+      fetchproducts();
+    } catch (err) {
+      console.log("Error in adminproducts:", err.message);
+    }
+  };
+
+  const handleDeleteProduct = async (productId) => {
+    try {
+      await api.delete(`/admin/products/${productId}`);
+      fetchproducts();
+    } catch (err) {
+      console.log("Error deleting product:", err.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchproducts();
+  }, []);
   return (
     <>
       <AdminNavbar />
@@ -30,21 +48,40 @@ const AdminProducts = () => {
           <h1 className="text-2xl font-bold text-gray-900">Manage Products</h1>
 
           <div className="bg-white rounded-lg shadow-sm border border-gray-100 mt-6 overflow-hidden">
-            <div className="grid grid-cols-4 bg-gray-50 px-4 py-3 text-sm font-semibold text-gray-700">
+            <div className="grid grid-cols-5 bg-gray-50 px-4 py-3 text-sm font-semibold text-gray-700">
               <p>Product ID</p>
               <p>Title</p>
               <p>Vendor</p>
-              <p>Status</p>
+              <p>Featured</p>
+              <p>Action</p>
             </div>
-            {mockProducts.map((product) => (
+            {products.map((product) => (
               <div
-                key={product.id}
-                className="grid grid-cols-4 px-4 py-3 text-sm border-t border-gray-100 text-gray-700"
+                key={product._id}
+                className="grid grid-cols-5 px-4 py-3 text-sm border-t border-gray-100 text-gray-700"
               >
-                <p>{product.id}</p>
+                <p>{product._id}</p>
                 <p>{product.title}</p>
-                <p>{product.vendor}</p>
-                <p>{product.status}</p>
+                <p>{product?.vendor?.fullName || product?.vendor || "-"}</p>
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => {setfeatured(!featured); handleSetFeatured(product)}}
+                    className="rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-gray-300"
+                  >
+                    {product.isFeatured ? "Remove Featured" : "Set Featured"}
+                  </button>
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteProduct(product._id)}
+                    disabled={deletingId === product._id}
+                    className="rounded-md bg-red-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-gray-300"
+                  >
+                    {deletingId === product._id ? "Deleting..." : "Delete"}
+                  </button>
+                </div>
               </div>
             ))}
           </div>

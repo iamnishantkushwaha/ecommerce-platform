@@ -8,6 +8,7 @@ import CustomRoleSelect from "../ui/CustomRoleSelect";
 import Logopara from "../ui/Logopara";
 import { Link } from "react-router";
 import axios from "axios";
+import api from "../api";
 const Signup = () => {
   const [fullName, setfullName] = useState("");
   const [email, setemail] = useState("");
@@ -19,7 +20,7 @@ const Signup = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/signup`, {
+      const res = await api.post(`/signup`, {
         fullName,
         email,
         phoneNumber,
