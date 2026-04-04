@@ -7,7 +7,9 @@ async function handlemanagevendors(req, res) {
     if (!vendors)
       return res.status(404).json({ message: "vendors not available" });
 
-    return res.status(200).json({ message: "vendor fetched" });
+    return res.status(200).json({ message: "vendor fetched" ,
+      vendors
+    });
   } catch (err) {
     return res.status(500).json({ message: "server error" });
   }
@@ -43,7 +45,7 @@ async function handlevendorapproval(req, res) {
   const id = req.params.id;
 
   try {
-    await User.findOneAndUpdate({ _id: id }, { isApproved: true });
+    await User.findOneAndUpdate({ _id: id }, { approvalStatus: "APPROVED" });
     return res.status(200).json({ message: "Vendor Approved successfully" });
   } catch (error) {
     return res.status(401).json({ message: "Vendor doent exists" });
@@ -53,13 +55,23 @@ async function handlevendorrejection(req, res) {
   const id = req.params.id;
 
   try {
-    await User.findOneAndDelete({ _id: id });
+    await User.findOneAndUpdate( {_id: id} ,{approvalStatus:"REJECTED"});
     return res.status(200).json({ message: "Vendor Rejected successfully" });
   } catch (error) {
     return res.status(401).json({ message: "Vendor doent exists" });
   }
 }
 
+async function handledeletevendor(req,res){
+   const id = req.params.id;
+
+  try {
+    await User.findOneAndDelete( {_id: id});
+    return res.status(200).json({ message: "Vendor Deleted successfully" });
+  } catch (error) {
+    return res.status(401).json({ message: "Vendor Not Found" });
+  }
+}
 async function handledashboard(req, res) {
   try {
     const totalvendors = await User.countDocuments({ role: "VENDOR" });
@@ -94,7 +106,7 @@ async function handlerecentactivities(req, res) {
     const recentVendors = await User.find({ role: "VENDOR" })
       .sort({ createdAt: -1 })
       .limit(5);
- const recentVendorsapprove = await User.find({ role: "VENDOR" ,isApproved:true})
+ const recentVendorsapprove = await User.find({ role: "VENDOR" ,approvalStatus:"APPROVED" })
       .sort({ createdAt: -1 })
       .limit(5);
     const activities = [
@@ -136,6 +148,7 @@ async function handlerecentactivities(req, res) {
 module.exports = {
   handlemanagevendors,
   handledashboard,
+  handledeletevendor,
   handleusers,
   handlevendorapproval,
   

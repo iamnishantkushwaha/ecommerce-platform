@@ -34,7 +34,7 @@ async function handlelogin(req, res) {
     if (!matchpassword) return res.status(401).json({ message: "incorrect password" });
     
     if(user.role==="VENDOR")
-    {     if(!user.isApproved)  return res.status(401).json({message:"Not Approved Yet"});
+    {     if(!user.approvalStatus=="APPROVED")  return res.status(401).json({message:"Not Approved Yet"});
 
     }
    

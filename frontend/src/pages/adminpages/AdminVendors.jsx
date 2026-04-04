@@ -1,17 +1,17 @@
 import AdminNavbar from "../../Components/AdminNavbar";
 
-
-
+import {useState,useEffect} from "react"
+import api from "../../api"
 const AdminVendors = () => {
-  
-const fetchusers=async()=>{
+  const [vendors,setvendors]=useState([])
+const fetchvendors=async()=>{
   try{
-      const res=await api.get("/admin/manageusers")
+      const res=await api.get("/admin/managevendors")
         console.log(res.data);
-        setusers(res.data.users)
+        setvendors(res.data.vendors)
         
     }catch(err){
-      console.log("Error in AdminUsers:",err.message)
+      console.log("Error in AdminVendors:",err.message)
     }
     }
 
@@ -19,8 +19,43 @@ const fetchusers=async()=>{
   useEffect(()=>{
 
     
-   fetchusers()
+   fetchvendors()
   },[])
+
+
+  const handlevendorapprove=async(vendorId)=>{
+    try{
+      const res=await api.patch(`/admin/managevendors/approve/${vendorId}`)
+        fetchvendors()
+        
+        
+    }catch(err){
+      console.log("Error in Vendorapprove:",err.message)
+    }
+  }
+      
+  const handlevendorreject=async(vendorId)=>{
+    try{
+      const res=await api.patch(`/admin/managevendors/reject/${vendorId}`)
+        fetchvendors()
+        
+        
+    }catch(err){
+      console.log("Error in Vendorapprove:",err.message)
+    }
+  }
+
+  const handleDeleteVendor=async(vendorId)=>{
+    try{
+      const res=await api.delete(`/admin/deletevendor/${vendorId}`)
+        fetchvendors()
+        
+        
+    }catch(err){
+      console.log("Error in Vendorapprove:",err.message)
+    }
+  }
+
   return (
     <>
       <AdminNavbar />
@@ -36,28 +71,38 @@ const fetchusers=async()=>{
               <p>Approval</p>
               <p>Action</p>
             </div>
-            {mockVendors.map((vendor) => (
+            {vendors.map((vendor) => (
               <div
-                key={vendor.id}
+                key={vendor._id}
                 className="grid grid-cols-5 px-4 py-3 text-sm border-t border-gray-100 text-gray-700"
               >
-                <p>{vendor.id}</p>
-                <p>{vendor.name}</p>
+                <p>{vendor._id}</p>
+                <p>{vendor.fullName}</p>
                 <p>{vendor.email}</p>
-                <p>{vendor.approval}</p>
+                <p>{vendor.approvalStatus}</p>
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
-                    disabled={vendor.approval === "Approved"}
+                    onClick={()=>{handlevendorapprove(vendor._id)}}
+                    disabled={vendor.approvalStatus === "APPROVED"}
                     className="rounded-md bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-gray-300"
                   >
                     Approve
                   </button>
                   <button
+                  disabled={vendor.approvalStatus === "REJECTED"}
+                   onClick={()=>{handlevendorreject(vendor._id)}}
                     type="button"
                     className="rounded-md bg-gray-700 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-gray-800"
                   >
-                    Disapprove
+                    Reject
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteVendor(vendor._id)}
+                    className="rounded-md bg-red-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-red-700"
+                  >
+                    Delete
                   </button>
                 </div>
               </div>

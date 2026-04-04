@@ -26,9 +26,10 @@ const UserSchema=new mongoose.Schema({
         required:true
 
     },
-    isApproved:{
-        type:Boolean,
-        default:false
+    approvalStatus:{
+        type:String,
+        enum:["APPROVED","PENDING","REJECTED"],
+        default:"PENDING"
     }
 },{timestamps:true});
 
