@@ -1,8 +1,8 @@
-import api from "../../api";
-import AdminNavbar from "../../Components/AdminNavbar";
 import { useState } from "react";
+import api from "../../api";
+import VendorNavbar from "../../Components/VendorNavbar";
 
-const AdminSettings = () => {
+const VendorSettings = () => {
   const [formData, setFormData] = useState({
     currentPassword: "",
     newPassword: "",
@@ -18,32 +18,32 @@ const AdminSettings = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (isMismatch) return;
-    try{
-  const res=await api.patch("/user/passwordchange",{currentpassword:formData.currentPassword,
-    newpassword:formData.newPassword
-  })
-  toast.success("Password Changed Successfully");
-  setFormData({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-  })
-  console.log(res.data)
-    }catch(err){
-       toast.error(err.response?.data?.message);
-      console.log("Error in AdminSettings:",err.message);
+
+    try {
+      const res = await api.patch("/user/passwordchange", {
+        currentpassword: formData.currentPassword,
+        newpassword: formData.newPassword,
+      });
+      console.log(res.data);
+      setFormData({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+    } catch (err) {
+      console.log("Error in VendorSettings:", err.message);
     }
   };
 
   return (
     <>
-      <AdminNavbar />
-      <main className="bg-gray-100 pt-20 md:pl-72 md:pt-20 pb-10">
+      <VendorNavbar />
+      <main className="bg-gray-100 pt-20 md:pl-72 md:pt-20 pb-10 min-h-screen">
         <div className="px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-2xl font-bold text-gray-900">Admin Settings</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Vendor Settings</h1>
 
           <form
             onSubmit={handleSubmit}
@@ -53,7 +53,7 @@ const AdminSettings = () => {
               Change Password
             </h2>
             <p className="text-sm text-gray-600 mb-6">
-              Update your admin account password.
+              Update your vendor account password.
             </p>
 
             <div className="space-y-4 max-w-xl">
@@ -71,7 +71,6 @@ const AdminSettings = () => {
                   value={formData.currentPassword}
                   onChange={handleChange}
                   required
-                  autoComplete="true"
                   className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Enter current password"
                 />
@@ -88,7 +87,6 @@ const AdminSettings = () => {
                   id="newPassword"
                   name="newPassword"
                   type="password"
-                  autoComplete="true"
                   value={formData.newPassword}
                   onChange={handleChange}
                   required
@@ -107,7 +105,6 @@ const AdminSettings = () => {
                 <input
                   id="confirmPassword"
                   name="confirmPassword"
-                  autoComplete="true"
                   type="password"
                   value={formData.confirmPassword}
                   onChange={handleChange}
@@ -139,4 +136,4 @@ const AdminSettings = () => {
   );
 };
 
-export default AdminSettings;
+export default VendorSettings;

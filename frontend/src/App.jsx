@@ -26,6 +26,7 @@ import VendorAddProduct from "./pages/vendorpages/VendorAddProduct";
 import VendorOrders from "./pages/vendorpages/VendorOrders";
 import VendorRevenue from "./pages/vendorpages/VendorRevenue";
 import VendorProfile from "./pages/vendorpages/VendorProfile";
+import VendorSettings from "./pages/vendorpages/VendorSettings";
 import AdminDashboard from "./pages/adminpages/AdminDashboard";
 import AdminUsers from "./pages/adminpages/AdminUsers";
 import AdminVendors from "./pages/adminpages/AdminVendors";
@@ -95,6 +96,7 @@ function App() {
           <Route path="/vendor/orders" element={<VendorOrders />} />
           <Route path="/vendor/revenue" element={<VendorRevenue />} />
           <Route path="/vendor/profile" element={<VendorProfile />} />
+          <Route path="/vendor/settings" element={<VendorSettings />} />
 
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />

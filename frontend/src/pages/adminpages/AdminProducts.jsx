@@ -21,6 +21,7 @@ const AdminProducts = () => {
       const res = await api.patch(`/admin/products/${product._id}`, {
         featured,
       });
+
       console.log(res.data);
       fetchproducts();
     } catch (err) {
@@ -32,7 +33,9 @@ const AdminProducts = () => {
     try {
       await api.delete(`/admin/products/${productId}`);
       fetchproducts();
+      toast.success("Product Deleted Successfully");
     } catch (err) {
+       toast.error(err.response?.data?.message);
       console.log("Error deleting product:", err.message);
     }
   };

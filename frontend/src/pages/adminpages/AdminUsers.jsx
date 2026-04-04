@@ -32,8 +32,9 @@ const fetchusers=async()=>{
       const res=await api.delete(`/admin/deleteuser/${userId}`)
         console.log(res.data);
        fetchusers()
-        
+        toast.success("User Deleted Successfully");
     }catch(err){
+       toast.error(err.response?.data?.message);
       console.log("Error in AdminUsers[deleteuser]:",err.message)
     }
   }

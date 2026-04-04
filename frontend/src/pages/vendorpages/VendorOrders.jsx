@@ -52,8 +52,9 @@ const fetchorders = async () => {
      })
      console.log(`Status Updated to ${newStatus}`)
      fetchorders()
-
+toast.success("Order Status Changed Successfully");
     }catch(err){
+       toast.error(err.response?.data?.message);
       console.log("Error in Vendor Status Change:",err.message)
     }
      

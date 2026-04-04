@@ -11,7 +11,9 @@ const Setting = () => {
           newpassword,
         });
         console.log(res.data);
+        toast.success("Password Changed Successfully");
       } catch (err) {
+         toast.error(err.response?.data?.message);
         console.log("Error in Setting", err);
       }
     } else {

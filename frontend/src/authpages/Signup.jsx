@@ -32,8 +32,10 @@ const Signup = () => {
         setPassword(" "),
         setphoneNumber(" "),
         setrole("USER"));
+        toast.success("Account Created Successfully");
       console.log(res?.data.message);
     } catch (err) {
+       toast.error(err.response?.data?.message);
       console.log("Error in Signup Page: ", err);
     }
   };

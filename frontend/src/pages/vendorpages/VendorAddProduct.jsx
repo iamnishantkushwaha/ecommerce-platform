@@ -72,7 +72,9 @@ const VendorAddProduct = () => {
     description: "",
     images: [],
   })
+  toast.success("Product Added Successfully");
     } catch (err) {
+       toast.error(err.response?.data?.message);
       console.log("Error in add product:", err.message);
     }
   };

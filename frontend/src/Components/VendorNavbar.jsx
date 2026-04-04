@@ -8,6 +8,7 @@ import {
   FiBox,
   FiPlusCircle,
   FiTrendingUp,
+  FiSettings,
 } from "react-icons/fi";
 import { TbLayoutGrid } from "react-icons/tb";
 import { IoBagHandleOutline } from "react-icons/io5";
@@ -19,6 +20,7 @@ const navItems = [
   { label: "Add Product", path: "/vendor/add-product", icon: FiPlusCircle },
   { label: "Orders", path: "/vendor/orders", icon: IoBagHandleOutline },
   { label: "Revenue", path: "/vendor/revenue", icon: FiTrendingUp },
+  { label: "Settings", path: "/vendor/settings", icon: FiSettings },
 ];
 
 const getLinkClasses = ({ isActive }) =>

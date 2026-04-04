@@ -173,11 +173,7 @@ async function handlerecentactivities(req, res) {
         message: "New Vendor Registered",
         createdAt: vendor.createdAt,
       })),
-      ...recentVendors.map((vendor) => ({
-        type: "vendor",
-        message: "New Vendor Registered",
-        createdAt: vendor.createdAt,
-      })),
+      
       ...recentVendorsapprove.map((vendor) => ({
         type: "vendorapproved",
         message: "New Vendor Approved",

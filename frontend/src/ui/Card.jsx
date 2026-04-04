@@ -14,9 +14,11 @@ const Card = (props) => {
         productId: product._id,
         quantity: 1,
       });
+      toast.success("Product is added to cart Successfully");
       console.log(res.data.cart);
       dispatch(setCart(res.data.cart.products));
     } catch (err) {
+       toast.error(err.response?.data?.message);
       console.log("Error in Card:", err);
     }
   };

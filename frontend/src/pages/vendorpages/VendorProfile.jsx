@@ -31,7 +31,9 @@ const Profile = () => {
         phoneNumber,
       });
       console.log(res.data.message);
+      toast.success("Profile Updated Successfully");
     } catch (err) {
+       toast.error(err.response?.data?.message);
       console.log("Error in Profile", err);
     }
   };

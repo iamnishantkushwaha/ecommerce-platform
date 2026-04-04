@@ -25,7 +25,9 @@ const AdminAddAdmin = () => {
     if (isMismatch) return;
     try{
      const res=await api.post("/admin/addadmin",formData)
+     toast.success("Admin Added Successfully");
     }catch(err){
+         toast.error(err.response?.data?.message);
         console.log("Error in Adminaddadmin:",err.message)
     }
     console.log("Add admin form submitted", formData);

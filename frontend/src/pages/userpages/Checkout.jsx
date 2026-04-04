@@ -62,11 +62,13 @@ const Checkout = () => {
       if (res.data.message == "Order placed successfully") {
         navigate("/cart/orderplaced");
       }
+      toast.success("Order Placed Successfully");
     } catch (err) {
       console.log("FULL ERROR:", err);
       console.log("STATUS:", err?.response?.status);
       console.log("DATA:", err?.response?.data);
       console.log("MESSAGE:", err?.message);
+       toast.error(err.response?.data?.message);
     }
   };
   return (

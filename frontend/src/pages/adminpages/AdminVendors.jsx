@@ -49,9 +49,10 @@ const fetchvendors=async()=>{
     try{
       const res=await api.delete(`/admin/deletevendor/${vendorId}`)
         fetchvendors()
-        
+        toast.success("Vendor Deleted Successfully");
         
     }catch(err){
+       toast.error(err.response?.data?.message);
       console.log("Error in Vendorapprove:",err.message)
     }
   }

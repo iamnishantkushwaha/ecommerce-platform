@@ -62,7 +62,9 @@ const VendorProducts = () => {
     try {
       const res = await api.delete(`/vendor/product/${id}`);
       console.log(res.data.message);
+      toast.success("Product Deleted Successfully");
     } catch (err) {
+       toast.error(err.response?.data?.message);
       console.log("Error in handleDelete:", err.message);
     }
     fetchproducts();
@@ -99,8 +101,10 @@ const VendorProducts = () => {
       console.log("Product Upated Successfully");
       setEditDialogOpen(false);
       fetchproducts()
+      toast.success("Product Updated Successfully");
     }catch(err){
  console.log("Error in Edit Form :",err.message)
+  toast.error(err.response?.data?.message);
     }
   }
   return (

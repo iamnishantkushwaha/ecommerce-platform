@@ -15,8 +15,10 @@ const Profile = () => {
         setfullName(res.data.user.fullName);
         setemail(res.data.user.email);
         setphoneNumber(res.data.user.phoneNumber);
+        toast.success("Profile Updated Successfully");
       } catch (err) {
         console.log("Error in Profile", err);
+         toast.error(err.response?.data?.message);
       }
     };
     fetchprofiledata();
