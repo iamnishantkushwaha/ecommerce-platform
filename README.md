@@ -4,39 +4,54 @@ A full-stack multi-vendor e-commerce platform built with the MERN stack featurin
 
 ## API Endpoints
 
-## API Endpoints
+Base API path: `/api`
 
-### Static Routes
+### Public (No Auth)
 
-- `POST /signup` — User signup
-- `POST /login` — User login
-- `GET /logout` — User logout
-- `GET /products` — Get products (query params: `category`, `sort`, `maxprice`, `minprice`, `featured`, `page`, `limit`)
-  - Example: `/products?category=electronics&sort=price&minprice=100&maxprice=1000&featured=true&page=1&limit=10`
-- `GET /categories` — Get all product categories
+- `POST /api/signup` — User signup
+- `POST /api/login` — User login
+- `GET /api/logout` — User logout
+- `GET /api/products` — Get paginated products with filters
+  - Query params: `category`, `sort`, `maxprice`, `minprice`, `featured`, `search`, `page`, `limit`
+  - Sort values: `price_asc`, `price_desc`, `newest`
+- `GET /api/categories` — Get product categories with product counts
 
-### User Routes
+### Authenticated (Any Logged-In User)
 
-- `POST /cart` — Add item to cart
-- `GET /cart` — Get cart items
-- `PATCH /cart/:productId` — Update cart item
-- `DELETE /cart/:productId` — Remove item from cart
-- `POST /orders` — Place an order
-- `GET /orders` — Get user orders
-- `PATCH /orders/:orderid` — Cancel an order
+- `GET /api/me` — Get authenticated user details
 
-### Vendor Routes
+### User APIs (Auth + USER Role)
 
-- `POST /add-product` — Add a new product (with image upload)
-- `GET /product` — Get all products for the vendor
-- `DELETE /product/:id` — Delete a product by ID
-- `PATCH /product/:id` — Update a product by ID (with optional image upload)
-- `GET /orders` — Get all orders for the vendor
-- `PATCH /orders/:orderid` — Update order status
+- `POST /api/user/cart` — Add item to cart
+- `GET /api/user/cart` — Get cart items
+- `PATCH /api/user/cart/:productId` — Update cart item quantity/details
+- `DELETE /api/user/cart/:productId` — Remove item from cart
+- `POST /api/user/orders` — Place an order
+- `GET /api/user/orders` — Get user orders
+- `PATCH /api/user/orders/:orderid` — Cancel order
+- `GET /api/user/trackorder/:orderId` — Track a specific order
+- `GET /api/user/latest-order` — Get latest user order
+- `GET /api/user/profile` — Get user profile
+- `PATCH /api/user/profile` — Update user profile
+- `PATCH /api/user/passwordchange` — Change user password
+- `GET /api/user/api/me` — Get authenticated user details (exists in current routes)
 
-### Admin Routes
+### Vendor APIs (Auth + VENDOR Role)
 
-- `GET /managevendors` — Get all vendors
-- `GET /manageusers` — Get all users
-- `PATCH /managevendors/approve/:id` — Approve a vendor by ID
-- `DELETE /managevendors/reject/:id` — Reject (delete) a vendor by ID
+- `POST /api/vendor/add-product` — Add a new product (multipart image upload: `image`)
+- `GET /api/vendor/product` — Get all products for the vendor
+- `PATCH /api/vendor/product/:id` — Update product by ID (optional multipart image upload: `image`)
+- `DELETE /api/vendor/product/:id` — Delete product by ID
+- `GET /api/vendor/orders` — Get vendor orders
+- `PATCH /api/vendor/orders/:orderid` — Update order status
+- `GET /api/vendor/profile` — Get vendor profile
+- `PATCH /api/vendor/profile` — Update vendor profile
+- `GET /api/vendor/dashboard` — Get vendor dashboard analytics
+
+### Admin APIs (Auth + ADMIN Role)
+
+- `GET /api/admin/managevendors` — Get all vendors
+- `PATCH /api/admin/managevendors/approve/:id` — Approve vendor by ID
+- `DELETE /api/admin/managevendors/reject/:id` — Reject vendor by ID
+- `GET /api/admin/manageusers` — Get all users
+- `GET /api/admin/dashboard` — Get admin dashboard analytics

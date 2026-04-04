@@ -26,6 +26,12 @@ import VendorAddProduct from "./pages/vendorpages/VendorAddProduct";
 import VendorOrders from "./pages/vendorpages/VendorOrders";
 import VendorRevenue from "./pages/vendorpages/VendorRevenue";
 import VendorProfile from "./pages/vendorpages/VendorProfile";
+import AdminDashboard from "./pages/adminpages/AdminDashboard";
+import AdminUsers from "./pages/adminpages/AdminUsers";
+import AdminVendors from "./pages/adminpages/AdminVendors";
+import AdminProducts from "./pages/adminpages/AdminProducts";
+import AdminOrders from "./pages/adminpages/AdminOrders";
+import AdminSettings from "./pages/adminpages/AdminSettings";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -88,6 +94,14 @@ function App() {
           <Route path="/vendor/orders" element={<VendorOrders />} />
           <Route path="/vendor/revenue" element={<VendorRevenue />} />
           <Route path="/vendor/profile" element={<VendorProfile />} />
+
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/users" element={<AdminUsers />} />
+          <Route path="/admin/vendors" element={<AdminVendors />} />
+          <Route path="/admin/products" element={<AdminProducts />} />
+          <Route path="/admin/orders" element={<AdminOrders />} />
+          <Route path="/admin/settings" element={<AdminSettings />} />
         </Route>
       </Routes>
 

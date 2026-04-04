@@ -2,39 +2,55 @@
 
 This README lists the actual API endpoints implemented in your ecommerce-platform backend, based on your route files.
 
-
 ## Static Routes
 
-- **POST /signup** — User signup
-- **POST /login** — User login
-- **GET /logout** — User logout
-- **GET /products** — Get paginated products (query: `page`, `limit`)
+- **POST /api/signup** — User signup
+- **POST /api/login** — User login
+- **GET /api/logout** — User logout
+- **GET /api/products** — Get paginated products with filters
+  - Query: `category`, `sort`, `maxprice`, `minprice`, `featured`, `search`, `page`, `limit`
+  - Sort: `price_asc`, `price_desc`, `newest`
+- **GET /api/categories** — Get all categories with product counts
+
+## Authenticated Route (Any Role)
+
+- **GET /api/me** — Get authenticated user from token
 
 ## Admin Routes
 
-- **GET /managevendors** — List all vendors
-- **GET /manageusers** — List all users
-- **PATCH /managevendors/approve/:id** — Approve vendor by ID
-- **DELETE /managevendors/reject/:id** — Reject vendor by ID
+- **GET /api/admin/managevendors** — List all vendors
+- **GET /api/admin/manageusers** — List all users
+- **PATCH /api/admin/managevendors/approve/:id** — Approve vendor by ID
+- **DELETE /api/admin/managevendors/reject/:id** — Reject vendor by ID
+- **GET /api/admin/dashboard** — Get admin dashboard data
 
 ## Vendor Routes
 
-- **POST /add-product** — Add a new product (with image upload)
-- **GET /product** — Get all products for vendor
-- **DELETE /product/:id** — Delete product by ID
-- **PATCH /product/:id** — Update product by ID (with image upload)
-- **GET /orders** — Get vendor orders
-- **PATCH /orders/:orderid** — Update vendor order status
+- **POST /api/vendor/add-product** — Add a new product (with image upload)
+- **GET /api/vendor/product** — Get all products for vendor
+- **DELETE /api/vendor/product/:id** — Delete product by ID
+- **PATCH /api/vendor/product/:id** — Update product by ID (with image upload)
+- **GET /api/vendor/orders** — Get vendor orders
+- **PATCH /api/vendor/orders/:orderid** — Update vendor order status
+- **GET /api/vendor/profile** — Get vendor profile
+- **PATCH /api/vendor/profile** — Update vendor profile
+- **GET /api/vendor/dashboard** — Get vendor dashboard data
 
 ## User Routes
 
-- **POST /cart** — Add product to cart
-- **GET /cart** — Get user's cart
-- **PATCH /cart/:productId** — Update cart item
-- **DELETE /cart/:productId** — Remove item from cart
-- **POST /orders** — Place an order
-- **GET /orders** — Get user orders
-- **PATCH /orders/:orderid** — Cancel user order
+- **POST /api/user/cart** — Add product to cart
+- **GET /api/user/cart** — Get user's cart
+- **PATCH /api/user/cart/:productId** — Update cart item
+- **DELETE /api/user/cart/:productId** — Remove item from cart
+- **POST /api/user/orders** — Place an order
+- **GET /api/user/orders** — Get user orders
+- **PATCH /api/user/orders/:orderid** — Cancel user order
+- **GET /api/user/trackorder/:orderId** — Track order by ID
+- **GET /api/user/latest-order** — Get latest order
+- **GET /api/user/profile** — Get user profile
+- **PATCH /api/user/profile** — Update user profile
+- **PATCH /api/user/passwordchange** — Change user password
+- **GET /api/user/api/me** — Auth user info route currently present in user router
 
 ---
 
@@ -42,7 +58,7 @@ This README lists the actual API endpoints implemented in your ecommerce-platfor
 
 - Some endpoints require authentication and specific roles (admin, vendor, user).
 - Image uploads use `upload.single("image")` middleware.
-- See controllers for handler logic: `authentication.js`, `vendors.js`, `user.js`, `Admin.js`.
+- See controllers for handler logic in `controllers/`.
 
 ## Setup & Usage
 
