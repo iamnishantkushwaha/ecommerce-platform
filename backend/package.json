@@ -7,8 +7,9 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start": "npx nodemon index.js"
-  },
+  "dev": "nodemon index.js",
+  "start": "node index.js"
+},
   "dependencies": {
     "cloudinary": "^1.41.3",
     "cookie-parser": "^1.4.7",

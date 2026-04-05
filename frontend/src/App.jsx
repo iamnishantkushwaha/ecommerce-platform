@@ -15,6 +15,7 @@ const Profile = lazy(() => import("./pages/userpages/Profile"));
 const Orders = lazy(() => import("./pages/userpages/Orders"));
 const Setting = lazy(() => import("./pages/userpages/Setting"));
 const Products = lazy(() => import("./pages/userpages/Products"));
+const ProductDetail = lazy(() => import("./pages/userpages/ProductDetail"));
 const Cart = lazy(() =>
   import("./pages/userpages/Cart").then((module) => ({ default: module.Cart })),
 );
@@ -90,6 +91,7 @@ function App() {
           />
           <Route path="/signup" element={<Signup />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/products/:id" element={<ProductDetail />} />
           <Route path="/" element={<Home />} />
           <Route
             element={

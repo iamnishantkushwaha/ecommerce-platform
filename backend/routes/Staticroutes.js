@@ -77,6 +77,25 @@ router.get("/products", async (req, res) => {
   }
 });
 
+router.get("/products/:id", async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id).populate(
+      "vendor",
+      "fullName",
+    );
+
+    if (!product) {
+      return res.status(404).json({ message: "product not found" });
+    }
+
+    return res.status(200).json({ message: "product found", product });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ message: "Server Error", error: err.message });
+  }
+});
+
 router.get("/categories", async (req, res) => {
   try {
     const categories = await Product.aggregate([
