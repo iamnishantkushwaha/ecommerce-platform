@@ -20,17 +20,19 @@ const Hero = () => {
             Shop from thousands of verified vendors. Quality products, fast
             delivery, and secure payments. Shop now.
           </p>
-          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row md:gap-4">
-            <Link>
-              <button className="flex items-center justify-center rounded-xl bg-slate-900 px-6 py-3 font-semibold text-white transition hover:bg-slate-800 hover:shadow-lg">
-                Shop Now
-                <IoIosArrowRoundForward className="pt-1 text-2xl" />
-              </button>
+          <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center md:gap-4">
+            <Link
+              to="/products"
+              className="inline-flex min-h-12 items-center justify-center gap-1 rounded-xl bg-slate-900 px-6 py-3 font-semibold text-white transition hover:bg-slate-800 hover:shadow-lg"
+            >
+              Shop Now
+              <IoIosArrowRoundForward className="text-2xl" />
             </Link>
-            <Link>
-              <button className="rounded-xl border border-slate-300 bg-slate-100 px-8 py-3 font-semibold text-slate-900 transition hover:bg-slate-200">
-                Become a Vendor
-              </button>
+            <Link
+              to="/signup"
+              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-300 bg-slate-100 px-6 py-3 font-semibold text-slate-900 transition hover:bg-slate-200"
+            >
+              Become a Vendor
             </Link>
           </div>
         </div>
