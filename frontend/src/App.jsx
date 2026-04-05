@@ -42,6 +42,7 @@ const AdminProducts = lazy(() => import("./pages/adminpages/AdminProducts"));
 const AdminOrders = lazy(() => import("./pages/adminpages/AdminOrders"));
 const AdminSettings = lazy(() => import("./pages/adminpages/AdminSettings"));
 const AdminAddAdmin = lazy(() => import("./pages/adminpages/AdminAddAdmin"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -153,6 +154,8 @@ function App() {
             <Route path="/admin/add-admin" element={<AdminAddAdmin />} />
             <Route path="/admin/settings" element={<AdminSettings />} />
           </Route>
+
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
 
