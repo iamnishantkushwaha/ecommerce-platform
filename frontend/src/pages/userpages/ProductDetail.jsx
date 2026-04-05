@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import Navbar from "../../Components/Navbar";
 import api from "../../api";
 import { setCart } from "../../Redux/Cartslice";
+import LoadingIndicator from "../../ui/LoadingIndicator";
 
 const ProductDetail = () => {
   const { slug } = useParams();
@@ -50,9 +51,7 @@ const ProductDetail = () => {
       <div className="min-h-screen w-screen md:w-full bg-slate-50 px-4 md:px-8 lg:px-10 pt-24 pb-10">
         <div className="mx-auto max-w-7xl">
           {loading ? (
-            <div className="min-h-[50vh] flex items-center justify-center text-slate-600 font-semibold">
-              Loading product details...
-            </div>
+            <LoadingIndicator fullScreen={false} className="min-h-[50vh]" />
           ) : !product ? (
             <div className="min-h-[50vh] flex flex-col gap-3 items-center justify-center">
               <p className="text-slate-600 font-semibold">Product not found</p>

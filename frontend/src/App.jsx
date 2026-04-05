@@ -1,6 +1,7 @@
 import { Suspense, lazy, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import api from "./api";
+import LoadingIndicator from "./ui/LoadingIndicator";
 
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
@@ -72,12 +73,12 @@ function App() {
   }, []);
 
   if (isAuthenticated === null) {
-    return <h2>Loading...</h2>;
+    return <LoadingIndicator />;
   }
 
   return (
     <>
-      <Suspense fallback={<h2>Loading...</h2>}>
+      <Suspense fallback={<LoadingIndicator />}>
         <Routes>
           <Route
             path="/login"
