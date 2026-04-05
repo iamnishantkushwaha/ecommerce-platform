@@ -6,6 +6,17 @@ import { useDispatch } from "react-redux";
 import api from "../api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+
+const makeSlug = (text = "") =>
+  text
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+
+const getProductSlug = (product) => product.slug || makeSlug(product.title);
+
 const Card = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,7 +42,7 @@ const Card = (props) => {
       className="group flex h-full flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl"
     >
       <div
-        onClick={() => navigate(`/products/${product._id}`)}
+        onClick={() => navigate(`/products/${getProductSlug(product)}`)}
         className="relative overflow-hidden bg-slate-100 aspect-4/3 md:aspect-4/5 cursor-pointer"
       >
         <div className="absolute left-3 top-3 z-10 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-700 shadow-sm backdrop-blur">
@@ -45,7 +56,7 @@ const Card = (props) => {
       </div>
       <div className="flex flex-1 flex-col gap-3 p-4 md:p-5">
         <div
-          onClick={() => navigate(`/products/${product._id}`)}
+          onClick={() => navigate(`/products/${getProductSlug(product)}`)}
           className="space-y-1 cursor-pointer"
         >
           <h1 className="text-base font-semibold text-slate-900 md:text-lg">

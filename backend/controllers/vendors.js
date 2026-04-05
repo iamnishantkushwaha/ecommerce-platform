@@ -2,11 +2,40 @@ const Product = require("../models/product");
 const Order = require("../models/orders");
 const User = require("../models/user");
 
+const makeSlug = (text = "") =>
+  text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+
+const buildUniqueSlug = async (title, excludeId = null) => {
+  const baseSlug = makeSlug(title) || "product";
+  let slug = baseSlug;
+  let count = 1;
+
+  while (
+    await Product.findOne({
+      slug,
+      ...(excludeId ? { _id: { $ne: excludeId } } : {}),
+    })
+  ) {
+    slug = `${baseSlug}-${count}`;
+    count += 1;
+  }
+
+  return slug;
+};
+
 const isValidPhoneNumber = (phoneNumber) => /^\d{10}$/.test(phoneNumber);
 async function handleproductupload(req, res) {
   const { title, description, price, stock, category } = req.body;
   console.log(req.file);
   try {
+    const slug = await buildUniqueSlug(title);
+
     const isproductpresent = await Product.findOne({
       title,
       description,
@@ -19,6 +48,7 @@ async function handleproductupload(req, res) {
     if (!isproductpresent)
       await Product.create({
         title,
+        slug,
         description,
         price,
         image: req.file.path,
@@ -58,9 +88,26 @@ async function handledelete(req, res) {
 async function handleproductupdate(req, res) {
   try {
     const { title, description, price, image, stock, category } = req.body;
+
+    const existingProduct = await Product.findById(req.params.id);
+    if (!existingProduct)
+      return res.status(404).json({ message: "No product Found" });
+
+    const nextTitle = title || existingProduct.title;
+    const nextSlug = await buildUniqueSlug(nextTitle, req.params.id);
+
     const product = await Product.findOneAndUpdate(
       { _id: req.params.id },
-      { title, description, price, image, stock, category },
+      {
+        title: nextTitle,
+        slug: nextSlug,
+        description: description || existingProduct.description,
+        price: price || existingProduct.price,
+        image: image || existingProduct.image,
+        stock: stock || existingProduct.stock,
+        category: category || existingProduct.category,
+      },
+      { new: true },
     );
     if (!product) return res.status(404).json({ message: "No product Found" });
     return res.status(200).json({ message: "Updated Successfully" });

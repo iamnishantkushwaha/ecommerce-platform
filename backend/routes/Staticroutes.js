@@ -3,6 +3,16 @@ const router = express.Router();
 const protect = require("../middlewares/protect");
 const { handleSignup, handleLogin } = require("../controllers/authentication");
 const Product = require("../models/product");
+
+const makeSlug = (text = "") =>
+  text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+
 router.post("/signup", handleSignup);
 
 router.post("/login", handleLogin);
@@ -77,12 +87,32 @@ router.get("/products", async (req, res) => {
   }
 });
 
-router.get("/products/:id", async (req, res) => {
+router.get("/products/:slug", async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id).populate(
+    const { slug } = req.params;
+    let product = await Product.findOne({ slug }).populate(
       "vendor",
       "fullName",
     );
+
+    // Backward compatibility for old links that used /products/:id
+    if (!product && /^[0-9a-fA-F]{24}$/.test(slug)) {
+      product = await Product.findById(slug).populate("vendor", "fullName");
+    }
+
+    // Fallback for legacy products that were created before slug field existed.
+    if (!product) {
+      const legacyMatch = await Product.find().populate("vendor", "fullName");
+      const matchedProduct = legacyMatch.find(
+        (item) => makeSlug(item.title) === slug,
+      );
+
+      if (matchedProduct) {
+        matchedProduct.slug = slug;
+        await matchedProduct.save();
+        product = matchedProduct;
+      }
+    }
 
     if (!product) {
       return res.status(404).json({ message: "product not found" });

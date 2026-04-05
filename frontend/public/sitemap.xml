@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
   <url>
-    <loc>https://your-site-name.vercel.app/</loc>
+    <loc>https://marketpro.vercel.app/</loc>
   </url>
+
   <url>
-    <loc>https://your-site-name.vercel.app/products</loc>
+    <loc>https://marketpro.vercel.app/products</loc>
   </url>
-  <url>
-    <loc>https://your-site-name.vercel.app/cart</loc>
-  </url>
-  <url>
-    <loc>https://your-site-name.vercel.app/login</loc>
-  </url>
-  <url>
-    <loc>https://your-site-name.vercel.app/signup</loc>
-  </url>
+<url>
+  <loc>https://marketpro.vercel.app/products/wireless-mouse</loc>
+</url>
+
+<url>
+  <loc>https://marketpro.vercel.app/products/bluetooth-headphones</loc>
+</url>
 </urlset>

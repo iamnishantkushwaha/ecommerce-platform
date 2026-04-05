@@ -7,7 +7,7 @@ import api from "../../api";
 import { setCart } from "../../Redux/Cartslice";
 
 const ProductDetail = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -17,7 +17,7 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await api.get(`/products/${id}`);
+        const res = await api.get(`/products/${slug}`);
         setProduct(res.data.product);
       } catch (err) {
         toast.error(err.response?.data?.message || "Failed to load product");
@@ -27,7 +27,7 @@ const ProductDetail = () => {
     };
 
     fetchProduct();
-  }, [id]);
+  }, [slug]);
 
   const handleAddToCart = async () => {
     if (!product) return;
