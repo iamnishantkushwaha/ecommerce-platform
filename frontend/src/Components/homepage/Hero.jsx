@@ -4,41 +4,47 @@ import { IoIosArrowRoundForward } from "react-icons/io";
 
 const Hero = () => {
   return (
-    <div className="w-full md:items-center gap-5 md:max-w-screen md:min-h-[70vh] px-4 md:px-10 lg:px-16 flex flex-col md:flex-row justify-around bg-white py-10">
-      <div className="flex flex-col mt-4 md:pr-25 md:gap-5 md:h-full md:mt-0 md:w-1/2 md:items-start items-center justify-between  md:justify-center gap-3 ">
-        <h3 className=" bg-indigo-100  rounded-2xl px-2.5 py-0.5 w-fit text-sm text-indigo-500">
-          🚀New Season Arrivals
-        </h3>
-        <h1 className="text-4xl md:text-start py-5 md:py-0  md:flex md:flex-col text-center md:text-6xl font-bold">
-          Discover Premium{" "}
-          <span className="text-indigo-600">Products Online</span>
-        </h1>
-        <p className="text-center md:text-xl md:text-semibold text-gray-600 md:text-start">
-          Shop from thousands of verified vendors. Quality products, fast
-          delivery, and secure payments.Shop Now
-        </p>
-        <div className="flex gap-3 md:gap-8">
-          <Link>
-            <button className="bg-indigo-600 py-2.5 flex items-center justify-center text-white font-semibold px-6 rounded-xl">
-              Shop Now
-              <IoIosArrowRoundForward className="font-semibold pt-1 text-2xl" />
-            </button>
-          </Link>
-          <Link>
-            <button className="bg-gray-200 py-2.5 border border-gray-100 hover:bg-indigo-400 text-black font-semibold px-8 rounded-xl">
-              Become a Vendor
-            </button>
-          </Link>
+    <section className="w-full px-4 md:px-10 lg:px-16 pt-24">
+      <div className="mx-auto grid max-w-7xl items-center gap-8 rounded-3xl border border-slate-200/70 bg-white/85 p-6 shadow-[0_18px_50px_-30px_rgba(15,23,42,0.45)] backdrop-blur md:min-h-[70vh] md:grid-cols-2 md:p-12">
+        <div className="flex flex-col gap-5 md:items-start items-center text-center md:text-left">
+          <h3 className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-600">
+            🚀New Season Arrivals
+          </h3>
+          <h1 className="py-1 text-4xl font-extrabold tracking-tight text-slate-900 md:flex md:flex-col md:text-6xl">
+            Discover Premium{" "}
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-slate-900 to-blue-600">
+              Products Online
+            </span>
+          </h1>
+          <p className="max-w-xl text-base text-slate-600 md:text-lg">
+            Shop from thousands of verified vendors. Quality products, fast
+            delivery, and secure payments. Shop now.
+          </p>
+          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row md:gap-4">
+            <Link>
+              <button className="flex items-center justify-center rounded-xl bg-slate-900 px-6 py-3 font-semibold text-white transition hover:bg-slate-800 hover:shadow-lg">
+                Shop Now
+                <IoIosArrowRoundForward className="pt-1 text-2xl" />
+              </button>
+            </Link>
+            <Link>
+              <button className="rounded-xl border border-slate-300 bg-slate-100 px-8 py-3 font-semibold text-slate-900 transition hover:bg-slate-200">
+                Become a Vendor
+              </button>
+            </Link>
+          </div>
+        </div>
+
+        <div className="relative">
+          <div className="absolute -right-3 -top-3 h-24 w-24 rounded-full bg-blue-200/70 blur-2xl" />
+          <img
+            className="relative z-10 w-full rounded-2xl border border-slate-200 object-cover md:h-96"
+            src="https://res.cloudinary.com/dwgrcxx4o/image/upload/v1772901760/hero-banner-sbBafxHj_1_hl4yay.jpg"
+            alt="hero-banner"
+          />
         </div>
       </div>
-      <div className="h-3/5">
-        <img
-          className="rounded-2xl md:h-80"
-          src="https://res.cloudinary.com/dwgrcxx4o/image/upload/v1772901760/hero-banner-sbBafxHj_1_hl4yay.jpg"
-          alt="hero-banner"
-        />
-      </div>
-    </div>
+    </section>
   );
 };
 

@@ -36,7 +36,7 @@ const AdminProducts = () => {
       fetchproducts();
       toast.success("Product Deleted Successfully");
     } catch (err) {
-       toast.error(err.response?.data?.message);
+      toast.error(err.response?.data?.message);
       console.log("Error deleting product:", err.message);
     }
   };
@@ -47,12 +47,12 @@ const AdminProducts = () => {
   return (
     <>
       <AdminNavbar />
-      <main className="bg-gray-100 pt-20 md:pl-72 md:pt-20 pb-10">
+      <main className="bg-[#F8FAFC] pt-20 md:pl-72 md:pt-20 pb-10">
         <div className="px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-2xl font-bold text-gray-900">Manage Products</h1>
+          <h1 className="text-2xl font-bold text-slate-900">Manage Products</h1>
 
-          <div className="bg-white rounded-lg shadow-sm border border-gray-100 mt-6 overflow-hidden">
-            <div className="grid grid-cols-5 bg-gray-50 px-4 py-3 text-sm font-semibold text-gray-700">
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 mt-6 overflow-hidden">
+            <div className="grid grid-cols-5 bg-[#F8FAFC] px-4 py-3 text-sm font-semibold text-slate-700">
               <p>Product ID</p>
               <p>Title</p>
               <p>Vendor</p>
@@ -62,7 +62,7 @@ const AdminProducts = () => {
             {products.map((product) => (
               <div
                 key={product._id}
-                className="grid grid-cols-5 px-4 py-3 text-sm border-t border-gray-100 text-gray-700"
+                className="grid grid-cols-5 px-4 py-3 text-sm border-t border-slate-200 text-slate-700"
               >
                 <p>{product._id}</p>
                 <p>{product.title}</p>
@@ -70,8 +70,11 @@ const AdminProducts = () => {
                 <div>
                   <button
                     type="button"
-                    onClick={() => {setfeatured(!featured); handleSetFeatured(product)}}
-                    className="rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-gray-300"
+                    onClick={() => {
+                      setfeatured(!featured);
+                      handleSetFeatured(product);
+                    }}
+                    className="rounded-md bg-blue-500 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-slate-300"
                   >
                     {product.isFeatured ? "Remove Featured" : "Set Featured"}
                   </button>
@@ -81,7 +84,7 @@ const AdminProducts = () => {
                     type="button"
                     onClick={() => handleDeleteProduct(product._id)}
                     disabled={deletingId === product._id}
-                    className="rounded-md bg-red-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-gray-300"
+                    className="rounded-md bg-slate-700 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300"
                   >
                     {deletingId === product._id ? "Deleting..." : "Delete"}
                   </button>

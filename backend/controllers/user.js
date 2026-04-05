@@ -4,16 +4,22 @@ const Cart = require("../models/Cart");
 const mongoose = require("mongoose");
 const User = require("../models/user");
 const bycrpt = require("bcrypt");
+
+const isValidPhoneNumber = (phoneNumber) => /^\d{10}$/.test(phoneNumber);
 async function handleplaceorders(req, res) {
   try {
     if (!req.user) return res.status(401).json({ message: "unauthorized" });
-    const { products, deliveryAddress, paymentStatus } = req.body;
+    const { products, deliveryAddress, paymentStatus, shippingName } = req.body;
 
     if (!products || !Array.isArray(products) || products.length == 0)
       return res.status(404).json({ message: "Products are required" });
 
     if (!deliveryAddress) {
       return res.status(400).json({ message: "Delivery address is required" });
+    }
+
+    if (!shippingName || !shippingName.trim()) {
+      return res.status(400).json({ message: "Shipping name is required" });
     }
     console.log(products, "kl");
     let orderItems = [];
@@ -49,6 +55,7 @@ async function handleplaceorders(req, res) {
       products: orderItems,
       totalAmount,
       deliveryAddress,
+      shippingName: shippingName.trim(),
     });
 
     return res.status(201).json({ message: "Order placed successfully" });
@@ -168,7 +175,7 @@ async function handlecart(req, res) {
 
     // ab cart guaranteed hai
     const existingItem = cart.products.find(
-      (item) => item.product.toString() === productId
+      (item) => item.product.toString() === productId,
     );
 
     if (existingItem) {
@@ -269,9 +276,15 @@ async function handleprofile(req, res) {
 async function handleupdateprofile(req, res) {
   try {
     const { fullName, email, phoneNumber } = req.body;
+    if (!isValidPhoneNumber(phoneNumber)) {
+      return res
+        .status(400)
+        .json({ message: "Phone number must be exactly 10 digits" });
+    }
     const user = await User.findOneAndUpdate(
       { _id: req.user._id },
       { fullName, email, phoneNumber },
+      { runValidators: true },
     );
     if (!user) return res.status(404).json({ message: "user not found" });
     return res.status(200).json({ message: "Profile Updated Successfully" });

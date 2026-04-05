@@ -19,32 +19,51 @@ const Card = (props) => {
       console.log(res.data.cart);
       dispatch(setCart(res.data.cart.products));
     } catch (err) {
-       toast.error(err.response?.data?.message);
+      toast.error(err.response?.data?.message);
       console.log("Error in Card:", err);
     }
   };
   return (
-    <div key={props.idx} className="flex flex-col rounded-xl h-auto bg-white">
-      <div className="overflow-hidden rounded-t-xl aspect-4/3 md:aspect-4/5">
+    <div
+      key={props.idx}
+      className="group flex h-full flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl"
+    >
+      <div className="relative overflow-hidden bg-slate-100 aspect-4/3 md:aspect-4/5">
+        <div className="absolute left-3 top-3 z-10 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-700 shadow-sm backdrop-blur">
+          {product.category}
+        </div>
         <img
-          className=" hover:scale-105 h-full object-cover transition-all duration-300 rounded-t-xl"
+          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
           src={product.image}
-          alt=""
+          alt={product.title}
         />
       </div>
-      <div className="p-3 flex flex-col gap-1">
-        <h3 className="text-sm text-gray-500">{product.category}</h3>
-        <h1 className="text-sm font-semibold">{product.title}</h1>
-        <h1 className="flex items-center gap-0.5">
-          4.4 <FaStar className="text-yellow-500" />
-        </h1>
-        <div className="flex justify-between items-center">
-          <span className="text-xl font-bold">${product.price}</span>
+      <div className="flex flex-1 flex-col gap-3 p-4 md:p-5">
+        <div className="space-y-1">
+          <h1 className="text-base font-semibold text-slate-900 md:text-lg">
+            {product.title}
+          </h1>
+          <p className="text-sm leading-6 text-slate-500">
+            Quality product with a clean finish and modern presentation.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-1 text-sm font-semibold text-slate-700">
+          4.4 <FaStar className="text-amber-400" />
+          <span className="font-normal text-slate-400">rating</span>
+        </div>
+
+        <div className="mt-auto flex items-center justify-between gap-3 pt-1">
+          <span className="text-2xl font-bold tracking-tight text-slate-900">
+            ₹{product.price}
+          </span>
           <button
+            type="button"
             onClick={handleaddtocart}
-            className="hover:bg-indigo-200 p-2 hover:rounded-4xl"
+            aria-label={`Add ${product.title} to cart`}
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-700 transition hover:border-blue-500 hover:bg-blue-50 hover:text-blue-600"
           >
-            <CiShoppingCart className="text-2xl" />
+            <CiShoppingCart className="text-xl" />
           </button>
         </div>
       </div>

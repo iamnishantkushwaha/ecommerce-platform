@@ -111,7 +111,7 @@ const VendorOrders = () => {
     const updatedMeta = editForm;
 
     try {
-      await api.patch(`/vendor/orders/shippingdetails/${editOrderId}`, {
+      await api.patch(`/vendor/orders/shipping-details/${editOrderId}`, {
         couriername: updatedMeta.shippingVia,
         trackingId: updatedMeta.trackingNo,
         estimatedDelivery: updatedMeta.estimatedDelivery,
@@ -147,16 +147,20 @@ const VendorOrders = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case "Processing":
+      case "Order Placed":
         return "text-orange-400";
+      case "Packed":
+        return "text-blue-500";
       case "Shipped":
-        return "text-indigo-600";
+        return "text-blue-600";
+      case "Out for Delivery":
+        return "text-sky-600";
       case "Delivered":
         return "text-green-500";
       case "Cancelled":
         return "text-red-500";
       default:
-        return "text-gray-600";
+        return "text-slate-600";
     }
   };
 
@@ -167,23 +171,30 @@ const VendorOrders = () => {
       case "Unpaid":
         return "text-amber-600";
       default:
-        return "text-gray-600";
+        return "text-slate-600";
     }
   };
 
   return (
     <>
       <VendorNavbar />
-      <main className="bg-gray-100 pt-20 md:pl-72 md:pt-20 h-screen overflow-hidden">
-        <div className="w-full h-full min-h-0 px-4 md:px-6 lg:px-10 flex flex-col gap-4 pt-6 pb-4">
-          <h1 className="text-2xl font-semibold">Orders</h1>
+      <main className="bg-slate-50 pt-24 md:pl-72 md:pt-24 min-h-screen">
+        <div className="w-full min-h-0 px-4 md:px-6 lg:px-10 flex flex-col gap-4 pb-8">
+          <div className="pt-4 md:pt-0">
+            <h1 className="text-3xl md:text-4xl font-bold text-slate-900">
+              Orders
+            </h1>
+            <p className="mt-2 text-sm md:text-base text-slate-500">
+              Manage shipping status, payment state, and delivery details.
+            </p>
+          </div>
 
           <Paper
-            className="rounded-2xl flex flex-col flex-1 min-h-0 overflow-hidden mt-2"
+            className="rounded-3xl flex flex-col flex-1 min-h-0 overflow-hidden mt-2 border border-slate-200 shadow-sm"
             sx={{ minWidth: { xs: 320, sm: 600, md: 700 } }}
           >
             <TableContainer
-              className="rounded-2xl flex-1 min-h-0"
+              className="rounded-3xl flex-1 min-h-0"
               sx={{ overflow: "auto" }}
             >
               <Table
@@ -194,49 +205,55 @@ const VendorOrders = () => {
                 <TableHead>
                   <TableRow>
                     <TableCell
-                      className="bg-gray-100"
+                      className="bg-slate-50 text-slate-700"
                       style={{ minWidth: 100 }}
                     >
                       Order ID
                     </TableCell>
                     <TableCell
-                      className="bg-gray-100"
+                      className="bg-slate-50 text-slate-700"
                       style={{ minWidth: 150 }}
                     >
                       Customer
                     </TableCell>
                     <TableCell
-                      className="bg-gray-100"
+                      className="bg-slate-50 text-slate-700"
+                      style={{ minWidth: 150 }}
+                    >
+                      Shipping Name
+                    </TableCell>
+                    <TableCell
+                      className="bg-slate-50 text-slate-700"
                       style={{ minWidth: 100 }}
                     >
                       Date
                     </TableCell>
                     <TableCell
-                      className="bg-gray-100"
+                      className="bg-slate-50 text-slate-700"
                       style={{ minWidth: 120 }}
                     >
                       Total
                     </TableCell>
                     <TableCell
-                      className="bg-gray-100"
+                      className="bg-slate-50 text-slate-700"
                       style={{ minWidth: 130 }}
                     >
                       Status
                     </TableCell>
                     <TableCell
-                      className="bg-gray-100"
+                      className="bg-slate-50 text-slate-700"
                       style={{ minWidth: 130 }}
                     >
                       Payment
                     </TableCell>
                     <TableCell
-                      className="bg-gray-100"
+                      className="bg-slate-50 text-slate-700"
                       style={{ minWidth: 140 }}
                     >
                       Action
                     </TableCell>
                     <TableCell
-                      className="bg-gray-100"
+                      className="bg-slate-50 text-slate-700"
                       style={{ minWidth: 280 }}
                     >
                       Shipping Details
@@ -255,10 +272,11 @@ const VendorOrders = () => {
                       >
                         <TableCell>{order._id}</TableCell>
                         <TableCell>{order.user.fullName}</TableCell>
+                        <TableCell>{order.shippingName || "N/A"}</TableCell>
                         <TableCell>
                           {new Date(order.createdAt).toLocaleDateString()}
                         </TableCell>
-                        <TableCell>{order.totalAmount}</TableCell>
+                        <TableCell>₹{order.totalAmount}</TableCell>
                         <TableCell
                           className={getStatusColor(order.orderStatus)}
                         >
@@ -305,7 +323,7 @@ const VendorOrders = () => {
                         </TableCell>
                         <TableCell>
                           <div className="flex min-w-70 items-center justify-between gap-3">
-                            <div className="text-xs text-gray-600 leading-5">
+                            <div className="text-xs text-slate-600 leading-5">
                               <p>
                                 {orderMeta[order._id]?.shippingVia || "Not set"}
                               </p>
@@ -321,7 +339,7 @@ const VendorOrders = () => {
                             <button
                               type="button"
                               onClick={() => openMetaEditor(order._id)}
-                              className="rounded-md border border-indigo-600 px-3 py-1.5 text-xs font-semibold text-indigo-600 hover:bg-indigo-50"
+                              className="rounded-md border border-blue-600 px-3 py-1.5 text-xs font-semibold text-blue-600 hover:bg-blue-50"
                             >
                               Edit
                             </button>

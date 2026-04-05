@@ -7,7 +7,7 @@ const Servicecard = () => {
     {
       logo: CiDeliveryTruck,
       heading: "Free Shipping",
-      paragraph: "On orders over $50",
+      paragraph: "On orders over ₹50",
     },
     {
       logo: GoShieldCheck,
@@ -21,27 +21,29 @@ const Servicecard = () => {
     },
   ];
   return (
-    <div className="h-auto py-6 md:py-8 flex flex-col gap-4 md:w-full md:h-fit md:flex-row justify-evenly w-full px-4 bg-gray-200">
-      {cards.map((card, idx) => {
-        const Icon = card.logo;
-        return (
-          <div
-            key={idx}
-            className=" flex gap-2.5 md:pr-35  hover:shadow-sm bg-white rounded-xl md:p-5 md:pl-8 p-5"
-          >
-            <div>
-              <div className="bg-indigo-100 w-fit  rounded-xl p-2">
-                {<Icon className="font-semibold text-3xl text-indigo-600" />}
+    <section className="w-full px-4 md:px-10 lg:px-16">
+      <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-3">
+        {cards.map((card, idx) => {
+          const Icon = card.logo;
+          return (
+            <div
+              key={idx}
+              className="group flex items-start gap-3 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+            >
+              <div>
+                <div className="w-fit rounded-xl bg-slate-900/95 p-2.5 text-white shadow-md transition group-hover:bg-blue-500">
+                  {<Icon className="text-3xl font-semibold text-white" />}
+                </div>
+              </div>
+              <div>
+                <h2 className="font-semibold text-slate-900">{card.heading}</h2>
+                <p className="text-sm text-slate-500">{card.paragraph}</p>
               </div>
             </div>
-            <div>
-              <h2 className="font-semibold">{card.heading}</h2>
-              <p className="text-gray-500 text-sm">{card.paragraph}</p>
-            </div>
-          </div>
-        );
-      })}
-    </div>
+          );
+        })}
+      </div>
+    </section>
   );
 };
 

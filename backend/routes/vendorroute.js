@@ -29,7 +29,7 @@ router.patch("/profile",handleupdateprofile)
 router.get("/dashboard",handledashboard)
 // Route to update a product by ID with optional image upload
 router.patch("/product/:id", upload.single("image"), handleproductupdate);
-router.patch("/orders/shippingdetails/:id",handleshippingdetails);
+router.patch("/orders/shipping-details/:id",handleshippingdetails);
 router.get("/orders",handleorders);
 router.patch("/orders/:orderid",handleorderstatus);
 // Export the router

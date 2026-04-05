@@ -25,9 +25,7 @@ const navItems = [
 
 const getLinkClasses = ({ isActive }) =>
   `rounded-lg px-3 py-2 font-medium transition-colors ${
-    isActive
-      ? "bg-indigo-100 text-indigo-700"
-      : "text-gray-700 hover:bg-gray-100"
+    isActive ? "bg-blue-50 text-blue-500" : "text-slate-700 hover:bg-slate-100"
   }`;
 
 const VendorNavbar = () => {
@@ -47,10 +45,10 @@ const VendorNavbar = () => {
 
   return (
     <>
-      <aside className="fixed left-0 top-0 hidden h-screen w-72 flex-col bg-slate-950 text-white md:flex">
+      <aside className="fixed left-0 top-0 hidden h-screen w-72 flex-col bg-slate-900 text-white md:flex">
         <div className="flex items-center justify-between border-b border-slate-800 px-5 py-4">
           <div className="flex items-center gap-3">
-            <FiShoppingBag className="text-2xl text-indigo-400" />
+            <FiShoppingBag className="text-2xl text-blue-500" />
             <span className="text-3xl font-bold leading-none">MarketPro</span>
           </div>
           <NavLink
@@ -63,7 +61,7 @@ const VendorNavbar = () => {
         </div>
 
         <div className="px-4 py-4">
-          <span className="rounded-full bg-indigo-600/30 px-3 py-1 text-xs font-semibold text-indigo-200">
+          <span className="rounded-full bg-blue-500/20 px-3 py-1 text-xs font-semibold text-blue-200">
             Vendor
           </span>
         </div>
@@ -78,7 +76,7 @@ const VendorNavbar = () => {
                 className={({ isActive }) =>
                   `flex items-center gap-3 rounded-xl px-4 py-3 font-semibold transition-colors ${
                     isActive
-                      ? "bg-indigo-600 text-white"
+                      ? "bg-blue-500 text-white"
                       : "text-slate-300 hover:bg-slate-800 hover:text-white"
                   }`
                 }
@@ -94,21 +92,21 @@ const VendorNavbar = () => {
           <button
             type="button"
             onClick={handleLogout}
-            className="w-full rounded-xl bg-indigo-600 px-4 py-3 text-left font-semibold text-white transition-colors hover:bg-indigo-700"
+            className="w-full rounded-xl bg-blue-500 px-4 py-3 text-left font-semibold text-white transition-colors hover:bg-blue-600"
           >
             Logout
           </button>
         </div>
       </aside>
 
-      <div className="fixed left-72 right-0 top-0 z-40 hidden h-16 items-center justify-between border-b border-gray-200 bg-white px-6 md:flex">
+      <div className="fixed left-72 right-0 top-0 z-40 hidden h-16 items-center justify-between border-b border-slate-200 bg-white px-6 md:flex">
         <h1 className="text-3xl font-semibold text-slate-900">
           Vendor Dashboard
         </h1>
         <div className="flex items-center gap-2">
           <NavLink
             to="/vendor/profile"
-            className="rounded-lg p-2 text-slate-600 transition-colors hover:bg-gray-100 hover:text-slate-900"
+            className="rounded-lg p-2 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900"
             aria-label="Vendor profile"
           >
             <GoPerson className="text-xl" />
@@ -116,14 +114,14 @@ const VendorNavbar = () => {
           <button
             type="button"
             onClick={handleLogout}
-            className="rounded-lg bg-indigo-600 px-4 py-2 font-medium text-white transition-colors hover:bg-indigo-700"
+            className="rounded-lg bg-blue-500 px-4 py-2 font-medium text-white transition-colors hover:bg-blue-600"
           >
             Logout
           </button>
         </div>
       </div>
 
-      <div className="fixed top-0 left-0 z-50 w-full border-b border-gray-200 bg-white md:hidden">
+      <div className="fixed top-0 left-0 z-50 w-full border-b border-slate-200 bg-white md:hidden">
         <div className="mx-auto flex h-16 w-full items-center justify-between px-4">
           <div className="text-xl font-bold text-black">Vendor Dashboard</div>
           <button
@@ -140,7 +138,7 @@ const VendorNavbar = () => {
         </div>
 
         {isOpen && (
-          <div className="border-t border-gray-200 bg-white px-4 py-3">
+          <div className="border-t border-slate-200 bg-white px-4 py-3">
             <div className="flex flex-col gap-2">
               {navItems.map((item) => (
                 <NavLink
@@ -162,7 +160,7 @@ const VendorNavbar = () => {
               <button
                 type="button"
                 onClick={handleLogout}
-                className="mt-1 rounded-lg bg-indigo-600 px-4 py-2 text-left font-medium text-white"
+                className="mt-1 rounded-lg bg-blue-500 px-4 py-2 text-left font-medium text-white"
               >
                 Logout
               </button>

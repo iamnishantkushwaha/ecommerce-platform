@@ -54,3 +54,4 @@ const DashboardChart = ({ stats }) => {
 };
 
 export default DashboardChart;
+

@@ -66,16 +66,16 @@ const VendorAddProduct = () => {
       const res = await api.post("/vendor/add-product", formDataToSend);
       console.log(res.data.message);
       setFormData({
-    productName: "",
-    category: "",
-    price: "",
-    stockQuantity: "",
-    description: "",
-    images: [],
-  })
-  toast.success("Product Added Successfully");
+        productName: "",
+        category: "",
+        price: "",
+        stockQuantity: "",
+        description: "",
+        images: [],
+      });
+      toast.success("Product Added Successfully");
     } catch (err) {
-       toast.error(err.response?.data?.message);
+      toast.error(err.response?.data?.message);
       console.log("Error in add product:", err.message);
     }
   };
@@ -83,21 +83,23 @@ const VendorAddProduct = () => {
   return (
     <>
       <VendorNavbar />
-      <main className="bg-gray-100 pt-20 md:pl-72 md:pt-20 pb-10">
+      <main className="bg-slate-50 pt-24 md:pl-72 md:pt-24 pb-10 min-h-screen">
         <div className="px-4 sm:px-6 lg:px-8 py-8">
-          {/* Page Title */}
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-900">
+          <div className="mb-8 pt-4 md:pt-0 max-w-3xl">
+            <h1 className="text-3xl md:text-4xl font-bold text-slate-900">
               Add New Product
             </h1>
+            <p className="mt-2 text-sm md:text-base text-slate-500">
+              Create a polished product listing with images, price, and stock.
+            </p>
           </div>
 
           {/* Form Card */}
-          <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
-            <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="bg-white rounded-3xl shadow-sm p-6 md:p-8 border border-slate-200 max-w-4xl">
+            <form onSubmit={handleSubmit} className="space-y-5">
               {/* Product Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
                   Product Name
                 </label>
                 <input
@@ -106,7 +108,7 @@ const VendorAddProduct = () => {
                   value={formData.productName}
                   onChange={handleInputChange}
                   placeholder="Enter product name"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 text-sm"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50 text-sm"
                 />
               </div>
 
@@ -114,14 +116,14 @@ const VendorAddProduct = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Category */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
                     Category
                   </label>
                   <select
                     name="category"
                     value={formData.category}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-sm"
+                    className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-sm"
                   >
                     <option value="">Select category</option>
                     <option value="electronics">Electronics</option>
@@ -135,8 +137,8 @@ const VendorAddProduct = () => {
 
                 {/* Price */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Price ($)
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Price (₹)
                   </label>
                   <input
                     type="number"
@@ -145,7 +147,7 @@ const VendorAddProduct = () => {
                     onChange={handleInputChange}
                     placeholder="0.00"
                     step="0.01"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 text-sm"
+                    className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50 text-sm"
                   />
                 </div>
               </div>
@@ -154,7 +156,7 @@ const VendorAddProduct = () => {
               <div>
                 {/* Stock Quantity */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
                     Stock Quantity
                   </label>
                   <input
@@ -163,14 +165,14 @@ const VendorAddProduct = () => {
                     value={formData.stockQuantity}
                     onChange={handleInputChange}
                     placeholder="0"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 text-sm"
+                    className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50 text-sm"
                   />
                 </div>
               </div>
 
               {/* Description */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
                   Description
                 </label>
                 <textarea
@@ -179,13 +181,13 @@ const VendorAddProduct = () => {
                   onChange={handleInputChange}
                   placeholder="Describe your product..."
                   rows="3"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 resize-none text-sm"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50 resize-none text-sm"
                 ></textarea>
               </div>
 
               {/* Product Images */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Product Images
                 </label>
                 <label
@@ -195,7 +197,7 @@ const VendorAddProduct = () => {
                   className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors block ${
                     dragActive
                       ? "border-blue-500 bg-blue-50"
-                      : "border-gray-300 hover:border-blue-400"
+                      : "border-slate-200 hover:border-blue-400"
                   }`}
                 >
                   {/* hidden input */}
@@ -208,7 +210,7 @@ const VendorAddProduct = () => {
                   />
 
                   <svg
-                    className="mx-auto h-10 w-10 text-gray-400 mb-2"
+                    className="mx-auto h-10 w-10 text-slate-400 mb-2"
                     stroke="currentColor"
                     fill="none"
                     viewBox="0 0 48 48"
@@ -221,10 +223,10 @@ const VendorAddProduct = () => {
                     />
                   </svg>
 
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-slate-600 text-sm">
                     Drag & drop images here
                   </p>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-slate-500 mt-1">
                     or click to browse (PNG, JPG up to 5MB)
                   </p>
                 </label>
@@ -243,7 +245,7 @@ const VendorAddProduct = () => {
               </div>
 
               {/* Form Actions */}
-              <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200">
+              <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-slate-200">
                 <button
                   type="submit"
                   className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors text-sm"
@@ -252,7 +254,7 @@ const VendorAddProduct = () => {
                 </button>
                 <button
                   type="button"
-                  className="w-full sm:w-auto bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-6 rounded-lg transition-colors text-sm"
+                  className="w-full sm:w-auto bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold py-2 px-6 rounded-lg transition-colors text-sm"
                 >
                   Save as Draft
                 </button>

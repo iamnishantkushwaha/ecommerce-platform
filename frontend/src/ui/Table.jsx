@@ -13,22 +13,19 @@ const columns = [
     id: "_id",
     label: "Order ID",
     minWidth: 140,
-   
   },
   {
     id: "createdAt",
     label: "Date",
     minWidth: 100,
-    format: (value) =>
-      new Date(value).toLocaleDateString("en-IN"),
+    format: (value) => new Date(value).toLocaleDateString("en-IN"),
   },
   {
     id: "products",
     label: "Items",
     minWidth: 150,
     align: "center",
-    format: (value) =>
-      Array.isArray(value) ? value.length : 0,
+    format: (value) => (Array.isArray(value) ? value.length : 0),
   },
   {
     id: "quantity",
@@ -37,10 +34,7 @@ const columns = [
     align: "center",
     format: (_, row) =>
       Array.isArray(row?.products)
-        ? row.products.reduce(
-            (sum, item) => sum + (item.quantity || 0),
-            0
-          )
+        ? row.products.reduce((sum, item) => sum + (item.quantity || 0), 0)
         : 0,
   },
   {
@@ -48,6 +42,7 @@ const columns = [
     label: "Total Amount",
     minWidth: 140,
     align: "center",
+    format: (value) => `₹${value}`,
   },
   {
     id: "orderStatus",
@@ -74,9 +69,12 @@ export default function StickyHeadTable(props) {
   }, [props.orders]);
 
   return (
-    <Paper className="rounded-2xl "  sx={{ minWidth: { xs: 320, sm: 600, md: 700 } }}>
+    <Paper
+      className="rounded-2xl border border-slate-200 bg-white"
+      sx={{ minWidth: { xs: 320, sm: 600, md: 700 } }}
+    >
       <TableContainer
-        className="rounded-2xl "
+        className="rounded-2xl"
         sx={{ maxHeight: 440, overflowX: "auto" }}
       >
         <Table stickyHeader aria-label="sticky table" sx={{ minWidth: 700 }}>
@@ -84,7 +82,7 @@ export default function StickyHeadTable(props) {
             <TableRow>
               {columns.map((column) => (
                 <TableCell
-                  className="bg-gray-100"
+                  className="bg-slate-50"
                   key={column.id}
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
@@ -111,12 +109,12 @@ export default function StickyHeadTable(props) {
                             value == "Pending"
                               ? "    text-orange-400"
                               : value == "Shipping"
-                                ? "  text-indigo-600"
+                                ? "  text-blue-600"
                                 : value == "Delivered"
                                   ? "   text-green-500"
                                   : value == "Cancelled"
                                     ? "  bg-red-300 text-red-500"
-                                    : "bg-white"
+                                    : "bg-white text-slate-700"
                           }
                           align={column.align}
                         >
@@ -133,7 +131,7 @@ export default function StickyHeadTable(props) {
         </Table>
       </TableContainer>
       <TablePagination
-        className="bg-gray-100"
+        className="bg-slate-50"
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
         count={rows.length}

@@ -65,7 +65,7 @@ const VendorProducts = () => {
       console.log(res.data.message);
       toast.success("Product Deleted Successfully");
     } catch (err) {
-       toast.error(err.response?.data?.message);
+      toast.error(err.response?.data?.message);
       console.log("Error in handleDelete:", err.message);
     }
     fetchproducts();
@@ -96,28 +96,35 @@ const VendorProducts = () => {
     }));
   };
 
-  const handlesavechanges=async(id)=>{
-    try{
-      const res=await api.patch(`/vendor/product/${id}`,editFormData)
+  const handlesavechanges = async (id) => {
+    try {
+      const res = await api.patch(`/vendor/product/${id}`, editFormData);
       console.log("Product Upated Successfully");
       setEditDialogOpen(false);
-      fetchproducts()
+      fetchproducts();
       toast.success("Product Updated Successfully");
-    }catch(err){
- console.log("Error in Edit Form :",err.message)
-  toast.error(err.response?.data?.message);
+    } catch (err) {
+      console.log("Error in Edit Form :", err.message);
+      toast.error(err.response?.data?.message);
     }
-  }
+  };
   return (
     <>
       <VendorNavbar />
-      <main className="bg-gray-100 pt-20 md:pl-72 md:pt-20 h-screen overflow-hidden">
-        <div className="w-full h-full min-h-0 px-4 md:px-6 lg:px-10 flex flex-col gap-4 pt-6 pb-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-semibold">My Products</h1>
+      <main className="bg-slate-50 pt-24 md:pl-72 md:pt-24 min-h-screen">
+        <div className="w-full min-h-0 px-4 md:px-6 lg:px-10 flex flex-col gap-4 pb-8">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between pt-4 md:pt-0">
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold text-slate-900">
+                My Products
+              </h1>
+              <p className="mt-2 text-sm md:text-base text-slate-500">
+                Review listings, stock, and product details.
+              </p>
+            </div>
             <button
               onClick={() => navigate("/vendor/add-product")}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg flex items-center gap-2 transition-colors"
+              className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-6 py-3 font-semibold text-white transition hover:bg-blue-600"
             >
               <FiPlus className="text-lg" />
               Add Product
@@ -125,11 +132,11 @@ const VendorProducts = () => {
           </div>
 
           <Paper
-            className="rounded-2xl flex flex-col flex-1 min-h-0 overflow-hidden mt-2"
+            className="rounded-3xl flex flex-col flex-1 min-h-0 overflow-hidden mt-2 border border-slate-200 shadow-sm"
             sx={{ minWidth: { xs: 320, sm: 600, md: 700 } }}
           >
             <TableContainer
-              className="rounded-2xl flex-1 min-h-0"
+              className="rounded-3xl flex-1 min-h-0"
               sx={{ overflow: "auto" }}
             >
               <Table
@@ -140,37 +147,37 @@ const VendorProducts = () => {
                 <TableHead>
                   <TableRow>
                     <TableCell
-                      className="bg-gray-100"
+                      className="bg-slate-50 text-slate-700"
                       style={{ minWidth: 120 }}
                     >
                       Product ID
                     </TableCell>
                     <TableCell
-                      className="bg-gray-100"
+                      className="bg-slate-50 text-slate-700"
                       style={{ minWidth: 200 }}
                     >
                       Name
                     </TableCell>
                     <TableCell
-                      className="bg-gray-100"
+                      className="bg-slate-50 text-slate-700"
                       style={{ minWidth: 130 }}
                     >
                       Category
                     </TableCell>
                     <TableCell
-                      className="bg-gray-100"
+                      className="bg-slate-50 text-slate-700"
                       style={{ minWidth: 100 }}
                     >
                       Price
                     </TableCell>
                     <TableCell
-                      className="bg-gray-100"
+                      className="bg-slate-50 text-slate-700"
                       style={{ minWidth: 100 }}
                     >
                       Stock
                     </TableCell>
                     <TableCell
-                      className="bg-gray-100"
+                      className="bg-slate-50 text-slate-700"
                       style={{ minWidth: 120 }}
                     >
                       Action
@@ -190,8 +197,8 @@ const VendorProducts = () => {
                         <TableCell>{product._id}</TableCell>
                         <TableCell>{product.title}</TableCell>
                         <TableCell>{product.category}</TableCell>
-                        <TableCell>{product.price}</TableCell>
-                        <TableCell className="text-green-500">
+                        <TableCell>₹{product.price}</TableCell>
+                        <TableCell className="font-semibold text-emerald-600">
                           {product.stock}
                         </TableCell>
                         <TableCell>
@@ -199,7 +206,7 @@ const VendorProducts = () => {
                             <button
                               type="button"
                               onClick={() => handleOpenEditDialog(product)}
-                              className="text-blue-600 hover:text-blue-800 transition-colors"
+                              className="rounded-full border border-slate-200 p-2 text-blue-600 transition hover:border-blue-200 hover:bg-blue-50"
                             >
                               <FiEdit2 className="text-lg" />
                             </button>
@@ -207,7 +214,7 @@ const VendorProducts = () => {
                               onClick={() => {
                                 handleDelete(product._id);
                               }}
-                              className="text-red-600 hover:text-red-800 transition-colors"
+                              className="rounded-full border border-slate-200 p-2 text-red-600 transition hover:border-red-200 hover:bg-red-50"
                             >
                               <FiTrash2 className="text-lg" />
                             </button>
@@ -286,7 +293,10 @@ const VendorProducts = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseEditDialog}>Cancel</Button>
-          <Button variant="contained" onClick={() => handlesavechanges(selectedProduct._id)}>
+          <Button
+            variant="contained"
+            onClick={() => handlesavechanges(selectedProduct._id)}
+          >
             Save Changes
           </Button>
         </DialogActions>

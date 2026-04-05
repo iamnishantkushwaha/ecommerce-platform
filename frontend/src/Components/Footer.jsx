@@ -9,119 +9,131 @@ import { LuFacebook } from "react-icons/lu";
 import { Link } from "react-router";
 const Footer = () => {
   return (
-    <div className="min-h-screen md:min-h-fit w-full px-4 md:px-6 lg:px-10 bg-white">
-      <div className="flex flex-col md:flex-row gap-12 md:gap-15 py-15 md:py-8 border-b border-gray-100">
-        <div className="flex flex-col justify-items-start">
-          <div className="min-h-24 p-4 md:max-w-md gap-1.5 w-full flex flex-col justify-center items-start">
-            <h1 className="  text-indigo-600 gap-2 flex text-2xl font font-bold">
-              <FiShoppingBag className="text-3xl" />
-              MarketPro
-            </h1>
-            <p className="text-gray-400 ">
-              Your one-stop multi-vendor marketplace for quality products from
-              trusted sellers worldwide.
-            </p>
-          </div>
-          <div className="flex flex-col font-semibold gap-1">
-            <label htmlFor="newsletter">Subscribe to our newsletter</label>
-            <div className="flex gap-3 w-full">
-              <input
-                type="text"
-                className="bg-gray-200 w-5/6 outline-0 rounded-xl px-2"
-                placeholder="Enter your email"
-                name="newsletter"
-                id="newsletter"
-              />
-              <button className="bg-indigo-600 text-white p-3 rounded-xl">
-                <FaTelegramPlane className="text-2xl" />
-              </button>
+    <footer className="w-full px-4 pb-8 pt-10 md:px-10 lg:px-16">
+      <div className="mx-auto max-w-7xl rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_20px_45px_-35px_rgba(15,23,42,0.45)] md:p-8">
+        <div className="grid gap-8 border-b border-slate-200 pb-8 md:grid-cols-2 lg:grid-cols-[1.25fr_1fr_1fr_1fr_1fr]">
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-2">
+              <h1 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
+                <Link to="/" className="flex items-center gap-2">
+                  <span className="rounded-xl bg-slate-900 p-2 text-white">
+                    <FiShoppingBag className="text-2xl" />
+                  </span>
+                  MarketPro
+                </Link>
+              </h1>
+              <p className="max-w-md text-sm leading-relaxed text-slate-500">
+                Your one-stop multi-vendor marketplace for quality products from
+                trusted sellers worldwide.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-[#F8FAFC] p-4">
+              <label
+                htmlFor="newsletter"
+                className="mb-2 block text-sm font-semibold text-slate-700"
+              >
+                Subscribe to our newsletter
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-0 focus:border-blue-500"
+                  placeholder="Enter your email"
+                  name="newsletter"
+                  id="newsletter"
+                />
+                <button className="rounded-xl bg-slate-900 p-3 text-white transition hover:bg-blue-500">
+                  <FaTelegramPlane className="text-xl" />
+                </button>
+              </div>
             </div>
           </div>
+
+          <div className="flex flex-col gap-2 text-sm text-slate-600">
+            <h3 className="mb-2 text-base font-semibold text-slate-900">
+              <Link to="/products">Shop</Link>
+            </h3>
+            <h3 className="hover:text-blue-500">
+              <Link to="/products">All Products</Link>
+            </h3>
+            <h3 className="hover:text-blue-500">
+              <Link to="/products">Categories</Link>
+            </h3>
+            <h3 className="hover:text-blue-500">
+              <Link to="/products">Deals</Link>
+            </h3>
+            <h3 className="hover:text-blue-500">
+              <Link to="/products">New Arrivals</Link>
+            </h3>
+          </div>
+
+          <div className="flex flex-col gap-2 text-sm text-slate-600">
+            <h3 className="mb-2 text-base font-semibold text-slate-900">
+              <Link to="/dashboard">Account</Link>
+            </h3>
+            <h3 className="hover:text-blue-500">
+              <Link to="/dashboard/orders">My Orders</Link>
+            </h3>
+            <h3 className="hover:text-blue-500">
+              <Link to="/cart">Wishlist</Link>
+            </h3>
+            <h3 className="hover:text-blue-500">
+              <Link to="/dashboard/profile">Profile</Link>
+            </h3>
+            <h3 className="hover:text-blue-500">
+              <Link to="/dashboard/setting">Settings</Link>
+            </h3>
+          </div>
+
+          <div className="flex flex-col gap-2 text-sm text-slate-600">
+            <h3 className="mb-2 text-base font-semibold text-slate-900">
+              <Link to="/">Company</Link>
+            </h3>
+            <h3 className="hover:text-blue-500">
+              <Link to="/">About Us</Link>
+            </h3>
+            <h3>Careers</h3>
+            <h3>Blogs</h3>
+            <h3 className="hover:text-blue-500">
+              <Link to="/">Contact</Link>
+            </h3>
+          </div>
+
+          <div className="flex flex-col gap-2 text-sm text-slate-600">
+            <h3 className="mb-2 text-base font-semibold text-slate-900">
+              <Link to="/">Support</Link>
+            </h3>
+            <h3 className="hover:text-blue-500">
+              <Link to="/">Help Center</Link>
+            </h3>
+            <h3>Shipping Info</h3>
+            <h3>Returns</h3>
+            <h3>Privacy Policy</h3>
+          </div>
         </div>
 
-        <div className="text-gray-600 flex flex-col gap-2">
-          <h3 className="text-black font-semibold">
-            <Link>Shop</Link>
-          </h3>
-          <h3>
-            <Link>All Products</Link>
-          </h3>
-          <h3>
-            <Link>Categories</Link>
-          </h3>
-          <h3>
-            <Link>Deals</Link>
-          </h3>
-          <h3>
-            <Link>New Arrivals</Link>
-          </h3>
-        </div>
-
-        <div className="text-gray-600 flex flex-col gap-2">
-          <h3 className="text-black font-semibold">
-            <Link>Account</Link>
-          </h3>
-          <h3>
-            <Link>My Orders</Link>
-          </h3>
-          <h3>
-            <Link>Wishlist</Link>
-          </h3>
-          <h3>
-            <Link>Profile</Link>
-          </h3>
-          <h3>
-            <Link>Settings</Link>
-          </h3>
-        </div>
-
-        <div className="text-gray-600 flex flex-col gap-2">
-          <h3 className="text-black font-semibold">
-            <Link>Company</Link>
-          </h3>
-          <h3>
-            <Link>About Us</Link>
-          </h3>
-          <h3>
-            <Link>Careers</Link>
-          </h3>
-          <h3>
-            <Link>Blogs</Link>
-          </h3>
-          <h3>
-            <Link>Contact</Link>
-          </h3>
-        </div>
-
-        <div className="text-gray-600 flex flex-col gap-2">
-          <h3 className="text-black font-semibold">
-            <Link>Support</Link>
-          </h3>
-          <h3>
-            <Link>Help Center</Link>
-          </h3>
-          <h3>
-            <Link>Shupping Info</Link>
-          </h3>
-          <h3>
-            <Link>Returns</Link>
-          </h3>
-          <h3>
-            <Link>Privacy Policy</Link>
-          </h3>
+        <div className="mt-5 flex flex-col items-center justify-between gap-4 text-sm text-slate-500 md:flex-row">
+          <span>© 2026 MarketPro. All rights reserved.</span>
+          <div className="flex gap-2 text-lg text-slate-700">
+            <button className="rounded-full border border-slate-200 p-2 transition hover:border-blue-500 hover:text-blue-500">
+              <LuFacebook />
+            </button>
+            <button className="rounded-full border border-slate-200 p-2 transition hover:border-blue-500 hover:text-blue-500">
+              <RiTwitterXLine />
+            </button>
+            <button className="rounded-full border border-slate-200 p-2 transition hover:border-blue-500 hover:text-blue-500">
+              <FaInstagram />
+            </button>
+            <button className="rounded-full border border-slate-200 p-2 transition hover:border-blue-500 hover:text-blue-500">
+              <SlSocialYoutube />
+            </button>
+          </div>
         </div>
       </div>
-      <div className="flex flex-col  md:pb-0 md:text-sm  md:flex-row gap-5 mt-4 md:mt-0  justify-center md:justify-between my-4 items-center">
-        <span className="md:my-5">© 2026 MarketPro. All rights reserved.</span>
-        <div className=" text-2xl md:my-5 md:text-lg flex gap-2 md:gap-4 md:pr-8">
-          <LuFacebook />
-          <RiTwitterXLine />
-          <FaInstagram />
-          <SlSocialYoutube />
-        </div>
-      </div>
-    </div>
+    </footer>
   );
 };
 
 export default Footer;
+

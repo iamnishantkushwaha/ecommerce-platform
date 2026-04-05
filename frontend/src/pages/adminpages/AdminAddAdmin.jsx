@@ -18,18 +18,28 @@ const AdminAddAdmin = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === "phoneNumber") {
+      const digitsOnly = value.replace(/\D/g, "").slice(0, 10);
+      setFormData((prev) => ({ ...prev, [name]: digitsOnly }));
+      return;
+    }
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (isMismatch) return;
-    try{
-     const res=await api.post("/admin/addadmin",formData)
-     toast.success("Admin Added Successfully");
-    }catch(err){
-         toast.error(err.response?.data?.message);
-        console.log("Error in Adminaddadmin:",err.message)
+    if (!/^\d{10}$/.test(formData.phoneNumber)) {
+      toast.error("Phone number must be exactly 10 digits");
+      return;
+    }
+
+    try {
+      const res = await api.post("/admin/addadmin", formData);
+      toast.success("Admin Added Successfully");
+    } catch (err) {
+      toast.error(err.response?.data?.message);
+      console.log("Error in Adminaddadmin:", err.message);
     }
     console.log("Add admin form submitted", formData);
   };
@@ -37,15 +47,15 @@ const AdminAddAdmin = () => {
   return (
     <>
       <AdminNavbar />
-      <main className="bg-gray-100 pt-20 md:pl-72 md:pt-20 pb-10 min-h-screen">
+      <main className="bg-[#F8FAFC] pt-20 md:pl-72 md:pt-20 pb-10 min-h-screen">
         <div className="px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-2xl font-bold text-gray-900">Add New Admin</h1>
+          <h1 className="text-2xl font-bold text-slate-900">Add New Admin</h1>
 
           <form
             onSubmit={handleSubmit}
-            className="mt-6 rounded-lg border border-gray-100 bg-white p-6 shadow-sm max-w-2xl"
+            className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm max-w-2xl"
           >
-            <p className="mb-6 text-sm text-gray-600">
+            <p className="mb-6 text-sm text-slate-500">
               Create another admin account for platform management.
             </p>
 
@@ -53,7 +63,7 @@ const AdminAddAdmin = () => {
               <div>
                 <label
                   htmlFor="fullName"
-                  className="mb-1 block text-sm font-medium text-gray-700"
+                  className="mb-1 block text-sm font-medium text-slate-700"
                 >
                   Full Name
                 </label>
@@ -64,7 +74,7 @@ const AdminAddAdmin = () => {
                   value={formData.fullName}
                   onChange={handleChange}
                   required
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                  className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter full name"
                 />
               </div>
@@ -72,7 +82,7 @@ const AdminAddAdmin = () => {
               <div>
                 <label
                   htmlFor="email"
-                  className="mb-1 block text-sm font-medium text-gray-700"
+                  className="mb-1 block text-sm font-medium text-slate-700"
                 >
                   Email
                 </label>
@@ -83,7 +93,7 @@ const AdminAddAdmin = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                  className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter email"
                 />
               </div>
@@ -91,7 +101,7 @@ const AdminAddAdmin = () => {
               <div>
                 <label
                   htmlFor="phoneNumber"
-                  className="mb-1 block text-sm font-medium text-gray-700"
+                  className="mb-1 block text-sm font-medium text-slate-700"
                 >
                   Phone Number
                 </label>
@@ -101,8 +111,11 @@ const AdminAddAdmin = () => {
                   type="tel"
                   value={formData.phoneNumber}
                   onChange={handleChange}
+                  inputMode="numeric"
+                  maxLength={10}
+                  pattern="[0-9]{10}"
                   required
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                  className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter phone number"
                 />
               </div>
@@ -110,7 +123,7 @@ const AdminAddAdmin = () => {
               <div>
                 <label
                   htmlFor="password"
-                  className="mb-1 block text-sm font-medium text-gray-700"
+                  className="mb-1 block text-sm font-medium text-slate-700"
                 >
                   Password
                 </label>
@@ -121,7 +134,7 @@ const AdminAddAdmin = () => {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                  className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter password"
                 />
               </div>
@@ -129,7 +142,7 @@ const AdminAddAdmin = () => {
               <div>
                 <label
                   htmlFor="confirmPassword"
-                  className="mb-1 block text-sm font-medium text-gray-700"
+                  className="mb-1 block text-sm font-medium text-slate-700"
                 >
                   Confirm Password
                 </label>
@@ -140,7 +153,7 @@ const AdminAddAdmin = () => {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   required
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                  className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                   placeholder="Re-enter password"
                 />
                 {isMismatch && (
@@ -154,7 +167,7 @@ const AdminAddAdmin = () => {
             <button
               type="submit"
               disabled={isMismatch}
-              className="mt-6 inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300"
+              className="mt-6 inline-flex items-center rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-slate-300"
             >
               Add Admin
             </button>

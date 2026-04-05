@@ -1,7 +1,9 @@
 const User = require("../models/user");
 const Order = require("../models/orders");
 const Product = require("../models/product");
-const bcrypt=require("bcrypt")
+const bcrypt = require("bcrypt");
+
+const isValidPhoneNumber = (phoneNumber) => /^\d{10}$/.test(phoneNumber);
 async function handlemanagevendors(req, res) {
   try {
     const vendors = await User.find({ role: "VENDOR" });
@@ -26,11 +28,11 @@ async function handleusers(req, res) {
   }
 }
 
-
 async function handleorders(req, res) {
   try {
-    const orders = await Order.find().populate("user","fullName");
-    if (!orders) return res.status(404).json({ message: "Orders Not Found" });
+    const orders = await Order.find().populate("user", "fullName");
+    if (orders.length == 0)
+      return res.status(404).json({ message: "Orders Not Found" });
 
     return res.status(200).json({ message: "Order fetched", orders });
   } catch (err) {
@@ -173,7 +175,7 @@ async function handlerecentactivities(req, res) {
         message: "New Vendor Registered",
         createdAt: vendor.createdAt,
       })),
-      
+
       ...recentVendorsapprove.map((vendor) => ({
         type: "vendorapproved",
         message: "New Vendor Approved",
@@ -192,11 +194,17 @@ async function handlerecentactivities(req, res) {
   }
 }
 
-async function handleaddadmin(req,res){
+async function handleaddadmin(req, res) {
   try {
     const { fullName, email, phoneNumber, password } = req.body;
-   
-    const user = await User.findOne( {email} );
+
+    if (!isValidPhoneNumber(phoneNumber)) {
+      return res
+        .status(400)
+        .json({ message: "Phone number must be exactly 10 digits" });
+    }
+
+    const user = await User.findOne({ email });
     if (user) return res.status(400).json({ message: "Admin already Existed" });
     const hashpassword = await bcrypt.hash(password, 10);
 
@@ -205,12 +213,13 @@ async function handleaddadmin(req,res){
       email,
       phoneNumber,
       password: hashpassword,
-      role:"ADMIN"
+      role: "ADMIN",
     });
-    return res.status(201).json({message:`ADMIN created successfully`});
+    return res.status(201).json({ message: `ADMIN created successfully` });
   } catch (err) {
-   
-  return res.status(500).json({ message: "Server Error", Error:err.message });
+    return res
+      .status(500)
+      .json({ message: "Server Error", Error: err.message });
   }
 }
 

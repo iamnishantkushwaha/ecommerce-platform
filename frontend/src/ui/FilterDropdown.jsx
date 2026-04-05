@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 
-
-
-export default function FilterDropdown({ onChange ,options}) {
+export default function FilterDropdown({ onChange, options }) {
   const [open, setOpen] = useState(false);
 
   const [selected, setSelected] = useState(options[0].label);
@@ -18,11 +16,10 @@ export default function FilterDropdown({ onChange ,options}) {
 
   return (
     <div className="relative w-56">
-      
       {/* Selected box */}
       <div
         onClick={() => setOpen(!open)}
-        className="flex justify-between items-center px-4 py-2 border rounded-lg bg-white cursor-pointer"
+        className="flex justify-between items-center px-4 py-2 border border-slate-200 rounded-lg bg-white cursor-pointer text-slate-700"
       >
         <span>{selected}</span>
         <FiChevronDown className={`${open ? "rotate-180" : ""} transition`} />
@@ -30,13 +27,13 @@ export default function FilterDropdown({ onChange ,options}) {
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute w-full mt-1 bg-white border rounded-lg shadow-md z-10">
+        <div className="absolute w-full mt-1 bg-white border border-slate-200 rounded-lg shadow-md z-10">
           {options.map((item) => (
             <div
               key={item.label}
               onClick={() => handleSelect(item)}
-              className={`px-4 py-2 cursor-pointer hover:bg-indigo-200 ${
-                selected === item.label ? "bg-indigo-600 text-white" : ""
+              className={`px-4 py-2 cursor-pointer hover:bg-blue-50 ${
+                selected === item.label ? "bg-blue-600 text-white" : ""
               }`}
             >
               {item.label}

@@ -3,10 +3,16 @@ import { GoPerson } from "react-icons/go";
 import { useState, useEffect } from "react";
 import api from "../../api";
 import { toast } from "react-toastify";
+
 const Profile = () => {
   const [fullName, setfullName] = useState("");
   const [email, setemail] = useState("");
   const [phoneNumber, setphoneNumber] = useState("");
+
+  const handlePhoneNumberChange = (e) => {
+    const digitsOnly = e.target.value.replace(/\D/g, "").slice(0, 10);
+    setphoneNumber(digitsOnly);
+  };
 
   useEffect(() => {
     const fetchprofiledata = async () => {
@@ -18,81 +24,113 @@ const Profile = () => {
         setphoneNumber(res.data.user.phoneNumber);
       } catch (err) {
         console.log("Error in Profile", err);
-         
       }
     };
     fetchprofiledata();
   }, []);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!/^\d{10}$/.test(phoneNumber)) {
+      toast.error("Phone number must be exactly 10 digits");
+      return;
+    }
+
     try {
       const res = await api.patch("/user/profile", {
         fullName,
         email,
         phoneNumber,
       });
-        toast.success("Profile Updated Successfully");
-
+      toast.success("Profile Updated Successfully");
       console.log(res.data.message);
     } catch (err) {
       console.log("Error in Profile", err);
       toast.error(err.response?.data?.message);
     }
   };
+
   return (
-    <div className="min-h-screen px-4 w-screen md:w-full md:px-6 lg:px-10 bg-gray-100 flex flex-col justify-center gap-8">
-      <h1 className="text-3xl font-bold text-center">My Profile</h1>
-      <div className="rounded-xl bg-white p-6 md:p-8 items-center justify-center flex flex-col gap-10 w-full max-w-3xl mx-auto">
-        <div className="flex gap-4 justify-center w-full">
-          <div className="text-indigo-600 h-fit w-fit  bg-indigo-200 p-3 text-5xl rounded-[50px] font-bold">
-            <GoPerson />
+    <div className="min-h-screen w-full bg-linear-to-b from-slate-50 to-white px-4 md:px-8 lg:px-12 pt-24 md:pt-24 pb-8 md:pb-12">
+      {/* Header */}
+      <div className="max-w-3xl mx-auto mb-6 md:mb-8">
+        <h1 className="text-3xl md:text-4xl font-bold text-slate-900">
+          My Profile
+        </h1>
+        <p className="text-slate-500 mt-2 text-sm md:text-base">
+          Update your personal information
+        </p>
+      </div>
+
+      {/* Main Card */}
+      <div className="max-w-3xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+          {/* Profile Header */}
+          <div className="bg-linear-to-r from-slate-900 to-blue-600 px-8 py-12 text-white">
+            <div className="flex items-center gap-6">
+              <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm border-2 border-white/30">
+                <GoPerson className="text-4xl text-white" />
+              </div>
+              <div>
+                <h2 className="text-3xl font-bold">{fullName || "User"}</h2>
+                <p className="text-white/80">{email || "No email"}</p>
+              </div>
+            </div>
           </div>
-          <div>
-            <span className="text-2xl font-semibold">{fullName}</span>
-            <p>{email}</p>
-          </div>
-        </div>
-        <div className="w-full">
-          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-            <div className="flex flex-col gap-2">
-              <label htmlFor="fullName">Full Name</label>
-              <input
-                value={fullName}
-                onChange={(e) => setfullName(e.target.value)}
-                className="p-2 outline-0 bg-gray-100 border border-gray-300 rounded-xl "
-                type="text"
-                id="fullName"
-                name="fullName"
-              />
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="email">Email</label>
-              <input
-                value={email}
-                onChange={(e) => setemail(e.target.value)}
-                className="p-2 outline-0 bg-gray-100 border border-gray-300 rounded-xl "
-                type="text"
-                id="email"
-                name="email"
-              />
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="phoneNumber">Phone Number</label>
-              <input
-                value={phoneNumber}
-                onChange={(e) => setphoneNumber(e.target.value)}
-                className="p-2 outline-0 bg-gray-100 border border-gray-300 rounded-xl "
-                type="text"
-                id="phoneNumber"
-                name="phoneNumber"
-              />
-            </div>
-            <div className="flex justify-center">
-              <button className="p-3 w-full sm:w-auto text-white bg-indigo-600 rounded-xl font-semibold">
+
+          {/* Form Section */}
+          <div className="p-8 md:p-10">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Full Name
+                </label>
+                <input
+                  value={fullName}
+                  onChange={(e) => setfullName(e.target.value)}
+                  className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-200 rounded-xl focus:border-blue-500 focus:bg-white outline-none transition-colors"
+                  type="text"
+                  placeholder="Enter your full name"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Email Address
+                </label>
+                <input
+                  value={email}
+                  onChange={(e) => setemail(e.target.value)}
+                  className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-200 rounded-xl focus:border-blue-500 focus:bg-white outline-none transition-colors"
+                  type="email"
+                  placeholder="Enter your email"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Phone Number
+                </label>
+                <input
+                  value={phoneNumber}
+                  onChange={handlePhoneNumberChange}
+                  className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-200 rounded-xl focus:border-blue-500 focus:bg-white outline-none transition-colors"
+                  type="tel"
+                  inputMode="numeric"
+                  maxLength={10}
+                  pattern="[0-9]{10}"
+                  placeholder="Enter your phone number"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-linear-to-r from-slate-900 to-blue-600 text-white font-bold py-3 px-6 rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-200 mt-8"
+              >
                 Save Changes
               </button>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </div>

@@ -41,18 +41,25 @@ const VendorSettings = () => {
   return (
     <>
       <VendorNavbar />
-      <main className="bg-gray-100 pt-20 md:pl-72 md:pt-20 pb-10 min-h-screen">
+      <main className="bg-slate-50 pt-24 md:pl-72 md:pt-24 pb-10 min-h-screen">
         <div className="px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-2xl font-bold text-gray-900">Vendor Settings</h1>
+          <div className="pt-4 md:pt-0 max-w-3xl">
+            <h1 className="text-3xl md:text-4xl font-bold text-slate-900">
+              Vendor Settings
+            </h1>
+            <p className="mt-2 text-sm md:text-base text-slate-500">
+              Update your vendor account password.
+            </p>
+          </div>
 
           <form
             onSubmit={handleSubmit}
-            className="bg-white rounded-lg shadow-sm border border-gray-100 mt-6 p-6"
+            className="bg-white rounded-3xl shadow-sm border border-slate-200 mt-6 p-6 md:p-8 max-w-3xl"
           >
-            <h2 className="text-lg font-semibold text-gray-900 mb-1">
+            <h2 className="text-xl font-semibold text-slate-900 mb-1">
               Change Password
             </h2>
-            <p className="text-sm text-gray-600 mb-6">
+            <p className="text-sm text-slate-500 mb-6">
               Update your vendor account password.
             </p>
 
@@ -60,7 +67,7 @@ const VendorSettings = () => {
               <div>
                 <label
                   htmlFor="currentPassword"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  className="block text-sm font-medium text-slate-700 mb-1"
                 >
                   Current Password
                 </label>
@@ -71,7 +78,7 @@ const VendorSettings = () => {
                   value={formData.currentPassword}
                   onChange={handleChange}
                   required
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Enter current password"
                 />
               </div>
@@ -79,7 +86,7 @@ const VendorSettings = () => {
               <div>
                 <label
                   htmlFor="newPassword"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  className="block text-sm font-medium text-slate-700 mb-1"
                 >
                   New Password
                 </label>
@@ -90,7 +97,7 @@ const VendorSettings = () => {
                   value={formData.newPassword}
                   onChange={handleChange}
                   required
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Enter new password"
                 />
               </div>
@@ -98,7 +105,7 @@ const VendorSettings = () => {
               <div>
                 <label
                   htmlFor="confirmPassword"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  className="block text-sm font-medium text-slate-700 mb-1"
                 >
                   Confirm New Password
                 </label>
@@ -109,7 +116,7 @@ const VendorSettings = () => {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   required
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Re-enter new password"
                 />
                 {isMismatch && (
@@ -124,7 +131,7 @@ const VendorSettings = () => {
               <button
                 type="submit"
                 disabled={isMismatch}
-                className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300"
+                className="inline-flex items-center rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-slate-300"
               >
                 Update Password
               </button>

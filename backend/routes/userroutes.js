@@ -16,10 +16,7 @@ router.get("/trackorder/:orderId",handletrackorder);
 router.get("/latest-order", handleLatestOrder); 
 router.get("/profile",handleprofile);
 router.patch("/profile",handleupdateprofile);
-router.get("/api/me",(req,res)=>{
-  console.log(req.user);
-  return res.json({user:req.user})
-})
+
 
 router.patch("/passwordchange",handlepasswordchange);
 module.exports=router

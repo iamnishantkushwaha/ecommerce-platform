@@ -22,6 +22,12 @@ const Checkout = () => {
   const [country, setcountry] = useState("");
   const [pincode, setpincode] = useState("");
   const [city, setcity] = useState("");
+
+  const handlePhoneNumberChange = (e) => {
+    const digitsOnly = e.target.value.replace(/\D/g, "").slice(0, 10);
+    setphonenumber(digitsOnly);
+  };
+
   useEffect(() => {
     const fetchcart = async () => {
       try {
@@ -37,6 +43,11 @@ const Checkout = () => {
   const handleplaceorder = async (e) => {
     e.preventDefault();
 
+    if (!/^\d{10}$/.test(phonenumber)) {
+      toast.error("Phone number must be exactly 10 digits");
+      return;
+    }
+
     if (!paymentmethod) {
       return;
     }
@@ -46,19 +57,18 @@ const Checkout = () => {
         productId: item.product._id,
         quantity: item.quantity,
       }));
-    let paymentStatus;
+      let paymentStatus;
       const deliveryAddress = `${fullname}, ${address}, ${city}, ${state}, ${country}, ${pincode}\nMobile Number: ${phonenumber}`;
-      if(paymentmethod=="online"){
-       paymentStatus="Paid"
-      }
-      else
-      {
-        paymentStatus="Unpaid"
+      if (paymentmethod == "online") {
+        paymentStatus = "Paid";
+      } else {
+        paymentStatus = "Unpaid";
       }
       const res = await api.post("/user/orders", {
         products: formattedProducts,
         deliveryAddress,
-        paymentStatus
+        paymentStatus,
+        shippingName: fullname,
       });
       if (res.data.message == "Order placed successfully") {
         navigate("/cart/orderplaced");
@@ -69,26 +79,40 @@ const Checkout = () => {
       console.log("STATUS:", err?.response?.status);
       console.log("DATA:", err?.response?.data);
       console.log("MESSAGE:", err?.message);
-       toast.error(err.response?.data?.message);
+      toast.error(err.response?.data?.message);
     }
   };
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gray-200 w-screen md:w-full md:px-6 lg:px-10 px-4 flex flex-col gap-4 pt-20">
-        <h2 className="text-2xl font-bold">Checkout</h2>
+      <div className="min-h-screen w-screen md:w-full md:px-8 lg:px-10 px-4 flex flex-col gap-4 pt-24 bg-slate-50">
+        <div className="mx-auto w-full max-w-7xl pt-2">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
+            Checkout
+          </h2>
+          <p className="mt-1 text-sm text-slate-500">
+            Complete shipping and payment to place your order
+          </p>
+        </div>
         <form
           onSubmit={handleplaceorder}
-          className="md:flex-row flex md:gap-18 flex-col gap-4 "
+          className="mx-auto flex w-full max-w-7xl md:flex-row md:gap-8 flex-col gap-4"
         >
           <div className="flex flex-col md:w-4/6 gap-4">
-            <div className=" flex flex-col gap-3 p-4 w-full bg-white rounded-xl">
-              <h3 className="text-lg font-semibold">Shipping Address</h3>
+            <div className="flex flex-col gap-3 p-5 w-full bg-white rounded-2xl border border-slate-200 shadow-sm">
+              <h3 className="text-lg font-semibold text-slate-900">
+                Shipping Address
+              </h3>
               <div className=" w-full ">
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="fullName">FullName</label>
+                  <label
+                    className="text-sm font-semibold text-slate-700"
+                    htmlFor="fullName"
+                  >
+                    FullName
+                  </label>
                   <input
-                    className="outline-0 p-2 bg-gray-100 rounded-lg border border-gray-300"
+                    className="outline-0 p-3 bg-slate-50 rounded-lg border border-slate-200 focus:border-blue-500"
                     type="text"
                     name="fullNAme"
                     id="fullName"
@@ -98,21 +122,34 @@ const Checkout = () => {
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="contact">Contact</label>
+                  <label
+                    className="text-sm font-semibold text-slate-700"
+                    htmlFor="contact"
+                  >
+                    Contact
+                  </label>
                   <input
-                    className="outline-0 p-2 bg-gray-100 rounded-lg border border-gray-300"
-                    type="text"
+                    className="outline-0 p-3 bg-slate-50 rounded-lg border border-slate-200 focus:border-blue-500"
+                    type="tel"
                     name="contact"
                     id="contact"
                     required
                     value={phonenumber}
-                    onChange={(e) => setphonenumber(e.target.value)}
+                    onChange={handlePhoneNumberChange}
+                    inputMode="numeric"
+                    maxLength={10}
+                    pattern="[0-9]{10}"
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="Address">Address</label>
+                  <label
+                    className="text-sm font-semibold text-slate-700"
+                    htmlFor="Address"
+                  >
+                    Address
+                  </label>
                   <input
-                    className="outline-0 p-2 bg-gray-100 rounded-lg border border-gray-300"
+                    className="outline-0 p-3 bg-slate-50 rounded-lg border border-slate-200 focus:border-blue-500"
                     type="text"
                     name="Address"
                     id="Address"
@@ -122,11 +159,15 @@ const Checkout = () => {
                   />
                 </div>
                 <div className="flex gap-2 w-full">
-                  {" "}
                   <div className="flex flex-col w-1/2 gap-2">
-                    <label htmlFor="city"></label>City
+                    <label
+                      className="text-sm font-semibold text-slate-700"
+                      htmlFor="city"
+                    >
+                      City
+                    </label>
                     <input
-                      className="outline-0 p-2 bg-gray-100 rounded-lg border border-gray-300"
+                      className="outline-0 p-3 bg-slate-50 rounded-lg border border-slate-200 focus:border-blue-500"
                       type="text"
                       name="city"
                       id="city"
@@ -136,9 +177,14 @@ const Checkout = () => {
                     />
                   </div>
                   <div className="flex w-1/2 flex-col gap-2">
-                    <label htmlFor="State"></label>State
+                    <label
+                      className="text-sm font-semibold text-slate-700"
+                      htmlFor="State"
+                    >
+                      State
+                    </label>
                     <input
-                      className="outline-0 p-2 bg-gray-100 rounded-lg border border-gray-300"
+                      className="outline-0 p-3 bg-slate-50 rounded-lg border border-slate-200 focus:border-blue-500"
                       type="text"
                       name="State"
                       id="State"
@@ -150,9 +196,14 @@ const Checkout = () => {
                 </div>
                 <div className="flex gap-2 justify-center items-center w-full">
                   <div className="flex w-1/2 flex-col gap-2">
-                    <label htmlFor="Country"></label>Country
+                    <label
+                      className="text-sm font-semibold text-slate-700"
+                      htmlFor="Country"
+                    >
+                      Country
+                    </label>
                     <input
-                      className="outline-0 p-2 bg-gray-100 rounded-lg border border-gray-300"
+                      className="outline-0 p-3 bg-slate-50 rounded-lg border border-slate-200 focus:border-blue-500"
                       type="text"
                       name="Country"
                       id="Country"
@@ -162,9 +213,14 @@ const Checkout = () => {
                     />
                   </div>
                   <div className="flex w-1/2 flex-col gap-2 pt-0.5">
-                    <label htmlFor="Pincode">Pincode</label>
+                    <label
+                      className="text-sm font-semibold text-slate-700"
+                      htmlFor="Pincode"
+                    >
+                      Pincode
+                    </label>
                     <input
-                      className="outline-0 p-2 bg-gray-100 rounded-lg border border-gray-300"
+                      className="outline-0 p-3 bg-slate-50 rounded-lg border border-slate-200 focus:border-blue-500"
                       type="Number"
                       name="Pincode"
                       id="Pincode"
@@ -176,15 +232,17 @@ const Checkout = () => {
                 </div>
               </div>
             </div>
-            <div className=" flex flex-col gap-8 p-4 w-full bg-white rounded-xl">
-              <h3 className="text-lg font-semibold">Payment Method</h3>
+            <div className="flex flex-col gap-6 p-5 w-full bg-white rounded-2xl border border-slate-200 shadow-sm">
+              <h3 className="text-lg font-semibold text-slate-900">
+                Payment Method
+              </h3>
               <div className="flex flex-col gap-4">
                 <div
                   onClick={() => {
                     setpaymentmethod(paymentmethod === "cash" ? "" : "cash");
                     setisonline(false);
                   }}
-                  className={` flex   rounded-xl border  ${paymentmethod == "cash" ? "border-indigo-600 bg-indigo-100" : "border-gray-300"} gap-2 p-4`}
+                  className={`flex rounded-xl border ${paymentmethod == "cash" ? "border-blue-500 bg-blue-50" : "border-slate-200"} gap-2 p-4 cursor-pointer transition`}
                 >
                   <input
                     type="radio"
@@ -197,7 +255,7 @@ const Checkout = () => {
                   />
                   <label
                     htmlFor="cash"
-                    className="flex text-lg font-semibold gap-2 items-center "
+                    className="flex text-lg font-semibold gap-2 items-center text-slate-800"
                   >
                     <BsCash className="text-2xl " /> Cash On Delivery
                   </label>
@@ -209,7 +267,7 @@ const Checkout = () => {
                     );
                     setisonline(true);
                   }}
-                  className={` flex   rounded-xl border  ${paymentmethod == "online" ? "border-indigo-600 bg-indigo-100" : "border-gray-300"} gap-2 p-4`}
+                  className={`flex rounded-xl border ${paymentmethod == "online" ? "border-blue-500 bg-blue-50" : "border-slate-200"} gap-2 p-4 cursor-pointer transition`}
                 >
                   <input
                     type="radio"
@@ -222,7 +280,7 @@ const Checkout = () => {
                   />
                   <label
                     htmlFor="online"
-                    className="flex text-lg font-semibold gap-2 items-center "
+                    className="flex text-lg font-semibold gap-2 items-center text-slate-800"
                   >
                     <LuWallet className="text-2xl " /> By Online Payment
                   </label>
@@ -230,10 +288,10 @@ const Checkout = () => {
               </div>
               {isonline ? (
                 <div className="flex flex-col gap-4">
-                  <h3 className="text-lg font-semibold">
+                  <h3 className="text-lg font-semibold text-slate-900">
                     Select Payment Option
                   </h3>
-                  <div className="flex justify-between  items-center">
+                  <div className="grid grid-cols-3 gap-3 items-center">
                     <div
                       onClick={() =>
                         setonlinepaymentmethod(
@@ -242,8 +300,7 @@ const Checkout = () => {
                             : "creditcard",
                         )
                       }
-                       
-                      className={`flex items-center p-3 md:p-6 ${onlinepaymentmethod == "creditcard" ? "border-indigo-600 bg-indigo-100" : "border-gray-300 "} flex-col border rounded-xl `}
+                      className={`flex items-center p-3 md:p-4 ${onlinepaymentmethod == "creditcard" ? "border-blue-500 bg-blue-50" : "border-slate-200"} flex-col border rounded-xl cursor-pointer`}
                     >
                       <FaCreditCard className="text-2xl" />
                       Credit Card
@@ -256,8 +313,7 @@ const Checkout = () => {
                             : "debitcard",
                         )
                       }
-                      
-                      className={`p-3 md:p-6 flex flex-col border ${onlinepaymentmethod == "debitcard" ? "border-indigo-600 bg-indigo-100" : "border-gray-300 "} border-gray-300 items-center rounded-xl `}
+                      className={`p-3 md:p-4 flex flex-col border ${onlinepaymentmethod == "debitcard" ? "border-blue-500 bg-blue-50" : "border-slate-200"} items-center rounded-xl cursor-pointer`}
                     >
                       <FaCreditCard className="text-2xl" /> Debit Card
                     </div>
@@ -267,10 +323,8 @@ const Checkout = () => {
                           onlinepaymentmethod === "UPI" ? " " : "UPI",
                         )
                       }
-                       
-                      className={`p-4 md:p-6 flex border ${onlinepaymentmethod === "UPI" ? "border-indigo-600 bg-indigo-100" : "border-gray-300 "} border-gray-300 items-center rounded-xl flex-col`}
+                      className={`p-4 md:p-4 flex border ${onlinepaymentmethod === "UPI" ? "border-blue-500 bg-blue-50" : "border-slate-200"} items-center rounded-xl flex-col cursor-pointer`}
                     >
-                      {" "}
                       <FiSmartphone className="text-2xl" /> UPI
                     </div>
                   </div>
@@ -282,7 +336,7 @@ const Checkout = () => {
                             Card Number
                           </label>
                           <input
-                            className="border border-gray-300 rounded-xl p-3 outline-0"
+                            className="border border-slate-200 rounded-xl p-3 outline-0 focus:border-blue-500"
                             type="Number"
                             placeholder="4343 5464 4353 3345"
                           />
@@ -292,7 +346,7 @@ const Checkout = () => {
                             Expiry Date
                           </label>
                           <input
-                            className="border border-gray-300 rounded-xl p-3 outline-0"
+                            className="border border-slate-200 rounded-xl p-3 outline-0 focus:border-blue-500"
                             type="Number"
                             placeholder="09/11"
                           />
@@ -302,7 +356,7 @@ const Checkout = () => {
                             CVV
                           </label>
                           <input
-                            className="border border-gray-300 rounded-xl p-3 outline-0"
+                            className="border border-slate-200 rounded-xl p-3 outline-0 focus:border-blue-500"
                             type="Number"
                             placeholder="545"
                           />
@@ -314,7 +368,7 @@ const Checkout = () => {
                           UPI ID
                         </label>
                         <input
-                          className="border border-gray-300 rounded-xl p-3 outline-0"
+                          className="border border-slate-200 rounded-xl p-3 outline-0 focus:border-blue-500"
                           type="text"
                           placeholder="examample@upi"
                         />
@@ -327,24 +381,33 @@ const Checkout = () => {
               )}
             </div>
           </div>
-          <div className="md:w-2/5 md:h-fit rounded-xl  bg-white p-5">
-            <h2 className="text-xl font-semibold">Order Summary</h2>
+          <div className="md:w-2/5 md:h-fit rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">
+              Order Summary
+            </h2>
 
-            <div className="border-b max-h-[45vh] md:max-h-58 overflow-y-auto flex flex-col gap-2 border-gray-400 py-2">
+            <div className="border-b max-h-[45vh] md:max-h-58 overflow-y-auto flex flex-col gap-2 border-slate-200 py-3">
               {items.map((item) => {
                 return (
-                  <div key={item.product._id} className="flex gap-2">
+                  <div
+                    key={item.product._id}
+                    className="flex gap-3 rounded-xl border border-slate-200 p-2"
+                  >
                     <img
-                      className="h-18 rounded-xl w-18"
+                      className="h-18 rounded-xl w-18 object-cover"
                       src={item.product.image}
                       alt={item.product.title}
                     />
                     <div className="flex flex-col gap-1">
-                      <h3 className="font-semibold">{item.product.title}</h3>
+                      <h3 className="font-semibold text-slate-900">
+                        {item.product.title}
+                      </h3>
                       <div className="flex justify-between w-full items-center gap-3">
-                        <h4>QTY:{item.quantity}</h4>{" "}
-                        <h2 className="text-lg font-bold">
-                          {item.quantity * item.product.price}
+                        <h4 className="text-sm text-slate-600">
+                          QTY:{item.quantity}
+                        </h4>{" "}
+                        <h2 className="text-lg font-bold text-slate-900">
+                          ₹{item.quantity * item.product.price}
                         </h2>
                       </div>
                     </div>
@@ -353,14 +416,14 @@ const Checkout = () => {
               })}
             </div>
 
-            <div className="flex justify-between font-bold text-xl py-2">
+            <div className="flex justify-between font-bold text-xl py-3">
               <span>Total</span>
-              <span> 45</span>
+              <span>₹45</span>
             </div>
 
             <button
               type="submit"
-              className="w-full mt-4 p-4 bg-indigo-600 text-white rounded-xl"
+              className="w-full mt-2 p-4 rounded-xl bg-slate-900 text-white font-semibold transition hover:bg-blue-500"
             >
               Place Order
             </button>

@@ -1,6 +1,8 @@
 const Product = require("../models/product");
 const Order = require("../models/orders");
-const User =require("../models/user")
+const User = require("../models/user");
+
+const isValidPhoneNumber = (phoneNumber) => /^\d{10}$/.test(phoneNumber);
 async function handleproductupload(req, res) {
   const { title, description, price, stock, category } = req.body;
   console.log(req.file);
@@ -73,7 +75,8 @@ async function handleorders(req, res) {
       "user",
       "fullName",
     );
-    if (!Orders) return res.status(404).json({ message: "No Order Found" });
+    if (Orders.length == 0)
+      return res.status(404).json({ message: "No Order Found" });
     return res
       .status(200)
       .json({ message: "Order Fetched Successfully", Orders });
@@ -84,29 +87,36 @@ async function handleorders(req, res) {
   }
 }
 
-async function handleshippingdetails(req,res){
-  try{
-   const {couriername,trackingId,estimatedDelivery}=req.body;
-    if (!couriername || !trackingId || !estimatedDelivery) {
-      return res.status(400).json({
-        message: "All fields are required",
-      });
-    }
-    const order=await Order.findOneAndUpdate({_id:req.params.id},{
-      courierName:couriername,
-      trackingId,
-      estimatedDelivery
-    },{ new: true })
+async function handleshippingdetails(req, res) {
+  try {
+    const { couriername, trackingId, estimatedDelivery } = req.body;
+
+    if (couriername || trackingId || estimatedDelivery) {
+      const order = await Order.findOneAndUpdate(
+        { _id: req.params.id, vendor: req.user._id },
+        {
+          courierName: couriername,
+          trackingId,
+          estimatedDelivery,
+        },
+        { new: true },
+      );
       if (!order) {
-      return res.status(404).json({
-        message: "Order not found",
-      });
+        return res.status(404).json({
+          message: "Order not found",
+        });
+      }
+      return res
+        .status(200)
+        .json({ message: "Order Shipping Detail Updated Successfully" });
     }
-    return res.status(200).json({message:"Order Shipping Detail Updated Successfully"})
-  }catch(err){
-    return res.status(500).json({message:"Server Error",
-      Error:err.message
-    })
+    return res.status(400).json({
+      message: "All fields are required",
+    });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ message: "Server Error", Error: err.message });
   }
 }
 async function handleorderstatus(req, res) {
@@ -114,7 +124,7 @@ async function handleorderstatus(req, res) {
     const orderid = req.params.orderid;
     const { orderStatus, paymentStatus } = req.body;
     const Orders = await Order.findOneAndUpdate(
-      { _id: orderid },
+      { _id: orderid, vendor: req.user._id },
       { orderStatus, paymentStatus },
     );
     console.log(Orders);
@@ -147,7 +157,7 @@ async function handledashboard(req, res) {
     }).countDocuments();
 
     const monthlymap = {};
-   const  monthlyRevenueMap ={}
+    const monthlyRevenueMap = {};
     for (const item of order) {
       const month = new Date(item.createdAt).toLocaleString("default", {
         month: "short",
@@ -155,7 +165,7 @@ async function handledashboard(req, res) {
       const OrderQuantity = item.products.reduce((acc, product) => {
         return acc + product.quantity;
       }, 0);
-      
+
       if (!monthlymap[month]) {
         monthlymap[month] = OrderQuantity;
       } else {
@@ -163,18 +173,16 @@ async function handledashboard(req, res) {
       }
 
       if (!monthlyRevenueMap[month]) {
-    monthlyRevenueMap[month] = item.totalAmount;
-  } else {
-    monthlyRevenueMap[month] += item.totalAmount;
-  }
+        monthlyRevenueMap[month] = item.totalAmount;
+      } else {
+        monthlyRevenueMap[month] += item.totalAmount;
+      }
     }
- 
 
-
-const monthlyRevenue = Object.keys(monthlyRevenueMap).map((month) => ({
-  month,
-  revenue: monthlyRevenueMap[month],
-}));
+    const monthlyRevenue = Object.keys(monthlyRevenueMap).map((month) => ({
+      month,
+      revenue: monthlyRevenueMap[month],
+    }));
     const monthlysales = Object.keys(monthlymap).map((month) => ({
       month,
       sales: monthlymap[month],
@@ -187,7 +195,7 @@ const monthlyRevenue = Object.keys(monthlyRevenueMap).map((month) => ({
       totalOrders,
       totalproducts,
       monthlysales,
-      monthlyRevenue
+      monthlyRevenue,
     });
   } catch (err) {
     return res
@@ -211,9 +219,15 @@ async function handleprofile(req, res) {
 async function handleupdateprofile(req, res) {
   try {
     const { fullName, email, phoneNumber } = req.body;
+    if (!isValidPhoneNumber(phoneNumber)) {
+      return res
+        .status(400)
+        .json({ message: "Phone number must be exactly 10 digits" });
+    }
     const user = await User.findOneAndUpdate(
       { _id: req.user._id },
       { fullName, email, phoneNumber },
+      { runValidators: true },
     );
     if (!user) return res.status(404).json({ message: "user not found" });
     return res.status(200).json({ message: "Profile Updated Successfully" });

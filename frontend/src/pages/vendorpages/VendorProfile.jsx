@@ -10,6 +10,11 @@ const Profile = () => {
   const [email, setemail] = useState("");
   const [phoneNumber, setphoneNumber] = useState("");
 
+  const handlePhoneNumberChange = (e) => {
+    const digitsOnly = e.target.value.replace(/\D/g, "").slice(0, 10);
+    setphoneNumber(digitsOnly);
+  };
+
   useEffect(() => {
     const fetchprofiledata = async () => {
       try {
@@ -25,7 +30,13 @@ const Profile = () => {
     fetchprofiledata();
   }, []);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!/^\d{10}$/.test(phoneNumber)) {
+      toast.error("Phone number must be exactly 10 digits");
+      return;
+    }
+
     try {
       const res = await api.patch("/vendor/profile", {
         fullName,
@@ -35,62 +46,89 @@ const Profile = () => {
       console.log(res.data.message);
       toast.success("Profile Updated Successfully");
     } catch (err) {
-       toast.error(err.response?.data?.message);
+      toast.error(err.response?.data?.message);
       console.log("Error in Profile", err);
     }
   };
   return (
     <>
       <VendorNavbar />
-      <div className="min-h-screen pt-20 md:pt-20 md:pl-72 px-4 w-full md:px-6 lg:px-10 bg-gray-100 flex flex-col justify-center gap-8">
-        <h1 className="text-3xl font-bold text-center">My Profile</h1>
-        <div className="rounded-xl bg-white p-6 md:p-8 items-center justify-center flex flex-col gap-10 w-full max-w-3xl mx-auto">
+      <div className="min-h-screen pt-24 md:pt-24 md:pl-72 px-4 w-full md:px-6 lg:px-10 bg-slate-50 flex flex-col gap-8 pb-10">
+        <div className="max-w-3xl mx-auto w-full pt-4 md:pt-0">
+          <h1 className="text-3xl md:text-4xl font-bold text-slate-900">
+            My Profile
+          </h1>
+          <p className="mt-2 text-sm md:text-base text-slate-500">
+            Keep your vendor profile details current.
+          </p>
+        </div>
+        <div className="rounded-3xl bg-white p-6 md:p-8 items-center justify-center flex flex-col gap-10 w-full max-w-3xl mx-auto border border-slate-200 shadow-sm">
           <div className="flex gap-4 justify-center w-full">
-            <div className="text-indigo-600 h-fit w-fit  bg-indigo-200 p-3 text-5xl rounded-[50px] font-bold">
+            <div className="text-blue-600 h-fit w-fit bg-blue-50 p-3 text-5xl rounded-[50px] font-bold border border-blue-100">
               <GoPerson />
             </div>
             <div>
-              <span className="text-2xl font-semibold">{fullName}</span>
-              <p>{email}</p>
+              <span className="text-2xl font-semibold text-slate-900">
+                {fullName}
+              </span>
+              <p className="text-slate-500">{email}</p>
             </div>
           </div>
           <div className="w-full">
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
               <div className="flex flex-col gap-2">
-                <label htmlFor="fullName">Full Name</label>
+                <label
+                  className="text-sm font-semibold text-slate-700"
+                  htmlFor="fullName"
+                >
+                  Full Name
+                </label>
                 <input
                   value={fullName}
                   onChange={(e) => setfullName(e.target.value)}
-                  className="p-2 outline-0 bg-gray-100 border border-gray-300 rounded-xl "
+                  className="p-3 outline-0 bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500"
                   type="text"
                   id="fullName"
                   name="fullName"
                 />
               </div>
               <div className="flex flex-col">
-                <label htmlFor="email">Email</label>
+                <label
+                  className="text-sm font-semibold text-slate-700"
+                  htmlFor="email"
+                >
+                  Email
+                </label>
                 <input
                   value={email}
                   onChange={(e) => setemail(e.target.value)}
-                  className="p-2 outline-0 bg-gray-100 border border-gray-300 rounded-xl "
+                  className="p-3 outline-0 bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500"
                   type="text"
                   id="email"
                   name="email"
                 />
               </div>
               <div className="flex flex-col">
-                <label htmlFor="phoneNumber">Phone Number</label>
+                <label
+                  className="text-sm font-semibold text-slate-700"
+                  htmlFor="phoneNumber"
+                >
+                  Phone Number
+                </label>
                 <input
                   value={phoneNumber}
-                  onChange={(e) => setphoneNumber(e.target.value)}
-                  className="p-2 outline-0 bg-gray-100 border border-gray-300 rounded-xl "
-                  type="text"
+                  onChange={handlePhoneNumberChange}
+                  className="p-3 outline-0 bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500"
+                  type="tel"
                   id="phoneNumber"
                   name="phoneNumber"
+                  inputMode="numeric"
+                  maxLength={10}
+                  pattern="[0-9]{10}"
                 />
               </div>
               <div className="flex justify-center">
-                <button className="p-3 w-full sm:w-auto text-white bg-indigo-600 rounded-xl font-semibold">
+                <button className="p-3 w-full sm:w-auto text-white bg-slate-900 rounded-xl font-semibold hover:bg-blue-600 transition">
                   Save Changes
                 </button>
               </div>
