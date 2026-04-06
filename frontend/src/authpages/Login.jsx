@@ -33,7 +33,6 @@ const Login = ({ onLoginSuccess }) => {
         navigate("/admin/dashboard");
       }
     } catch (err) {
-       
       toast.error(err.response?.data?.message);
       console.log(err.response?.data?.message);
     }
@@ -47,7 +46,7 @@ const Login = ({ onLoginSuccess }) => {
 
       <div className="relative z-10 w-full max-w-md">
         <Logopara
-          logotext="MarketPro"
+          logotext="ShopNest"
           para="Welcome back! Sign in to your account"
         />
 

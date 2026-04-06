@@ -58,7 +58,7 @@ const Signup = () => {
 
       <div className="relative z-10 w-full max-w-lg">
         <Logopara
-          logotext="MarketPro"
+          logotext="ShopNest"
           para="Create your account to get started"
         />
 

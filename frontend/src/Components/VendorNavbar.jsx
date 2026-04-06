@@ -34,19 +34,15 @@ const VendorNavbar = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-
-
-     try {
+    try {
       const res = await api.get(`/logout`);
-       setIsOpen(false);
+      setIsOpen(false);
       navigate("/login");
       console.log(res?.data.message);
-      toast.success("Logout Successfully")
+      toast.success("Logout Successfully");
     } catch (err) {
-      
       console.log("Error in Navbar", err);
     }
-    
   };
 
   return (
@@ -55,7 +51,7 @@ const VendorNavbar = () => {
         <div className="flex items-center justify-between border-b border-slate-800 px-5 py-4">
           <div className="flex items-center gap-3">
             <FiShoppingBag className="text-2xl text-blue-500" />
-            <span className="text-3xl font-bold leading-none">MarketPro</span>
+            <span className="text-3xl font-bold leading-none">ShopNest</span>
           </div>
           <NavLink
             to="/vendor/profile"
