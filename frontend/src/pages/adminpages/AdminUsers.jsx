@@ -38,34 +38,36 @@ const AdminUsers = () => {
         <div className="px-4 sm:px-6 lg:px-8 py-8">
           <h1 className="text-2xl font-bold text-slate-900">Manage Users</h1>
 
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 mt-6 overflow-hidden">
-            <div className="grid grid-cols-4 bg-[#F8FAFC] px-4 py-3 text-sm font-semibold text-slate-700">
-              <p>User ID</p>
-              <p>Name</p>
-              <p>Email</p>
-              <p>Action</p>
-            </div>
-            {users.map((user) => (
-              <div
-                key={user._id}
-                className="grid grid-cols-4 px-4 py-3 text-sm border-t border-slate-200 text-slate-700"
-              >
-                <p>USR-{user._id.slice(0, 6)}</p>
-                <p>{user.fullName}</p>
-                <p>{user.email}</p>
-                <div>
-                  <button
-                    onClick={() => {
-                      handledeleteuser(user._id);
-                    }}
-                    type="button"
-                    className="rounded-md bg-blue-500 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-blue-600"
-                  >
-                    Delete
-                  </button>
-                </div>
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 mt-6 overflow-x-auto">
+            <div className="min-w-165">
+              <div className="grid grid-cols-[110px_110px_minmax(200px,1fr)_90px] bg-[#F8FAFC] px-4 py-3 text-sm font-semibold text-slate-700">
+                <p>User ID</p>
+                <p>Name</p>
+                <p>Email</p>
+                <p>Action</p>
               </div>
-            ))}
+              {users.map((user) => (
+                <div
+                  key={user._id}
+                  className="grid grid-cols-[110px_110px_minmax(200px,1fr)_90px] px-4 py-3 text-sm border-t border-slate-200 text-slate-700"
+                >
+                  <p className="truncate">USR-{user._id.slice(0, 6)}</p>
+                  <p className="truncate">{user.fullName}</p>
+                  <p className="break-all whitespace-normal">{user.email}</p>
+                  <div>
+                    <button
+                      onClick={() => {
+                        handledeleteuser(user._id);
+                      }}
+                      type="button"
+                      className="rounded-md bg-blue-500 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-blue-600"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </main>
