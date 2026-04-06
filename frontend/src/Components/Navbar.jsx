@@ -66,7 +66,6 @@ const Navbar = () => {
       console.log(res?.data.message);
       toast.success("Logout Successfully");
       navigate("/login");
-      window.location.reload();
     } catch (err) {
       console.log("Error in Navbar", err);
       toast.error("Logout failed");

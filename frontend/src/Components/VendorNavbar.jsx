@@ -37,11 +37,12 @@ const VendorNavbar = () => {
     try {
       const res = await api.get(`/logout`);
       setIsOpen(false);
-      navigate("/login");
       console.log(res?.data.message);
       toast.success("Logout Successfully");
+      navigate("/login");
     } catch (err) {
       console.log("Error in Navbar", err);
+      toast.error("Logout failed");
     }
   };
 
