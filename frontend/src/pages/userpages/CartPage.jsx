@@ -16,7 +16,7 @@ const CartPage = () => {
     const fetchcart = async () => {
       try {
         const res = await api.get("/user/cart");
-        setItems(res.data.cart.products);
+        setItems(res?.data?.cart?.products);
         dispatch(setCart(res.data.cart.products));
       } catch (err) {
         console.log("Error in Cart", err);
