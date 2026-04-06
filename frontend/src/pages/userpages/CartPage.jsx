@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { removefromcart, setCart } from "../../Redux/Cartslice";
 import api from "../../api";
 import { useNavigate } from "react-router-dom";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -64,6 +65,17 @@ const CartPage = () => {
     }
   };
 
+
+
+  const handledeletproduct=async(id)=>{
+    try{
+      const res=await api.delete(`user/cart/${id}`)
+      toast.success("Cart item Deleted Successfully")
+    }catch(err){
+      
+      console.log("Error in Cart page",err.message)
+    }
+  }
   return (
     <div className="min-h-screen w-screen md:w-full pb-10 px-4 md:px-8 lg:px-10 flex flex-col gap-5 pt-24 bg-slate-50">
       <div className="mx-auto w-full max-w-7xl pt-2">
@@ -94,9 +106,9 @@ const CartPage = () => {
                 />
 
                 <div className="flex flex-col gap-2 flex-1">
-                  <h3 className="text-xl font-semibold text-slate-900">
+                  <div className="flex items-center justify-between"><h3 className="text-xl font-semibold text-slate-900">
                     {item.product.title}
-                  </h3>
+                  </h3><RiDeleteBin6Line onClick={()=>handledeletproduct(item._id)} className="text-red-500 text-xl"/></div>
                   <h4 className="text-sm text-slate-500">
                     {item.product.category}
                   </h4>

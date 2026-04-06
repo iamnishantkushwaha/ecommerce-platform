@@ -12,7 +12,7 @@ const columns = [
   {
     id: "_id",
     label: "Order ID",
-    minWidth: 140,
+    minWidth: 220,
   },
   {
     id: "createdAt",
@@ -117,6 +117,14 @@ export default function StickyHeadTable(props) {
                                     : "bg-white text-slate-700"
                           }
                           align={column.align}
+                          sx={
+                            column.id === "_id"
+                              ? {
+                                  whiteSpace: "normal",
+                                  wordBreak: "break-all",
+                                }
+                              : undefined
+                          }
                         >
                           {column.format
                             ? column.format(value, row)

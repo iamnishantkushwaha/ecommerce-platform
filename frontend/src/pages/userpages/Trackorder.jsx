@@ -6,13 +6,11 @@ import api from "../../api";
 const Trackorder = () => {
   const [trackorder, settrackorder] = useState("");
   const [orderId, setorderId] = useState("");
-  const [shortId, setshortId] = useState("");
   const handletrackorder = async () => {
     try {
       const res = await api.get(`/user/trackorder/${orderId}`);
       console.log(res.data.trackedorder);
       settrackorder(res.data.trackedorder);
-      setshortId(res.data.trackedorder._id.toString().slice(-6));
     } catch (err) {
       console.log("Error in TrackOrder page", err.message);
     }
@@ -50,7 +48,7 @@ const Trackorder = () => {
             <div className="rounded-2xl flex flex-col items-center justify-center bg-white border border-slate-200 p-3 shadow-sm md:p-4">
               <h2 className="text-xs font-light text-slate-500">Order ID</h2>
               <h2 className="mt-1 font-semibold text-slate-900 text-sm md:text-base">
-                {shortId}
+                {trackorder._id}
               </h2>
             </div>
             <div className="rounded-2xl bg-white border border-slate-200 flex flex-col items-center justify-center p-3 shadow-sm md:p-4">
