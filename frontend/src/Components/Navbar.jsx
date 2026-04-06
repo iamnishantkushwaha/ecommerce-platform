@@ -72,7 +72,7 @@ const Navbar = () => {
     <div className="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur border-b border-slate-200">
       <div className="w-full h-16 flex relative items-center justify-between px-4 md:px-8 lg:px-10 bg-white/90">
         <div className="text-slate-900 font-bold md:w-1/5 text-xl flex gap-2 items-center">
-          <FiShoppingBag className="text-3xl text-blue-500" /> ShopNest
+          <FiShoppingBag className="text-3xl text-blue-500" /> MarketPro
         </div>
         <div className="flex items-center md:hidden  relative justify-center gap-3">
           {cartcount > 0 && (

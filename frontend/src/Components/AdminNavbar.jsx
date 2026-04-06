@@ -53,7 +53,7 @@ const AdminNavbar = () => {
         <div className="flex items-center justify-between border-b border-slate-800 px-5 py-4">
           <div className="flex items-center gap-3">
             <FiShoppingBag className="text-2xl text-blue-500" />
-            <span className="text-3xl font-bold leading-none">ShopNest</span>
+            <span className="text-3xl font-bold leading-none">MarketPro</span>
           </div>
           <NavLink
             to="/admin/dashboard"

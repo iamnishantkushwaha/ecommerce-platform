@@ -46,7 +46,7 @@ const Login = ({ onLoginSuccess }) => {
 
       <div className="relative z-10 w-full max-w-md">
         <Logopara
-          logotext="ShopNest"
+          logotext="MarketPro"
           para="Welcome back! Sign in to your account"
         />
 

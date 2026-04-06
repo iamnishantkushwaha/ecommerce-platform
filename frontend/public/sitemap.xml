@@ -2,17 +2,17 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-    <loc>https://shopnest.vercel.app/</loc>
+    <loc>https://marketpro.vercel.app/</loc>
   </url>
 
   <url>
-    <loc>https://shopnest.vercel.app/products</loc>
+    <loc>https://marketpro.vercel.app/products</loc>
   </url>
 <url>
-  <loc>https://shopnest.vercel.app/products/wireless-mouse</loc>
+  <loc>https://marketpro.vercel.app/products/wireless-mouse</loc>
 </url>
 
 <url>
-  <loc>https://shopnest.vercel.app/products/bluetooth-headphones</loc>
+  <loc>https://marketpro.vercel.app/products/bluetooth-headphones</loc>
 </url>
 </urlset>

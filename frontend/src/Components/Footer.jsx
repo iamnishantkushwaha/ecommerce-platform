@@ -19,7 +19,7 @@ const Footer = () => {
                   <span className="rounded-xl bg-slate-900 p-2 text-white">
                     <FiShoppingBag className="text-2xl" />
                   </span>
-                  ShopNest
+                  MarketPro
                 </Link>
               </h1>
               <p className="max-w-md text-sm leading-relaxed text-slate-500">
@@ -114,7 +114,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-5 flex flex-col items-center justify-between gap-4 text-sm text-slate-500 md:flex-row">
-          <span>© 2026 ShopNest. All rights reserved.</span>
+          <span>© 2026 MarketPro. All rights reserved.</span>
           <div className="flex gap-2 text-lg text-slate-700">
             <button className="rounded-full border border-slate-200 p-2 transition hover:border-blue-500 hover:text-blue-500">
               <LuFacebook />
