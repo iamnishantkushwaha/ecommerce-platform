@@ -10,7 +10,7 @@ const Featuredproducts = () => {
   useEffect(() => {
     const fetchfeatureproducts = async () => {
       const res = await api.get("/products?featured=true");
-      setfeatureproduct(res.data.products);
+      setfeatureproduct(res?.data?.products);
     };
     fetchfeatureproducts();
   }, []);
