@@ -90,6 +90,7 @@ function App() {
           />
           <Route path="/signup" element={<Signup />} />
           <Route path="/products" element={<Products />} />
+          
           <Route path="/products/:slug" element={<ProductDetail />} />
           <Route path="/" element={<Home />} />
           <Route

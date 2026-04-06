@@ -9,7 +9,9 @@ const Featuredproducts = () => {
   const [featureproduct, setfeatureproduct] = useState([]);
   useEffect(() => {
     const fetchfeatureproducts = async () => {
-      const res = await api.get("/products?featured=true");
+      const res = await api.get("/products?featured=true",{
+        withCredentials:false
+      });
       setfeatureproduct(res?.data?.products);
     };
     fetchfeatureproducts();

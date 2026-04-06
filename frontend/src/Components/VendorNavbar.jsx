@@ -10,6 +10,7 @@ import {
   FiTrendingUp,
   FiSettings,
 } from "react-icons/fi";
+import { toast } from "react-toastify";
 import { TbLayoutGrid } from "react-icons/tb";
 import { IoBagHandleOutline } from "react-icons/io5";
 import api from "../api";
@@ -33,14 +34,19 @@ const VendorNavbar = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    try {
-      await api.get("/logout");
-    } catch (err) {
-      console.log("Error in vendor logout:", err);
-    } finally {
-      setIsOpen(false);
+
+
+     try {
+      const res = await api.get(`/logout`);
+       setIsOpen(false);
       navigate("/login");
+      console.log(res?.data.message);
+      toast.success("Logout Successfully")
+    } catch (err) {
+      
+      console.log("Error in Navbar", err);
     }
+    
   };
 
   return (

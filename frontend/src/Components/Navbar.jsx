@@ -15,6 +15,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { GoArrowLeft } from "react-icons/go";
 
 import api from "../api";
+import { toast } from "react-toastify";
 const Navbar = () => {
   const location = useLocation();
   const sidebar = location.pathname.startsWith("/dashboard");
@@ -62,7 +63,9 @@ const Navbar = () => {
       const res = await api.get(`/logout`);
       setuser("");
       console.log(res?.data.message);
+      toast.success("Logout Successfully")
     } catch (err) {
+      
       console.log("Error in Navbar", err);
     }
   };

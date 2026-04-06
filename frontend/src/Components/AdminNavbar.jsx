@@ -13,6 +13,8 @@ import {
   FiShield,
   FiSettings,
 } from "react-icons/fi";
+import { toast } from "react-toastify";
+import api from "../api";
 
 const navItems = [
   { label: "Dashboard", path: "/admin/dashboard", icon: FiGrid },
@@ -33,9 +35,16 @@ const AdminNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    setIsOpen(false);
-    navigate("/login");
+  const handleLogout = async () => {
+    try {
+      const res = await api.get(`/logout`);
+      setIsOpen(false);
+      navigate("/login");
+      console.log(res?.data.message);
+      toast.success("Logout Successfully");
+    } catch (err) {
+      console.log("Error in Navbar", err);
+    }
   };
 
   return (

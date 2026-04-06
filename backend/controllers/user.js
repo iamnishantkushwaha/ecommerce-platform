@@ -253,7 +253,6 @@ async function handledeletecart(req, res) {
     cart.products = cart.products.filter(
       (p) => (p.product?._id || p.product).toString() !== productId,
     );
-
     if (cart.products.length === initialCount) {
       return res.status(404).json({ message: "product not found in cart" });
     }
