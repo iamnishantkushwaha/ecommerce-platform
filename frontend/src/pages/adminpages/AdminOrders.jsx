@@ -38,9 +38,13 @@ const AdminOrders = () => {
                   className="grid grid-cols-[minmax(220px,1.4fr)_minmax(140px,1fr)_minmax(90px,0.7fr)_minmax(110px,0.9fr)] gap-x-4 px-3 py-3 text-xs border-t border-slate-200 text-slate-700 md:grid-cols-4 md:px-4 md:text-sm md:gap-x-0"
                 >
                   <p className="break-all whitespace-normal">{order._id}</p>
-                  <p className="wrap-break-word whitespace-normal">{order.user.fullName}</p>
+                  <p className="wrap-break-word whitespace-normal">
+                    {order.user.fullName}
+                  </p>
                   <p className="whitespace-nowrap">₹{order.totalAmount}</p>
-                  <p className="wrap-break-word whitespace-normal">{order.orderStatus}</p>
+                  <p className="wrap-break-word whitespace-normal">
+                    {order.orderStatus}
+                  </p>
                 </div>
               ))}
             </div>

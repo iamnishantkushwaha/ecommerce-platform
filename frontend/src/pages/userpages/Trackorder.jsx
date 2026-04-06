@@ -49,22 +49,30 @@ const Trackorder = () => {
           <div className="mx-auto w-full max-w-7xl grid grid-cols-2 grid-rows-2 md:grid-cols-4 md:grid-rows-1 justify-center overflow-x-auto rounded-xl gap-2 md:gap-3">
             <div className="rounded-2xl flex flex-col items-center justify-center bg-white border border-slate-200 p-3 shadow-sm md:p-4">
               <h2 className="text-xs font-light text-slate-500">Order ID</h2>
-              <h2 className="mt-1 font-semibold text-slate-900 text-sm md:text-base">{shortId}</h2>
+              <h2 className="mt-1 font-semibold text-slate-900 text-sm md:text-base">
+                {shortId}
+              </h2>
             </div>
             <div className="rounded-2xl bg-white border border-slate-200 flex flex-col items-center justify-center p-3 shadow-sm md:p-4">
-              <h2 className="text-xs font-light text-slate-500">Shipping Via</h2>
+              <h2 className="text-xs font-light text-slate-500">
+                Shipping Via
+              </h2>
               <h2 className="mt-1 font-semibold text-slate-900 text-sm md:text-base text-center">
                 {trackorder.courierName}
               </h2>
             </div>
             <div className="rounded-2xl flex flex-col items-center justify-center bg-white border border-slate-200 p-3 shadow-sm md:p-4">
-              <h2 className="text-xs font-light text-slate-500">Tracking No.</h2>
+              <h2 className="text-xs font-light text-slate-500">
+                Tracking No.
+              </h2>
               <h2 className="mt-1 font-semibold text-slate-900 text-sm md:text-base text-center">
                 {trackorder.trackingId}
               </h2>
             </div>
             <div className="rounded-2xl flex flex-col items-center justify-center bg-white border border-slate-200 p-3 shadow-sm md:p-4">
-              <h2 className="text-xs font-light text-slate-500">Estimated Delivery</h2>
+              <h2 className="text-xs font-light text-slate-500">
+                Estimated Delivery
+              </h2>
               <h2 className="mt-1 font-semibold text-slate-900 text-sm md:text-base text-center">
                 {new Date(trackorder.estimatedDelivery).toLocaleDateString(
                   "en-IN",

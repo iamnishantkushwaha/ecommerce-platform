@@ -67,7 +67,9 @@ const AdminProducts = () => {
                 >
                   <p className="break-all whitespace-normal">{product._id}</p>
                   <p className="truncate">{product.title}</p>
-                  <p className="truncate">{product?.vendor?.fullName || product?.vendor || "-"}</p>
+                  <p className="truncate">
+                    {product?.vendor?.fullName || product?.vendor || "-"}
+                  </p>
                   <div>
                     <button
                       type="button"
