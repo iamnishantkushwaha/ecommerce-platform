@@ -242,20 +242,26 @@ async function handlecartupdate(req, res) {
 
 async function handledeletecart(req, res) {
   try {
+    if (!req.user) return res.status(401).json({ message: "unauthorized" });
+
     const productId = req.params.productId;
     const cart = await Cart.findOne({ user: req.user._id });
 
     if (!cart) return res.status(404).json({ message: "cart is empty" });
+
+    const initialCount = cart.products.length;
     cart.products = cart.products.filter(
-      (p) => p.product.toString() !== productId,
+      (p) => (p.product?._id || p.product).toString() !== productId,
     );
+
+    if (cart.products.length === initialCount) {
+      return res.status(404).json({ message: "product not found in cart" });
+    }
+
     await cart.save();
-    const updatedcart = await Cart.findOne({ user: req.user._id }).populate(
-      "products.product",
-    );
-    return res
-      .status(200)
-      .json({ message: "  product removed from cart", cart: updatedcart });
+    await cart.populate("products.product");
+
+    return res.status(200).json({ message: "product removed from cart", cart });
   } catch (error) {
     return res.status(500).json({ message: "server error" });
   }

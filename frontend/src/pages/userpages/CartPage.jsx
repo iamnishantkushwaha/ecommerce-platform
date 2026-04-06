@@ -5,6 +5,7 @@ import { removefromcart, setCart } from "../../Redux/Cartslice";
 import api from "../../api";
 import { useNavigate } from "react-router-dom";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { toast } from "react-toastify";
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ const CartPage = () => {
         const res = await api.get("/user/cart");
         setItems(res?.data?.cart?.products);
         dispatch(setCart(res.data.cart.products));
+        console.log(res.data.cart.products,"dfd")
       } catch (err) {
         console.log("Error in Cart", err);
       }
@@ -69,7 +71,11 @@ const CartPage = () => {
 
   const handledeletproduct=async(id)=>{
     try{
-      const res=await api.delete(`user/cart/${id}`)
+      console.log(id)
+      const res=await api.delete(`/user/cart/${id}`)
+      console.log(res.data)
+      setItems(res.data.cart.products)
+      dispatch(setCart(res.data.cart.products));
       toast.success("Cart item Deleted Successfully")
     }catch(err){
       
@@ -96,7 +102,7 @@ const CartPage = () => {
           <div className="md:w-3/5 flex flex-col gap-4 max-h-[72vh] md:max-h-[75vh] overflow-y-auto pr-1">
             {items.map((item) => (
               <div
-                key={item._id}
+                key={item.product._id}
                 className="bg-white border border-slate-200 flex p-4 gap-4 rounded-2xl shadow-sm"
               >
                 <img
@@ -108,7 +114,7 @@ const CartPage = () => {
                 <div className="flex flex-col gap-2 flex-1">
                   <div className="flex items-center justify-between"><h3 className="text-xl font-semibold text-slate-900">
                     {item.product.title}
-                  </h3><RiDeleteBin6Line onClick={()=>handledeletproduct(item._id)} className="text-red-500 text-xl"/></div>
+                  </h3><RiDeleteBin6Line onClick={()=>handledeletproduct(item.product._id)} className="text-red-500 text-xl"/></div>
                   <h4 className="text-sm text-slate-500">
                     {item.product.category}
                   </h4>
