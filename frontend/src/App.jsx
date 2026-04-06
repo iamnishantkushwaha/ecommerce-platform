@@ -72,9 +72,6 @@ function App() {
     };
   }, []);
 
-  if (isAuthenticated === null) {
-    return <LoadingIndicator />;
-  }
 
   return (
     <>
