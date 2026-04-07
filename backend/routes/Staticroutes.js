@@ -18,13 +18,21 @@ router.post("/signup", handleSignup);
 router.post("/login", handleLogin);
 
 router.get("/logout", (req, res) => {
-  res.clearCookie("token", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "None" : "lax",
-    path: "/",
-  });
+  // res.clearCookie("token", {
+  //   httpOnly: true,
+  //   secure: process.env.NODE_ENV === "production",
+  //   sameSite: process.env.NODE_ENV === "production" ? "None" : "lax",
+  //   path: "/",
+  // });  but fails in cross domain
 
+
+  res.cookie("token", "", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+    path: "/",
+    maxAge: 0, // 👈 बस ये main trick hai
+  });
   return res.status(200).json({ message: "logout successfully" });
 });
 
