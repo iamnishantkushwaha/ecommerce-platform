@@ -23,8 +23,8 @@ router.get("/logout", (req, res) => {
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     path: "/",
-    expires: new Date(0),
   });
+
   return res.status(200).json({ message: "logout successfully" });
 });
 
