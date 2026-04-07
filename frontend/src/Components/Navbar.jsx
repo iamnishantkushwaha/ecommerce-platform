@@ -60,7 +60,9 @@ const Navbar = () => {
 
   const handlelogout = async () => {
     try {
-      const res = await api.get(`/logout`);
+      const res = await api.get(`/logout`,
+        { withCredentials: true }
+      );
       setuser("");
       dispatch(setCart([]));
       console.log(res?.data.message);

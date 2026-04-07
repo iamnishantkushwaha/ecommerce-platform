@@ -37,7 +37,7 @@ const AdminNavbar = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await api.get(`/logout`);
+      const res = await api.get(`/logout`,{ withCredentials: true });
       setIsOpen(false);
       console.log(res?.data.message);
       toast.success("Logout Successfully");
