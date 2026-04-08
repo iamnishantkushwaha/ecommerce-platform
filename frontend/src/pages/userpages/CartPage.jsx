@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
-import { removefromcart, setCart } from "../../Redux/Cartslice";
+import { setCart } from "../../Redux/Cartslice";
 import api from "../../api";
 import { useNavigate } from "react-router-dom";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -57,7 +57,6 @@ const CartPage = () => {
 
       if (item.quantity - 1 === 0) {
         res = await api.delete(`/user/cart/${item.product._id}`);
-        dispatch(removefromcart(item.product._id));
       }
 
       setItems(res.data.cart.products);
@@ -67,14 +66,13 @@ const CartPage = () => {
     }
   };
 
-  const handledeletproduct = async (id) => {
+  const handledeletproduct = async (item) => {
     try {
-      console.log(id);
-      const res = await api.delete(`/user/cart/${id}`);
-      console.log(res.data);
+      const res = await api.delete(`/user/cart/${item.product._id}`);
+
       setItems(res.data.cart.products);
       dispatch(setCart(res.data.cart.products));
-      toast.success("Cart item Deleted Successfully");
+      toast.success("Cart item deleted successfully");
     } catch (err) {
       console.log("Error in Cart page", err.message);
     }
@@ -116,7 +114,7 @@ const CartPage = () => {
                         {item.product.title}
                       </h3>
                       <RiDeleteBin6Line
-                        onClick={() => handledeletproduct(item.product._id)}
+                        onClick={() => handledeletproduct(item)}
                         className="text-red-500 text-xl"
                       />
                     </div>
