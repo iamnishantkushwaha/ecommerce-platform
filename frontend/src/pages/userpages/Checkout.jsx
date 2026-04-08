@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api";
 import { toast } from "react-toastify";
+import { useMemo } from "react";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -22,6 +23,14 @@ const Checkout = () => {
   const [country, setcountry] = useState("");
   const [pincode, setpincode] = useState("");
   const [city, setcity] = useState("");
+
+  const totalPrice = useMemo(() => {
+    return items.reduce((acc, item) => {
+      const price = Number(item.product?.price) || 0;
+      const quantity = Number(item.quantity) || 0;
+      return acc + price * quantity;
+    }, 0);
+  }, [items]);
 
   const handlePhoneNumberChange = (e) => {
     const digitsOnly = e.target.value.replace(/\D/g, "").slice(0, 10);
@@ -407,7 +416,7 @@ const Checkout = () => {
                           QTY:{item.quantity}
                         </h4>{" "}
                         <h2 className="text-lg font-bold text-slate-900">
-                          ₹{item.quantity * item.product.price}
+                            ₹{(item.quantity * item.product.price).toFixed(2)}
                         </h2>
                       </div>
                     </div>
@@ -418,7 +427,7 @@ const Checkout = () => {
 
             <div className="flex justify-between font-bold text-xl py-3">
               <span>Total</span>
-              <span>₹45</span>
+                <span>₹{totalPrice.toFixed(2)}</span>
             </div>
 
             <button
