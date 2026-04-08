@@ -167,7 +167,7 @@ const CartPage = () => {
 
             <div className="flex justify-between font-bold text-xl py-4">
               <span>Total</span>
-              <span>₹{(subtotal + shipping).toFixed()}</span>
+              <span>₹{(subtotal + shipping).toFixed(2)}</span>
             </div>
 
             <button
