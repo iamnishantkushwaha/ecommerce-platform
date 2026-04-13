@@ -54,8 +54,16 @@ const VendorAddProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      
-      const res = await api.post("/vendor/add-product", formData);
+      const formDataToSend = new FormData();
+
+      formDataToSend.append("title", formData.productName);
+      formDataToSend.append("price", formData.price);
+      formDataToSend.append("category", formData.category);
+      formDataToSend.append("stock", formData.stockQuantity);
+      formDataToSend.append("description", formData.description);
+      formDataToSend.append("image", formData.images[0]);
+      console.log("FormData", formDataToSend);
+      const res = await api.post("/vendor/add-product", formDataToSend);
       console.log(res.data.message);
       setFormData({
         productName: "",
