@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa6";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "../../Redux/Cartslice";
 import api from "../../api";
 import { useNavigate } from "react-router-dom";
@@ -11,18 +11,19 @@ const CartPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [items, setItems] = useState([]);
+  const items = useSelector((state) => state.cart.items);
+  const [loading, setLoading] = useState(true);
   const shipping = 0;
 
   useEffect(() => {
     const fetchcart = async () => {
       try {
         const res = await api.get("/user/cart");
-        setItems(res?.data?.cart?.products);
-        dispatch(setCart(res.data.cart.products));
-        console.log(res.data.cart.products, "dfd");
+        dispatch(setCart(res.data.cart?.products || []));
       } catch (err) {
         console.log("Error in Cart", err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchcart();
@@ -42,7 +43,6 @@ const CartPage = () => {
         quantity: item.quantity + 1,
       });
 
-      setItems(res.data.cart.products);
       dispatch(setCart(res.data.cart.products));
     } catch (err) {
       console.log("Error in increment", err.message);
@@ -59,7 +59,6 @@ const CartPage = () => {
         res = await api.delete(`/user/cart/${item.product._id}`);
       }
 
-      setItems(res.data.cart.products);
       dispatch(setCart(res.data.cart.products));
     } catch (err) {
       console.log("Error in decrement", err);
@@ -70,7 +69,6 @@ const CartPage = () => {
     try {
       const res = await api.delete(`/user/cart/${item.product._id}`);
 
-      setItems(res.data.cart.products);
       dispatch(setCart(res.data.cart.products));
       toast.success("Cart item deleted successfully");
     } catch (err) {
@@ -88,7 +86,11 @@ const CartPage = () => {
         </p>
       </div>
 
-      {items.length === 0 ? (
+      {loading ? (
+        <div className="mx-auto w-full max-w-7xl rounded-2xl border border-dashed border-slate-300 bg-white min-h-[30vh] md:min-h-[50vh] flex items-center justify-center font-bold text-2xl text-center text-slate-400">
+          Loading...
+        </div>
+      ) : items.filter((item) => item.product).length === 0 ? (
         <div className="mx-auto w-full max-w-7xl rounded-2xl border border-dashed border-slate-300 bg-white min-h-[30vh] md:min-h-[50vh] flex items-center justify-center font-bold text-2xl text-center text-slate-600">
           Cart is empty
         </div>
